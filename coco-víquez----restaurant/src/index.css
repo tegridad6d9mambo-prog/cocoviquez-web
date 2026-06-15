@@ -1,0 +1,262 @@
+@import "tailwindcss";
+
+@theme {
+  --color-sand: #FEFDF5;
+  --color-ocean: #1B263B;
+  --color-coral: #FF7F50;
+  --color-footer-navy: #111D2B;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-sand text-ocean font-sans overflow-x-hidden;
+  }
+}
+
+.footer-dots {
+  background-image: 
+    radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.05) 1.5px, transparent 1.5px);
+  background-size: 40px 40px, 60px 60px;
+  background-position: 0 0, 20px 30px;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.ken-burns {
+  animation: kenburns 20s ease infinite alternate;
+}
+
+@keyframes kenburns {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.15); }
+}
+
+@keyframes pulse-coral {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 127, 80, 0.7); }
+  70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255, 127, 80, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 127, 80, 0); }
+}
+
+.animate-pulse-coral {
+  animation: pulse-coral 2s infinite;
+}
+
+.asymmetric-shape {
+  clip-path: polygon(0 0, 100% 5%, 100% 100%, 0 95%);
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+@keyframes jump {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-jump {
+  animation: jump 0.5s ease-in-out infinite;
+}
+
+@keyframes white-neon-pulse {
+  0%, 100% {
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.3), 0 0 6px rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.35);
+  }
+  50% {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 1), 0 0 20px rgba(255, 255, 255, 0.7), 0 0 30px rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.9);
+  }
+}
+
+.animate-neon-pulse {
+  animation: white-neon-pulse 3s ease-in-out infinite;
+}
+
+/* Header Button Styles */
+.header-btn {
+  @apply px-6 py-2.5 rounded-full text-[13px] uppercase tracking-[2px] transition-all duration-300 border-2;
+}
+
+.header-btn-reserve {
+  @apply border-[#F27F57] bg-[#F27F57] text-white font-bold hover:brightness-110 active:scale-95 shadow-lg;
+}
+
+.header-btn-order {
+  @apply border-[#F27F57] bg-transparent text-[#F27F57] font-medium hover:bg-[#F27F57]/10 active:scale-95;
+}
+
+/* Language Selector Styles */
+.lang-selector-container {
+  position: relative;
+}
+
+.lang-selector-container .dropdown-menu {
+  position: absolute;
+  right: 0;
+  margin-top: 0.75rem;
+  width: 10rem;
+  background-color: rgba(17, 29, 43, 0.8);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  border: 1px solid rgba(242, 127, 87, 0.3);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease-out;
+}
+
+.lang-selector-container.active .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.flag-circular {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.lang-item {
+  @apply w-full px-4 py-2.5 text-left text-[12px] font-medium tracking-wide flex items-center justify-between transition-colors text-white/70 hover:bg-white/5 hover:text-white;
+}
+
+.lang-item.selected {
+  @apply bg-[#F27F57] text-white;
+}
+
+/* Custom Date Picker Styles */
+input[type="date"] {
+  cursor: pointer !important;
+  position: relative;
+  color-scheme: dark !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer !important;
+  filter: invert(61%) sepia(50%) saturate(624%) hue-rotate(334deg) brightness(97%) contrast(96%); /* App's orange #F27F57 */
+  opacity: 1;
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  transition: transform 0.2s ease;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  transform: scale(1.1);
+}
+
+input[type="date"]:hover,
+input[type="date"]:focus {
+  box-shadow: 0 0 12px rgba(242, 127, 87, 0.4);
+  border-color: rgba(242, 127, 87, 0.8);
+}
+
+/* Fallback for other browsers if needed */
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-clear-button {
+  display: none;
+}
+
+/* Contact information overflow handling */
+.contact-item-container {
+  display: flex !important;
+  align-items: center !important;
+  max-width: 100%;
+  gap: 0.75rem;
+}
+
+.contact-item-text {
+  word-break: break-all !important;
+  overflow-wrap: anywhere !important;
+  max-width: 100%;
+}
+
+@media (max-width: 640px) {
+  .contact-item-text {
+    font-size: 0.75rem !important; /* Smaller text for mobile contact info */
+  }
+}
+
+/* Feature Icons Badge Style */
+.feature-badge-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+}
+
+.feature-icon-badge {
+  width: 80px !important;
+  height: 80px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  border: 1.5px solid #FF8C00 !important;
+  background-color: #F9F7F2 !important;
+  box-shadow: 0 4px 12px rgba(255, 140, 0, 0.1) !important;
+  margin: 0 auto !important;
+}
+
+.feature-badge-container:hover .feature-icon-badge {
+  transform: translateY(-10px) !important;
+  border-color: #FF8C00 !important;
+  box-shadow: 0 15px 35px rgba(255, 140, 0, 0.25) !important;
+}
+
+.feature-badge-container span {
+  display: block;
+  margin-top: 1rem;
+}
+
+/* Custom Scrollbar for Modal Extras */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #FFD700;
+  border-radius: 9999px;
+}
+
+/* For Firefox compatibility */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #FFD700 transparent;
+}
