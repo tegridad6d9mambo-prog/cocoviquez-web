@@ -5099,7 +5099,7 @@ export default function App() {
           <div className="flex items-center justify-between">
             
             {/* 1. Izquierda: Navegación (flex-1 para ocupar un tercio) */}
-            <nav className="hidden md:flex flex-1 items-center justify-start gap-[25px] lg:gap-[20px]">
+            <nav className="hidden lg:flex flex-1 items-center justify-start gap-[25px] lg:gap-[20px]">
               <a href="#menu" className="text-[13px] lg:text-[12px] font-sans font-light uppercase tracking-[2px] text-white hover:text-[#F27F57] transition-all duration-300 whitespace-nowrap">{t.nav.menu}</a>
               <a href="#about" className="text-[13px] lg:text-[12px] font-sans font-light uppercase tracking-[2px] text-white hover:text-[#F27F57] transition-all duration-300 whitespace-nowrap">{t.nav.about}</a>
               <a href="#location" className="text-[13px] lg:text-[12px] font-sans font-light uppercase tracking-[2px] text-white hover:text-[#F27F57] transition-all duration-300 whitespace-nowrap">{t.nav.location}</a>
@@ -5135,7 +5135,7 @@ export default function App() {
 
             {/* 3. Derecha: Acciones y Utilidades (flex-1 y justify-end) */}
             <div className="flex-1 flex items-center justify-end gap-[15px] lg:gap-[25px]">
-              <div className="hidden md:flex items-center gap-[15px] lg:gap-[20px]">
+              <div className="hidden lg:flex items-center gap-[15px] lg:gap-[20px]">
                 <a 
                   href="#menu" 
                   className="header-btn header-btn-order whitespace-nowrap !px-4 lg:!px-6"
@@ -5153,8 +5153,8 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Mobile Toggle: Visible en tablets y móviles (md:hidden) */}
-              <button className="md:hidden text-white p-2 hover:text-[#F27F57] transition-colors" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+              {/* Mobile Toggle: Visible en tablets y móviles (lg:hidden) */}
+              <button className="lg:hidden text-white p-2 hover:text-[#F27F57] transition-colors" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
                 {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
               </button>
             </div>
@@ -5171,14 +5171,14 @@ export default function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileMenuOpen(false)}
-              className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm md:hidden"
+              className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm lg:hidden"
             />
             <motion.div 
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-[80%] max-w-sm z-[70] bg-[#111D2B] shadow-2xl flex flex-col p-8 overflow-y-auto md:hidden"
+              className="fixed top-0 right-0 h-full w-[80%] max-w-sm z-[70] bg-[#111D2B] shadow-2xl flex flex-col p-8 overflow-y-auto lg:hidden"
             >
               <div className="flex justify-between items-center mb-12">
                 <img 
