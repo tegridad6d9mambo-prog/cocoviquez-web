@@ -1,0 +1,7 @@
+{
+  "name": "Coco Víquez -  Restaurant",
+  "description": "Sitio web One-Page para el restaurante Coco Víquez en Playa Hermosa, Guanacaste, con estética Beach Luxury y animaciones modernas.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
