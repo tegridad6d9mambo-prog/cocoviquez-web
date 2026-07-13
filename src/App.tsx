@@ -2465,7 +2465,7 @@ const Cart = ({ items, onUpdate, onRemove, onConfirm, isOpen, setIsOpen }: {
   );
 };
 
-const LanguageSelector = ({ currentLang, onLangChange }: { currentLang: string, onLangChange: (lang: any) => void }) => {
+const LanguageSelector = ({ currentLang, onLangChange, openUpward = false }: { currentLang: string, onLangChange: (lang: any) => void, openUpward?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -2489,7 +2489,7 @@ const LanguageSelector = ({ currentLang, onLangChange }: { currentLang: string, 
   }, []);
 
   return (
-    <div className={`lang-selector-container ${isOpen ? 'active' : ''}`} ref={dropdownRef}>
+    <div className={`lang-selector-container ${openUpward ? 'opens-upward' : ''} ${isOpen ? 'active' : ''}`} ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center space-x-2 px-3 py-1.5 rounded-full border transition-all duration-300 group ${
@@ -5178,7 +5178,7 @@ export default function App() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-[80%] max-w-sm z-[70] bg-[#111D2B] shadow-2xl flex flex-col p-8 md:hidden"
+              className="fixed top-0 right-0 h-full w-[80%] max-w-sm z-[70] bg-[#111D2B] shadow-2xl flex flex-col p-8 overflow-y-auto md:hidden"
             >
               <div className="flex justify-between items-center mb-12">
                 <img 
@@ -5246,7 +5246,7 @@ export default function App() {
 
               <div className="mt-auto pt-8 border-t border-white/10 flex items-center justify-between">
                 <span className="text-white/40 text-xs uppercase tracking-widest">Idioma</span>
-                <LanguageSelector currentLang={lang} onLangChange={setLang} />
+                <LanguageSelector currentLang={lang} onLangChange={setLang} openUpward />
               </div>
             </motion.div>
           </>

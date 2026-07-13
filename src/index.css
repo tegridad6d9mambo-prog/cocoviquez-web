@@ -135,6 +135,23 @@
   transform: translateY(0);
 }
 
+/* Used when the trigger sits near the bottom of the screen (e.g. the mobile nav
+   drawer) so the dropdown opens above the button instead of overflowing past
+   the viewport with no way to scroll to it. */
+.lang-selector-container.opens-upward .dropdown-menu {
+  top: auto;
+  bottom: 100%;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  transform: translateY(10px);
+  max-height: min(60vh, 16rem);
+  overflow-y: auto;
+}
+
+.lang-selector-container.opens-upward.active .dropdown-menu {
+  transform: translateY(0);
+}
+
 .flag-circular {
   width: 18px;
   height: 18px;
