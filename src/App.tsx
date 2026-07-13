@@ -5494,11 +5494,11 @@ export default function App() {
       {/* --- Reservation Form --- */}
       <section id="reserve" className="py-24 bg-sand relative">
         <div className="container mx-auto px-6 max-w-4xl">
-          <div className="bg-[#0B1221] rounded-[3rem] shadow-2xl overflow-hidden flex flex-col md:flex-row border border-white/5 relative">
+          <div className="bg-[#0B1221] rounded-[3rem] shadow-2xl overflow-hidden flex flex-col lg:flex-row border border-white/5 relative">
             {/* Dot Pattern Background Overlay */}
             <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: 'radial-gradient(coral 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
-            
-            <div className="w-full md:w-2/5 bg-ocean/40 backdrop-blur-md p-12 text-sand flex flex-col justify-between relative z-10 border-r border-white/5">
+
+            <div className="w-full lg:w-2/5 bg-ocean/40 backdrop-blur-md p-12 text-sand flex flex-col justify-between relative z-10 border-r border-white/5">
               <div>
                 <h2 className="text-3xl font-bold mb-6">{t.reservation.title}</h2>
                 <motion.p 
@@ -5526,9 +5526,9 @@ export default function App() {
               </div>
 
               <div className="space-y-4">
-                <div className="contact-item-container group flex items-center whitespace-nowrap">
+                <div className="contact-item-container group flex items-center">
                   <div className="p-2 bg-coral/10 rounded-lg text-coral group-hover:bg-coral group-hover:text-white transition-all shrink-0"><Clock size={18} /></div>
-                  <span className="font-medium text-xs sm:text-[13px] md:text-sm tracking-tight whitespace-nowrap">Lunes a Domingo: 7:00 AM - 9:00 PM</span>
+                  <span className="contact-item-text font-medium text-xs sm:text-[13px] md:text-sm tracking-tight">Lunes a Domingo: 7:00 AM - 9:00 PM</span>
                 </div>
                 <div 
                   className="contact-item-container group flex items-center rounded-xl bg-slate-900/40 border border-slate-800/50 p-3 transition-all duration-300 ease-in-out hover:scale-[1.02] hover:border-orange-500/50 hover:shadow-[0_0_15px_rgba(249,115,22,0.3)] hover:text-orange-400 active:scale-95 text-sand/80 relative"
@@ -5581,7 +5581,7 @@ export default function App() {
               </div>
             </div>
 
-            <form onSubmit={handleReservation} className="w-full md:w-3/5 p-12 space-y-8 relative z-10">
+            <form onSubmit={handleReservation} className="w-full lg:w-3/5 p-12 space-y-8 relative z-10">
               {/* Informative Table Map */}
               <div className="space-y-4">
                 <label className="text-xs font-bold uppercase tracking-[0.2em] text-[#F9F7F2]/40 ml-1">Distribución del Restaurante</label>
