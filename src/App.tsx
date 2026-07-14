@@ -106,6 +106,45 @@ const toDateOnly = (value: string | null | undefined): string => {
   return value ? value.slice(0, 10) : '';
 };
 
+// Admin notification tones, synthesized with the Web Audio API instead of an
+// external audio file - no CDN dependency, no licensing to track, plays
+// instantly. Each note is a short sine/triangle blip with a quick fade-out.
+const playTone = (notes: { freq: number; duration: number; type?: OscillatorType }[]) => {
+  try {
+    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    const ctx = new AudioContextClass();
+    let startTime = ctx.currentTime;
+    notes.forEach(({ freq, duration, type = 'sine' }) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0, startTime);
+      gain.gain.linearRampToValueAtTime(0.3, startTime + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(startTime);
+      osc.stop(startTime + duration + 0.05);
+      startTime += duration * 0.85;
+    });
+  } catch (e) {
+    console.warn('Could not play notification tone:', e);
+  }
+};
+
+// Bright ascending two-note "ding-ding" for new delivery orders - needs to
+// grab kitchen attention.
+const playOrderNotification = () => playTone([
+  { freq: 880, duration: 0.15, type: 'sine' },
+  { freq: 1175, duration: 0.28, type: 'sine' },
+]);
+
+// Softer single "ping" for new table/service reservations - lower urgency.
+const playReservationNotification = () => playTone([
+  { freq: 660, duration: 0.35, type: 'triangle' },
+]);
+
 // --- Translations ---
 const translations = {
   es: {
@@ -3713,17 +3752,20 @@ export default function App() {
   const updateDeliveryStatus = async (orderId: any, newStatus: string) => {
     if (!supabase) return;
     try {
-      const { error } = await supabase
+      // 'pedidos_delivery' only has an 'estado' column - there is no 'status' column,
+      // sending one makes PostgREST reject the whole update.
+      const { data: updatedRows, error } = await supabase
         .from('pedidos_delivery')
-        .update({ 
-          status: newStatus,
-          estado: newStatus 
-        })
-        .eq('id', orderId);
-      
+        .update({ estado: newStatus })
+        .eq('id', orderId)
+        .select();
+
       if (error) {
         console.error("Error updating delivery status in Supabase:", error.message);
         setDashboardError("Error al actualizar el estado del pedido: " + error.message);
+      } else if (!updatedRows || updatedRows.length === 0) {
+        console.error("El UPDATE no afectó ninguna fila. Probablemente la política RLS de UPDATE en 'pedidos_delivery' está bloqueando al usuario admin actual.");
+        setDashboardError("No se pudo actualizar el pedido: la base de datos rechazó el cambio silenciosamente (0 filas afectadas). Revisa la política RLS de UPDATE en la tabla 'pedidos_delivery' para el rol 'authenticated'.");
       } else {
         await fetchDeliveryOrders();
       }
@@ -3743,13 +3785,17 @@ export default function App() {
 
     if (!supabase) return;
     try {
-      const { error } = await supabase
+      const { data: updatedRows, error } = await supabase
         .from('reservas')
         .update({ estado: nuevoEstado })
-        .eq('id', id);
+        .eq('id', id)
+        .select();
       if (error) {
         console.error('Error updating reserva status:', error.message);
         setDashboardError('Error al actualizar estado: ' + error.message);
+      } else if (!updatedRows || updatedRows.length === 0) {
+        console.error("El UPDATE no afectó ninguna fila. Probablemente la política RLS de UPDATE en 'reservas' está bloqueando al usuario admin actual.");
+        setDashboardError("No se pudo actualizar la reserva: la base de datos rechazó el cambio silenciosamente (0 filas afectadas). Revisa la política RLS de UPDATE en la tabla 'reservas' para el rol 'authenticated'.");
       } else {
         await fetchReservas();
       }
@@ -3810,15 +3856,7 @@ export default function App() {
         },
         (payload) => {
           console.log('Realtime new delivery order received:', payload.new);
-          
-          // Play a kitchen alert/bell sound
-          try {
-            const kitchenBell = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-600.wav');
-            kitchenBell.volume = 0.65;
-            kitchenBell.play().catch(e => console.warn('Audio playback blocked or failed:', e));
-          } catch (audioErr) {
-            console.warn('Could not play notification chime:', audioErr);
-          }
+          playOrderNotification();
 
           // Add new order to display state
           setAdminOrders((prevOrders) => {
@@ -3826,15 +3864,41 @@ export default function App() {
             if (alreadyExists) return prevOrders;
             return [payload.new, ...prevOrders];
           });
-          
+
           // Clear error banner on successful real-time connection flow
           setDashboardError('');
         }
       )
       .subscribe();
 
+    // Realtime postgres updates channel for new reservas (table bookings +
+    // service reservation requests) - separate channel/tone from delivery
+    // orders so the kitchen and front-of-house alerts stay distinguishable.
+    const reservasChannel = supabase
+      .channel('reservas-realtime-channel')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'reservas'
+        },
+        (payload) => {
+          console.log('Realtime new reservation received:', payload.new);
+          playReservationNotification();
+
+          setReservas((prev) => {
+            const alreadyExists = prev.some((r: any) => r.id === payload.new.id);
+            if (alreadyExists) return prev;
+            return [payload.new, ...prev];
+          });
+        }
+      )
+      .subscribe();
+
     return () => {
       supabase.removeChannel(channel);
+      supabase.removeChannel(reservasChannel);
     };
   }, [isAdmin]);
 
@@ -3860,13 +3924,18 @@ export default function App() {
         b => b.fecha === dateStr && b.servicio_tipo === servicioTipo
       );
       if (isCurrentlyBlocked) {
-        const { error } = await supabase
+        const { data: deletedRows, error } = await supabase
           .from('fechas_bloqueadas')
           .delete()
           .eq('fecha', dateStr)
-          .eq('servicio_tipo', servicioTipo);
+          .eq('servicio_tipo', servicioTipo)
+          .select();
         if (error) {
           console.warn('Error on delete from Supabase in toggleBlockedDate:', error.message);
+          setDashboardError('Error al desbloquear el día: ' + error.message);
+        } else if (!deletedRows || deletedRows.length === 0) {
+          console.error("El DELETE no afectó ninguna fila en toggleBlockedDate. Probablemente RLS está bloqueando al usuario admin actual.");
+          setDashboardError("No se pudo desbloquear el día: la base de datos rechazó el borrado silenciosamente. Revisa la política RLS de DELETE en 'fechas_bloqueadas'.");
         }
       } else {
         const { error } = await supabase
@@ -3922,13 +3991,17 @@ export default function App() {
       }
       
       if (datesToDelete.length > 0) {
-        const { error: deleteError } = await supabase
+        const { data: deletedRows, error: deleteError } = await supabase
           .from('fechas_bloqueadas')
           .delete()
           .eq('servicio_tipo', selectedAdminService)
-          .in('fecha', datesToDelete);
-          
+          .in('fecha', datesToDelete)
+          .select();
+
         if (deleteError) throw deleteError;
+        if (!deletedRows || deletedRows.length < datesToDelete.length) {
+          throw new Error(`Solo se desbloquearon ${deletedRows?.length || 0} de ${datesToDelete.length} fechas — revisa la política RLS de DELETE en 'fechas_bloqueadas'.`);
+        }
       }
       
       if (datesToInsert.length > 0) {
@@ -6371,8 +6444,13 @@ export default function App() {
                       
                       {/* --- Metrics Panel --- */}
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        {/* Metric 1 */}
-                        <div className="bg-[#0E1724] border border-cyan-500/20 rounded-3xl p-5 shadow-[0_4px_15px_rgba(6,182,212,0.05)] relative overflow-hidden group hover:border-cyan-500/40 transition-all duration-300">
+                        {/* Metric 1 - click to clear the status filter and see every reservation */}
+                        <div
+                          onClick={() => { setShowBlockedTable(false); setStatusFilter('todos'); }}
+                          className={`bg-[#0E1724] border rounded-3xl p-5 shadow-[0_4px_15px_rgba(6,182,212,0.05)] relative overflow-hidden group transition-all duration-300 cursor-pointer hover:bg-[#111c2c] ${
+                            statusFilter === 'todos' && !showBlockedTable ? 'border-cyan-500/60' : 'border-cyan-500/20 hover:border-cyan-500/40'
+                          }`}
+                        >
                           <div className="absolute right-3 top-3 text-cyan-500/10 group-hover:text-cyan-500/20 transition-all">
                             <ChefHat size={48} />
                           </div>
@@ -6383,8 +6461,13 @@ export default function App() {
                           <div className="w-12 h-1 bg-cyan-400 rounded mt-3 shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
                         </div>
 
-                        {/* Metric 2 */}
-                        <div className="bg-[#0E1724] border border-[#F27F57]/20 rounded-3xl p-5 shadow-[0_4px_15px_rgba(242,127,87,0.05)] relative overflow-hidden group hover:border-[#F27F57]/40 transition-all duration-300">
+                        {/* Metric 2 - click to filter the table below to pending reservations only */}
+                        <div
+                          onClick={() => { setShowBlockedTable(false); setStatusFilter('pendiente'); }}
+                          className={`bg-[#0E1724] border rounded-3xl p-5 shadow-[0_4px_15px_rgba(242,127,87,0.05)] relative overflow-hidden group transition-all duration-300 cursor-pointer hover:bg-[#111c2c] ${
+                            statusFilter === 'pendiente' && !showBlockedTable ? 'border-[#F27F57]/60' : 'border-[#F27F57]/20 hover:border-[#F27F57]/40'
+                          }`}
+                        >
                           <div className="absolute right-3 top-3 text-[#F27F57]/10 group-hover:text-[#F27F57]/20 transition-all">
                             <Clock size={48} />
                           </div>
