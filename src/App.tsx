@@ -1503,6 +1503,9 @@ const ServiceCard: React.FC<{
           <h3 className="text-2xl font-bold font-sans tracking-tight text-[#F9F7F2]">{item.name}</h3>
           <p className="text-sm font-light italic text-[#F27F57] mt-1">{reserveNote}</p>
           <div className="w-12 h-1 bg-black mt-4 rounded-full" />
+          {item.desc && (
+            <p className="text-sm font-light text-[#F9F7F2]/60 mt-4 leading-relaxed">{item.desc}</p>
+          )}
         </div>
 
         {/* Back Side - Dark Premium Style */}
@@ -5397,7 +5400,7 @@ export default function App() {
             <div className="w-24 h-1 bg-coral mx-auto" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-10 items-stretch">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 items-stretch">
             {t.services.items.slice(0, 4).map((item: any) => (
               <ServiceCard 
                 key={item.id} 
