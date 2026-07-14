@@ -97,6 +97,15 @@ const parseOrderDetails = (order: any): { items: any[]; email: string; paymentMe
   return { items, email, paymentMethod: paymentMethod || 'Sinpe Móvil', transactionId };
 };
 
+// 'reservas.fecha' is a timestamptz column, so Supabase returns it as
+// "2026-07-13T00:00:00+00:00", not a plain "2026-07-13" - unlike
+// 'fechas_bloqueadas.fecha', which is a real date column. Slicing to the
+// first 10 chars normalizes both shapes to "YYYY-MM-DD" for comparisons
+// and display.
+const toDateOnly = (value: string | null | undefined): string => {
+  return value ? value.slice(0, 10) : '';
+};
+
 // --- Translations ---
 const translations = {
   es: {
@@ -3757,13 +3766,17 @@ export default function App() {
 
     if (!supabase) return;
     try {
-      const { error } = await supabase
+      const { data: deletedRows, error } = await supabase
         .from('reservas')
         .delete()
-        .eq('id', id);
+        .eq('id', id)
+        .select();
       if (error) {
         console.error('Error deleting reserva:', error.message);
         setDashboardError('Error al eliminar reserva: ' + error.message);
+      } else if (!deletedRows || deletedRows.length === 0) {
+        console.error("El DELETE no afectó ninguna fila. Probablemente la política RLS de DELETE en 'reservas' está bloqueando al usuario admin actual.");
+        setDashboardError("No se pudo eliminar la reserva: la base de datos rechazó el borrado silenciosamente (0 filas afectadas). Revisa la política RLS de DELETE en la tabla 'reservas' para el rol 'authenticated'.");
       } else {
         await fetchReservas();
       }
@@ -3773,7 +3786,7 @@ export default function App() {
   };
 
   const dayHasReservations = (dateStr: string) => {
-    return (reservas || []).some(r => r.fecha === dateStr);
+    return (reservas || []).some(r => toDateOnly(r.fecha) === dateStr);
   };
 
   useEffect(() => {
@@ -6463,7 +6476,7 @@ export default function App() {
                                           </span>
                                         </td>
                                         <td className="p-4 text-white/80 font-mono">
-                                          <span className="block font-bold">{r.fecha?.split('-').reverse().join('/')}</span>
+                                          <span className="block font-bold">{toDateOnly(r.fecha).split('-').reverse().join('/')}</span>
                                           <span className="block text-[10px] text-white/40">{r.fecha_hora?.slice(11, 16)}</span>
                                         </td>
                                         <td className="p-4 text-center font-bold text-cyan-400 font-mono text-sm">
@@ -6840,7 +6853,7 @@ export default function App() {
                             <div className="space-y-3 pt-3 border-t border-white/5">
                               {(() => {
                                 const list = reservas || [];
-                                const matches = list.filter(r => r.fecha === selectedAdminDate);
+                                const matches = list.filter(r => toDateOnly(r.fecha) === selectedAdminDate);
                                 return (
                                   <>
                                     <div className="flex justify-between items-center px-1">
