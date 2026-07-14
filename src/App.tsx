@@ -3774,6 +3774,30 @@ export default function App() {
     }
   };
 
+  const deleteDeliveryOrder = async (orderId: any) => {
+    if (!supabase) return;
+    if (!window.confirm('¿Eliminar este pedido de forma permanente?')) return;
+    try {
+      const { data: deletedRows, error } = await supabase
+        .from('pedidos_delivery')
+        .delete()
+        .eq('id', orderId)
+        .select();
+
+      if (error) {
+        console.error('Error deleting delivery order:', error.message);
+        setDashboardError('Error al eliminar el pedido: ' + error.message);
+      } else if (!deletedRows || deletedRows.length === 0) {
+        console.error("El DELETE no afectó ninguna fila. Probablemente la política RLS de DELETE en 'pedidos_delivery' está bloqueando al usuario admin actual.");
+        setDashboardError("No se pudo eliminar el pedido: la base de datos rechazó el borrado silenciosamente (0 filas afectadas). Revisa la política RLS de DELETE en la tabla 'pedidos_delivery' para el rol 'authenticated'.");
+      } else {
+        setAdminOrders((prev) => prev.filter((o: any) => o.id !== orderId));
+      }
+    } catch (err: any) {
+      console.error(err);
+    }
+  };
+
   const updateReservaEstado = async (id: number | string, nuevoEstado: string) => {
     // If it's a fallback record
     if (typeof id === 'number' && id >= 100) {
@@ -7308,9 +7332,19 @@ export default function App() {
                                             {order.created_at ? new Date(order.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : (order.timestamp || '')}
                                           </h3>
                                         </div>
-                                        <span className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${getStatusBadge(currentStatusStr)}`}>
-                                          {currentStatusStr}
-                                        </span>
+                                        <div className="flex items-center gap-2">
+                                          <span className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${getStatusBadge(currentStatusStr)}`}>
+                                            {currentStatusStr}
+                                          </span>
+                                          <button
+                                            type="button"
+                                            onClick={() => deleteDeliveryOrder(order.id)}
+                                            className="text-white/20 hover:text-red-400 p-1.5 transition-colors cursor-pointer"
+                                            title="Eliminar pedido"
+                                          >
+                                            <Trash2 size={14} />
+                                          </button>
+                                        </div>
                                       </div>
 
                                       {/* Order Items */}
