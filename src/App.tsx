@@ -6060,7 +6060,7 @@ export default function App() {
                   <div className="bg-coral/10 p-3 rounded-xl text-coral shrink-0 group-hover:bg-coral group-hover:text-white transition-all"><MapPin /></div>
                   <div>
                     <h4 className="font-bold text-ocean">Dirección</h4>
-                    <p className="text-sm text-ocean/60 group-hover:text-coral transition-colors">Ruta Nacional Secundaria 159, Playa Hermosa, Guanacaste, Costa Rica. Frente a la playa, 200m Sur del Hotel Bosque del Mar.</p>
+                    <p className="text-sm text-ocean/60 group-hover:text-coral transition-colors">Ubicado en la Ruta Nacional 159, Playa Hermosa, Guanacaste, Costa Rica, frente a la entrada principal de Condovac y Villas Sol.</p>
                   </div>
                 </a>
 
