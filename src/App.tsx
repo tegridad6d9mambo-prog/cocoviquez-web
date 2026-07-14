@@ -3634,6 +3634,183 @@ function useLazyVideoSection<T extends HTMLElement>(rootMargin = '400px') {
   return { ref, inView };
 }
 
+// --- Kitchen Display View (/cocina) ---
+// A focused, tablet-friendly screen for kitchen staff: only food orders, only the
+// buttons needed to move one through Pendiente -> Aceptado -> En Cocina -> Entregado.
+// No reservations, no metrics, no delete - kitchen staff don't need (or shouldn't
+// have) access to any of that. Reuses the same admin Supabase Auth login as the
+// main dashboard; this is a separate view for a fixed kitchen tablet, not a
+// separate user role/permission system.
+const KitchenView = () => {
+  const [isAuthed, setIsAuthed] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [orders, setOrders] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!supabase) { setCheckingSession(false); return; }
+    supabase.auth.getSession().then(({ data }) => {
+      setIsAuthed(!!data?.session);
+      setCheckingSession(false);
+    });
+  }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!supabase) return;
+    setLoginError('');
+    setIsLoggingIn(true);
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        setLoginError(error.message === 'Invalid login credentials' ? 'Credenciales incorrectas' : error.message);
+      } else {
+        setIsAuthed(true);
+      }
+    } catch (err) {
+      setLoginError('Ocurrió un error inesperado al iniciar sesión.');
+    } finally {
+      setIsLoggingIn(false);
+    }
+  };
+
+  const fetchOrders = async () => {
+    if (!supabase) return;
+    const { data, error } = await supabase.from('pedidos_delivery').select('*').order('created_at', { ascending: false });
+    if (!error && data) setOrders(data);
+  };
+
+  useEffect(() => {
+    if (!isAuthed || !supabase) return;
+    fetchOrders();
+    const channel = supabase
+      .channel('kitchen-realtime-channel')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'pedidos_delivery' }, () => {
+        playOrderNotification();
+        fetchOrders();
+      })
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'pedidos_delivery' }, () => {
+        fetchOrders();
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [isAuthed]);
+
+  const advanceStatus = async (orderId: any, newStatus: string) => {
+    if (!supabase) return;
+    const { data, error } = await supabase.from('pedidos_delivery').update({ estado: newStatus }).eq('id', orderId).select();
+    if (!error && data && data.length > 0) fetchOrders();
+  };
+
+  const getDateOnly = (order: any) => {
+    try {
+      const d = new Date(order.created_at);
+      if (!isNaN(d.getTime())) return d.toISOString().slice(0, 10);
+    } catch (e) { /* noop */ }
+    return '';
+  };
+
+  const isOld = (order: any) => {
+    const s = (order.estado || '').toLowerCase();
+    if (s === 'entregado' || s === 'listo / entregado') {
+      const t = new Date(order.created_at).getTime();
+      return Date.now() - t > 2 * 60 * 60 * 1000;
+    }
+    return false;
+  };
+
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const activeOrders = orders.filter(o => getDateOnly(o) === todayStr && !isOld(o));
+
+  if (checkingSession) {
+    return <div className="min-h-screen bg-[#0A111A] flex items-center justify-center text-white/40 font-bold uppercase tracking-widest">Cargando...</div>;
+  }
+
+  if (!isAuthed) {
+    return (
+      <div className="min-h-screen bg-[#0A111A] flex items-center justify-center p-6">
+        <form onSubmit={handleLogin} className="w-full max-w-sm bg-[#0D1721] border-2 border-[#F27F57]/30 rounded-[2.5rem] p-8 space-y-6">
+          <div className="text-center">
+            <ChefHat size={40} className="mx-auto text-[#F27F57] mb-3" />
+            <h1 className="text-xl font-black text-white uppercase tracking-wide">Panel de Cocina</h1>
+            <p className="text-white/40 text-xs mt-1">Coco Víquez</p>
+          </div>
+          <input required type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Correo" className="w-full bg-[#0A192F] border border-white/10 rounded-xl p-4 text-white outline-none focus:border-[#F27F57]" />
+          <input required type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Contraseña" className="w-full bg-[#0A192F] border border-white/10 rounded-xl p-4 text-white outline-none focus:border-[#F27F57]" />
+          {loginError && <p className="text-red-400 text-xs text-center font-bold">⚠️ {loginError}</p>}
+          <button type="submit" disabled={isLoggingIn} className="w-full bg-[#F27F57] text-white py-4 rounded-xl font-black uppercase tracking-widest disabled:opacity-50">
+            {isLoggingIn ? 'Entrando...' : 'Entrar'}
+          </button>
+        </form>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#0A111A] p-6">
+      <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
+        <div className="flex items-center gap-3">
+          <ChefHat size={32} className="text-[#F27F57]" />
+          <h1 className="text-2xl font-black text-white uppercase tracking-wide">Comandas de Cocina</h1>
+        </div>
+        <span className="bg-[#F27F57]/10 text-[#F27F57] px-4 py-2 rounded-full font-black text-sm border border-[#F27F57]/30">
+          {activeOrders.length} activos
+        </span>
+      </div>
+
+      {activeOrders.length === 0 ? (
+        <div className="text-center py-24 text-white/30 text-lg font-bold uppercase tracking-widest">
+          No hay pedidos pendientes
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {activeOrders.map(order => {
+            const { items } = parseOrderDetails(order);
+            const normStatus = (order.estado || 'pendiente').toLowerCase();
+            return (
+              <div key={order.id} className="bg-[#0E1724] border-2 border-white/10 rounded-3xl p-6 space-y-4">
+                <div className="flex justify-between items-start">
+                  <span className="text-lg font-black text-white">Pedido #{order.id}</span>
+                  <span className="text-xs font-bold text-white/40">
+                    {order.created_at ? new Date(order.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+                  </span>
+                </div>
+                <div className="text-[#F27F57] font-bold text-sm">{order.cliente || 'Cliente'}</div>
+                <div className="space-y-2 border-y border-white/5 py-4">
+                  {items.map((it: any, idx: number) => (
+                    <div key={idx} className="flex justify-between text-white text-base">
+                      <span>{it.name}</span>
+                      <span className="font-black text-[#F27F57]">x{it.quantity}</span>
+                    </div>
+                  ))}
+                </div>
+                {normStatus === 'pendiente' && (
+                  <button onClick={() => advanceStatus(order.id, 'Aceptado')} className="w-full bg-cyan-500/15 text-cyan-400 border-2 border-cyan-500/40 py-4 rounded-xl font-black uppercase text-sm active:scale-[0.98] transition-transform">
+                    👍 Aceptar Pedido
+                  </button>
+                )}
+                {normStatus === 'aceptado' && (
+                  <button onClick={() => advanceStatus(order.id, 'En Cocina')} className="w-full bg-purple-500/15 text-purple-400 border-2 border-purple-500/40 py-4 rounded-xl font-black uppercase text-sm active:scale-[0.98] transition-transform">
+                    👨‍🍳 En Cocina
+                  </button>
+                )}
+                {(normStatus === 'en cocina' || normStatus === 'en_cocina') && (
+                  <button onClick={() => advanceStatus(order.id, 'Entregado')} className="w-full bg-green-500/20 text-green-400 border-2 border-green-500/40 py-4 rounded-xl font-black uppercase text-sm active:scale-[0.98] transition-transform">
+                    ✅ Listo / Entregado
+                  </button>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default function App() {
   const [lang, setLang] = useState<'es' | 'en' | 'fr' | 'de'>(() => {
     const saved = localStorage.getItem('coco_viquez_lang');
@@ -5064,6 +5241,10 @@ export default function App() {
     setShowChannels(false);
     setReservationData(null);
   };
+
+  if (currentPath.includes('cocina')) {
+    return <KitchenView />;
+  }
 
   if (currentPath.includes('reset-password')) {
     return (
