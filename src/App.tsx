@@ -145,6 +145,15 @@ const playReservationNotification = () => playTone([
   { freq: 660, duration: 0.35, type: 'triangle' },
 ]);
 
+// Urgent three-note descending alert for "order ready for pickup" - the
+// owner needs to physically go get it and deliver it, so this one is
+// deliberately the most attention-grabbing of the three.
+const playReadyForPickupNotification = () => playTone([
+  { freq: 1046, duration: 0.16, type: 'square' },
+  { freq: 784, duration: 0.16, type: 'square' },
+  { freq: 1046, duration: 0.24, type: 'square' },
+]);
+
 // --- Translations ---
 const translations = {
   es: {
@@ -3798,9 +3807,14 @@ const KitchenView = () => {
                   </button>
                 )}
                 {(normStatus === 'en cocina' || normStatus === 'en_cocina') && (
-                  <button onClick={() => advanceStatus(order.id, 'Entregado')} className="w-full bg-green-500/20 text-green-400 border-2 border-green-500/40 py-4 rounded-xl font-black uppercase text-sm active:scale-[0.98] transition-transform">
-                    ✅ Listo / Entregado
+                  <button onClick={() => advanceStatus(order.id, 'Listo para Recoger')} className="w-full bg-amber-500/20 text-amber-400 border-2 border-amber-500/40 py-4 rounded-xl font-black uppercase text-sm active:scale-[0.98] transition-transform">
+                    📦 Listo para Recoger
                   </button>
+                )}
+                {normStatus === 'listo para recoger' && (
+                  <div className="w-full bg-amber-500/10 text-amber-400/80 border-2 border-amber-500/20 py-3.5 rounded-xl text-sm font-black uppercase text-center">
+                    📦 Esperando al dueño
+                  </div>
                 )}
               </div>
             );
@@ -4068,6 +4082,22 @@ export default function App() {
 
           // Clear error banner on successful real-time connection flow
           setDashboardError('');
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'pedidos_delivery'
+        },
+        (payload) => {
+          const wasReady = (payload.old?.estado || '').toLowerCase() === 'listo para recoger';
+          const isNowReady = (payload.new?.estado || '').toLowerCase() === 'listo para recoger';
+          if (isNowReady && !wasReady) {
+            playReadyForPickupNotification();
+          }
+          setAdminOrders((prevOrders) => prevOrders.map((order: any) => order.id === payload.new.id ? payload.new : order));
         }
       )
       .subscribe();
@@ -4662,7 +4692,7 @@ export default function App() {
   const activeDeliveryCount = (adminOrders || []).filter(order => {
     const isToday = getOrderDateOnly(order) === todayStr;
     const statusLower = (order.status || order.estado || '').toLowerCase();
-    const isPendingOrCooking = ['pendiente', 'en cocina', 'en_cocina'].includes(statusLower);
+    const isPendingOrCooking = ['pendiente', 'en cocina', 'en_cocina', 'listo para recoger'].includes(statusLower);
     return isToday && isPendingOrCooking;
   }).length;
 
@@ -4676,6 +4706,9 @@ export default function App() {
     }
     if (norm === 'en cocina' || norm === 'en_cocina') {
       return 'bg-purple-500/15 text-purple-400 border border-purple-500/25 shadow-[0_0_8px_rgba(168,85,247,0.1)]';
+    }
+    if (norm === 'listo para recoger') {
+      return 'bg-orange-500/15 text-orange-400 border border-orange-500/25 shadow-[0_0_8px_rgba(249,115,22,0.15)]';
     }
     return 'bg-green-500/15 text-green-400 border border-green-500/25 shadow-[0_0_8px_rgba(34,197,94,0.1)]';
   };
@@ -7605,10 +7638,19 @@ export default function App() {
                                         {(normStatus === 'en cocina' || normStatus === 'en_cocina') && (
                                           <button
                                             type="button"
+                                            onClick={() => updateDeliveryStatus(order.id, 'Listo para Recoger')}
+                                            className="w-full bg-amber-500/15 hover:bg-amber-500/25 text-amber-400 border border-amber-500/30 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 shadow-[0_0_12px_rgba(245,158,11,0.15)] hover:scale-[1.02] active:scale-[0.98]"
+                                          >
+                                            📦 Listo para Recoger
+                                          </button>
+                                        )}
+                                        {normStatus === 'listo para recoger' && (
+                                          <button
+                                            type="button"
                                             onClick={() => updateDeliveryStatus(order.id, 'Entregado')}
                                             className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 border border-green-500/30 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 shadow-[0_0_12px_rgba(34,197,94,0.15)] hover:scale-[1.02] active:scale-[0.98]"
                                           >
-                                            🚲 Listo / Entregado
+                                            🚲 Marcar Entregado
                                           </button>
                                         )}
                                         {(normStatus === 'entregado' || normStatus === 'listo / entregado' || normStatus === 'listo' || normStatus === 'cerrado') && (
