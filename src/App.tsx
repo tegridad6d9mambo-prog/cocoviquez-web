@@ -6773,18 +6773,38 @@ export default function App() {
                   </button>
                 </div>
 
-                <button
-                  onClick={pushSubscribed ? handleDisablePush : handleEnablePush}
-                  disabled={pushBusy}
-                  title={pushSubscribed ? 'Notificaciones activas en este dispositivo - click para desactivar' : 'Recibir avisos de pedidos y reservas en este celular, sin tener el sitio abierto'}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-300 border disabled:opacity-50 ${
-                    pushSubscribed
-                      ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                      : 'bg-white/5 text-white/60 border-white/10 hover:border-[#F27F57]/40 hover:text-[#F27F57]'
-                  }`}
-                >
-                  {pushBusy ? '...' : pushSubscribed ? '🔔 Notificaciones Activas' : '🔕 Activar Notificaciones'}
-                </button>
+                {(() => {
+                  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+                  const isStandalone = (window.navigator as any).standalone === true
+                    || window.matchMedia('(display-mode: standalone)').matches;
+                  const needsIOSInstall = isIOS && !isStandalone;
+
+                  if (needsIOSInstall) {
+                    return (
+                      <div
+                        title="En iPhone hay que instalar el sitio antes de poder activar notificaciones"
+                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider border bg-amber-500/10 text-amber-400 border-amber-500/30 max-w-xs text-left leading-snug"
+                      >
+                        📲 En iPhone: toca Compartir (□↑) → "Agregar a pantalla de inicio" → abre el ícono nuevo desde ahí para activar notificaciones
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <button
+                      onClick={pushSubscribed ? handleDisablePush : handleEnablePush}
+                      disabled={pushBusy}
+                      title={pushSubscribed ? 'Notificaciones activas en este dispositivo - click para desactivar' : 'Recibir avisos de pedidos y reservas en este celular, sin tener el sitio abierto'}
+                      className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-300 border disabled:opacity-50 ${
+                        pushSubscribed
+                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                          : 'bg-white/5 text-white/60 border-white/10 hover:border-[#F27F57]/40 hover:text-[#F27F57]'
+                      }`}
+                    >
+                      {pushBusy ? '...' : pushSubscribed ? '🔔 Notificaciones Activas' : '🔕 Activar Notificaciones'}
+                    </button>
+                  );
+                })()}
 
                 <button
                   onClick={() => setShowAdmin(false)}
