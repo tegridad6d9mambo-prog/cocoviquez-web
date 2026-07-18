@@ -106,6 +106,19 @@ const toDateOnly = (value: string | null | undefined): string => {
   return value ? value.slice(0, 10) : '';
 };
 
+// Web Push requires the VAPID public key as a Uint8Array, not the base64url
+// string it's normally shared as - this is the standard conversion for it.
+function urlBase64ToUint8Array(base64String: string): Uint8Array {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; i++) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
 // Admin notification tones, synthesized with the Web Audio API instead of an
 // external audio file - no CDN dependency, no licensing to track, plays
 // instantly. Each note is a short sine/triangle blip with a quick fade-out.
@@ -3859,6 +3872,9 @@ export default function App() {
   const [selectedAdminService, setSelectedAdminService] = useState<string>('mesas');
   const [tempBlockedDatesForService, setTempBlockedDatesForService] = useState<string[]>([]);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [pushSubscribed, setPushSubscribed] = useState(false);
+  const [pushBusy, setPushBusy] = useState(false);
+  const [pushError, setPushError] = useState('');
   const [adminEmail, setAdminEmail] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
   const [loginError, setLoginError] = useState('');
@@ -3988,6 +4004,106 @@ export default function App() {
       console.error(err);
     }
   };
+
+  // Web Push subscription for this admin device. The button that calls this only
+  // renders inside the already-authenticated admin dashboard - see the
+  // "Acceso Denegado" gate above - so there's no way to reach this flow without
+  // first logging in with the admin's real credentials.
+  const checkPushSubscription = async () => {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+    try {
+      const registration = await navigator.serviceWorker.getRegistration('/sw.js');
+      const existing = await registration?.pushManager.getSubscription();
+      setPushSubscribed(!!existing);
+    } catch (err) {
+      console.warn('Could not check existing push subscription:', err);
+    }
+  };
+
+  const handleEnablePush = async () => {
+    setPushError('');
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+      setPushError('Este navegador no soporta notificaciones push. Probá con Chrome en Android.');
+      return;
+    }
+    const vapidPublicKey = (import.meta as any).env?.VITE_VAPID_PUBLIC_KEY;
+    if (!vapidPublicKey) {
+      setPushError('Las notificaciones push no están configuradas todavía en el servidor.');
+      return;
+    }
+    if (!supabase) {
+      setPushError('Supabase no está configurado.');
+      return;
+    }
+
+    setPushBusy(true);
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        setPushError('No se concedió el permiso de notificaciones. Revisa la configuración del navegador.');
+        return;
+      }
+
+      const registration = await navigator.serviceWorker.register('/sw.js');
+      await navigator.serviceWorker.ready;
+
+      let subscription = await registration.pushManager.getSubscription();
+      if (!subscription) {
+        subscription = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(vapidPublicKey),
+        });
+      }
+
+      const subJson = subscription.toJSON();
+      const { error } = await supabase.from('push_subscriptions').upsert(
+        [{
+          endpoint: subJson.endpoint,
+          p256dh: subJson.keys?.p256dh,
+          auth: subJson.keys?.auth,
+        }],
+        { onConflict: 'endpoint' }
+      );
+
+      if (error) {
+        console.error('Error saving push subscription:', error.message);
+        setPushError('No se pudo guardar la suscripción: ' + error.message);
+      } else {
+        setPushSubscribed(true);
+      }
+    } catch (err: any) {
+      console.error('Error enabling push notifications:', err);
+      setPushError('Ocurrió un error activando las notificaciones: ' + (err.message || err));
+    } finally {
+      setPushBusy(false);
+    }
+  };
+
+  const handleDisablePush = async () => {
+    setPushBusy(true);
+    setPushError('');
+    try {
+      const registration = await navigator.serviceWorker.getRegistration('/sw.js');
+      const subscription = await registration?.pushManager.getSubscription();
+      if (subscription) {
+        const endpoint = subscription.endpoint;
+        await subscription.unsubscribe();
+        if (supabase) {
+          await supabase.from('push_subscriptions').delete().eq('endpoint', endpoint);
+        }
+      }
+      setPushSubscribed(false);
+    } catch (err: any) {
+      console.error('Error disabling push notifications:', err);
+      setPushError('No se pudo desactivar: ' + (err.message || err));
+    } finally {
+      setPushBusy(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isAdmin) checkPushSubscription();
+  }, [isAdmin]);
 
   const updateReservaEstado = async (id: number | string, nuevoEstado: string) => {
     // If it's a fallback record
@@ -6657,13 +6773,33 @@ export default function App() {
                   </button>
                 </div>
 
-                <button 
-                  onClick={() => setShowAdmin(false)} 
+                <button
+                  onClick={pushSubscribed ? handleDisablePush : handleEnablePush}
+                  disabled={pushBusy}
+                  title={pushSubscribed ? 'Notificaciones activas en este dispositivo - click para desactivar' : 'Recibir avisos de pedidos y reservas en este celular, sin tener el sitio abierto'}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-300 border disabled:opacity-50 ${
+                    pushSubscribed
+                      ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                      : 'bg-white/5 text-white/60 border-white/10 hover:border-[#F27F57]/40 hover:text-[#F27F57]'
+                  }`}
+                >
+                  {pushBusy ? '...' : pushSubscribed ? '🔔 Notificaciones Activas' : '🔕 Activar Notificaciones'}
+                </button>
+
+                <button
+                  onClick={() => setShowAdmin(false)}
                   className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors p-2 rounded-full hover:bg-white/5"
                 >
                   <X size={24} />
                 </button>
               </div>
+
+              {/* Push notification error banner */}
+              {pushError && (
+                <div className="px-6 py-3 bg-red-950/30 border-b border-red-500/20 text-red-300 text-xs font-bold flex items-center gap-2 shrink-0">
+                  <span>⚠️</span> {pushError}
+                </div>
+              )}
 
               {/* Status banner */}
               {dashboardError && (
