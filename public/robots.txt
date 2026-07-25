@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /cocina
+Disallow: /reset-password
+
+Sitemap: https://cocoviquez.com/sitemap.xml
