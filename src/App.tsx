@@ -4479,6 +4479,25 @@ function useLazyVideoSection<T extends HTMLElement>(rootMargin = '400px') {
 // video becomes playable or the tab regains visibility, so background videos never
 // get stuck showing a blank/frozen frame. `ready` lets lazily-mounted videos wait
 // until their <video> element actually exists before wiring up listeners.
+//
+// Some mobile browsers and in-app webviews (Instagram/Facebook browser, low-power
+// mode, data-saver mode, etc.) block muted autoplay outright, so loadeddata/canplay
+// never manage to start it. As a last-resort fallback, the first tap/scroll/keypress
+// anywhere on the page also retries every registered video — a user gesture always
+// satisfies autoplay policies, so this guarantees the video eventually plays.
+const pendingAutoplayRetries = new Set<() => void>();
+let autoplayGestureListenerAttached = false;
+function ensureAutoplayGestureListener() {
+  if (autoplayGestureListenerAttached || typeof window === 'undefined') return;
+  autoplayGestureListenerAttached = true;
+  const retryAll = () => {
+    pendingAutoplayRetries.forEach((retry) => retry());
+  };
+  ['pointerdown', 'touchstart', 'keydown', 'scroll'].forEach((evt) =>
+    window.addEventListener(evt, retryAll, { passive: true })
+  );
+}
+
 function useAutoplayVideo(ready = true) {
   const ref = useRef<HTMLVideoElement>(null);
   useEffect(() => {
@@ -4486,15 +4505,22 @@ function useAutoplayVideo(ready = true) {
     const videoEl = ref.current;
     if (!videoEl) return;
     const tryPlay = () => {
+      if (!videoEl.paused) return;
+      videoEl.muted = true;
       videoEl.play().catch(() => {});
     };
+    ensureAutoplayGestureListener();
+    pendingAutoplayRetries.add(tryPlay);
     tryPlay();
     videoEl.addEventListener('loadeddata', tryPlay);
     videoEl.addEventListener('canplay', tryPlay);
+    videoEl.addEventListener('pause', tryPlay);
     document.addEventListener('visibilitychange', tryPlay);
     return () => {
+      pendingAutoplayRetries.delete(tryPlay);
       videoEl.removeEventListener('loadeddata', tryPlay);
       videoEl.removeEventListener('canplay', tryPlay);
+      videoEl.removeEventListener('pause', tryPlay);
       document.removeEventListener('visibilitychange', tryPlay);
     };
   }, [ready]);
