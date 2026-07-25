@@ -186,8 +186,8 @@ const translations = {
     },
     about: {
       title: 'Nuestra Herencia',
-      summary: 'Raíces que crecen desde Ciudad Quesada, San Carlos. Tras 23 años de lucha en su primer restaurante La Pradera, Abraham Víquez deja todo junto su familia para emprender Restaurante Coco Víquez en Playa Hermosa, durante 13 años de esfuerzo junto a su Esposa Marjorie e hijos Josué, Emmanuel y quienes hoy continúan el legado de excelencia en cada plato.',
-      extended: '...logran como familia dar un salto y adquieren su propio terreno en Playa Hermosa y construyen su propio nuevo Restaurante. Esta vez más grande, moderno y propio. Actualmente administrado por su fundandor Abraham Víquez y su hijo Sebastián. Está ubicado en la ruta nacional 159 frente a la entrada principal de Condovac y Villas Sol. Caracterizándose por ser el único restaurante 100 % costarricense con sus sabores únicos y precios accesibles tanto para extranjeros como locales.',
+      summary: 'Raíces que crecen desde Ciudad Quesada, San Carlos. Tras 23 años de lucha en su primer restaurante La Pradera, Abraham Víquez deja todo junto a su familia para emprender Restaurante Coco Víquez en Playa Hermosa, durante 13 años de esfuerzo junto a su Esposa Marjorie e hijos Sebastián, Josué, Emmanuel y quienes hoy continúan el legado de excelencia en cada plato.',
+      extended: '...logran como familia dar un salto y adquieren su propio terreno en Playa Hermosa y construyen su propio nuevo Restaurante. Esta vez más grande, moderno y propio. Actualmente administrado por su fundador Abraham Víquez y su hijo Sebastián. Está ubicado en la ruta nacional 159 frente a la entrada principal de Condovac y Villas Sol. Caracterizándose por ser el único restaurante 100 % costarricense con sus sabores únicos y precios accesibles tanto para extranjeros como locales.',
       readMore: 'Seguir leyendo',
       readLess: 'Leer menos',
       tag: 'Beach Luxury Dining',
@@ -272,12 +272,197 @@ const translations = {
       guests: 'Personas',
       guestsHint: '8+ o grupos grandes',
       send: 'Enviar Reserva',
-      success: '¡Reserva enviada! (Simulado en consola)'
+      success: '¡Reserva enviada! (Simulado en consola)',
+      hours: 'Lunes a Domingo: 7:00 AM - 9:00 PM',
+      distributionLabel: 'Distribución del Restaurante',
+      tableLegend: 'Distribución de Mesas',
+      clickMapHint: 'Haz clic en el mapa para ampliar la vista',
+      minAdvanceNotice: 'LAS RESERVAS REQUIEREN UN MÍNIMO DE 72 HORAS DE ANTICIPACIÓN',
+      guestsLabel: 'Número de Personas'
     },
     footer: {
       rights: '© 2026 Coco Viquez. Todos los derechos reservados.',
       location: 'Playa Hermosa, Guanacaste, Costa Rica',
       openMaps: 'Abrir en Google Maps'
+    },
+    cart: {
+      title: 'TU PEDIDO',
+      empty: 'El carrito está vacío',
+      backToMenu: 'Volver al menú',
+      orderSummary: 'Resumen de Pedido',
+      itemTotal: 'Total Item',
+      subtotal: 'Subtotal',
+      shipping: 'Envío',
+      packingFee: 'Cargo de Empaque',
+      total: 'Total Final',
+      deliveryDetails: 'Datos de Entrega',
+      fullName: 'Nombre Completo',
+      fullNamePlaceholder: 'Ej: Sasha Calero',
+      email: 'Correo Electrónico',
+      emailPlaceholder: 'tu@correo.com',
+      confirmEmail: 'Confirmar Correo',
+      confirmEmailPlaceholder: 'Confirma tu correo',
+      phone: 'Número de Teléfono',
+      address: 'Dirección Exacta',
+      addressPlaceholder: 'Ej: Casa blanca, frente al parque, portón negro...',
+      deliveryZone: 'ZONA DE ENTREGA',
+      viewDeliveryMap: 'Ver Mapa de Entrega',
+      locating: '⌛ Obteniendo ubicación...',
+      locationSaved: '✅ Ubicación Guardada',
+      shareLocation: 'COMPARTIR MI UBICACIÓN',
+      selectPaymentMethod: 'Selecciona Método de Pago',
+      card: 'Tarjeta',
+      sinpe: 'SINPE',
+      cash: 'EFECTIVO',
+      payNow: 'PAGAR AHORA',
+      sendOrder: 'ENVIAR PEDIDO',
+      closeMapAria: 'Cerrar mapa de entrega',
+      mapAlt: 'Mapa de Zonas de Entrega',
+      alertInvalidEmail: 'Por favor, ingrese un correo electrónico válido.',
+      alertEmailMismatch: 'Los correos electrónicos no coinciden.',
+      alertInvalidPhone: 'Por favor, ingrese un número de teléfono válido para {country} ({format}).',
+      alertInvalidName: 'Por favor, ingrese su nombre completo.',
+      alertNoAddress: 'Por favor, comparta su ubicación o ingrese su dirección exacta.',
+      geoUnsupported: "La geolocalización no está disponible en este navegador o requiere de una conexión HTTPS segura. Por favor, intente con otro navegador moderno o escriba su dirección de forma manual en el campo 'DIRECCIÓN EXACTA'.",
+      geoError: 'No pudimos obtener tu GPS. Por favor, escribe tu dirección exacta abajo o copia el enlace de tu ubicación manualmente.'
+    },
+    calendar: {
+      weekDays: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+      months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+    },
+    foodMenu: {
+      cartHint: 'Puedes ajustar tu pedido luego en el carrito',
+      extras: ['Arroz', 'Frijoles', 'Ensalada', 'Pico de Gallo', 'Chips Tortillas de Maíz', 'Tortilla Suave Harina de Maíz', 'Patacones', 'Plátano Maduro', 'Frijoles Molidos', 'Guacamole', 'Papas Fritas', 'Salsa de Nacho', 'Botella de Hot Sauce'],
+      categories: [
+        {
+          cat: 'Desayunos', ico: '☀️',
+          items: [
+            { n: 'Sándwich (Carne/Pollo/Jamón)', p: 6000, d: 'Con queso y proteína a elegir 🥪', tip: 'sandwich' },
+            { n: 'Desayuno Típico', p: 6000, d: 'Incluye café y jugo natural (ambas bebidas) ☕🥤' },
+            { n: 'Omelette', p: 6000, d: 'Ingredientes frescos 🍳', tip: 'omelette' }
+          ]
+        },
+        {
+          cat: 'Buffets', ico: '🍽️',
+          items: [
+            { n: 'Almuerzo/Cena Buffet', p: 6000, d: 'Proteína + 4 acompañamientos + Jugo natural 🥩', modal: 'buffet' },
+            { n: 'Buffet Desayuno', p: 6000, d: 'Opciones completas + Bebida natural/Café ☕' }
+          ]
+        },
+        {
+          cat: 'Pastas', ico: '🍝',
+          items: [
+            { n: 'Pasta Salsa de Tomate', p: 6500, d: 'Vegetariana: Con hongos, albahaca y queso parmesano. Incluye pan al ajillo 🌿', tip: 'tomato' },
+            { n: 'Pasta Salsa Blanca', p: 8000, d: 'Estilo Alfredo: Con hongos y pollo o jamón. Incluye pan al ajillo 🍗', tip: 'white' },
+            { n: 'Pasta con Camarones', p: 8000, d: 'Con salsa blanca y ajo. Incluye pan al ajillo 🍤' },
+            { n: 'Pasta al Ajillo de Pulpo', p: 8000, d: 'Pulpo fresco al ajillo. Incluye pan al ajillo 🐙' },
+            { n: 'Pasta al Ajillo de Camarón', p: 8000, d: 'Camarones al ajillo. Incluye pan al ajillo 🍤' },
+            { n: 'Pasta de Camarón y Pulpo', p: 9000, d: 'Mix de mariscos al ajillo. Incluye pan al ajillo 🐙🍤' }
+          ]
+        },
+        {
+          cat: 'Arroces', ico: '🍚',
+          items: [
+            { n: 'Arroz con Camarón', p: 8000, d: 'Clásico con camarones frescos 🍤', tip: 'rice' },
+            { n: 'Arroz con Pollo', p: 6500, d: 'Receta tradicional tica 🥥', tip: 'rice' },
+            { n: 'Arroz Cantones', p: 6500, d: 'Estilo oriental con carnes 🍚', tip: 'rice' },
+            { n: 'Arroz Mixto Mariscos', p: 9000, d: 'Pulpo, calamar y camarón 🥣', tip: 'rice' }
+          ]
+        },
+        {
+          cat: 'Mariscos', ico: '🐟',
+          items: [
+            { n: 'Ceviche de Pescado (Loro)', p: 8000, d: 'Cocinada al momento. 🍋', modal: 'ceviche' },
+            { n: 'Ceviche de Camarón', p: 8000, d: 'Camarones frescos. 🍤', modal: 'ceviche' },
+            { n: 'Ceviche Mixto', p: 8500, d: 'Pescado y camarón. 🐟🍤', modal: 'ceviche' },
+            { n: 'Ceviche de Pulpo', p: 9000, d: 'Pulpo tierno. 🐙', modal: 'ceviche' },
+            { n: 'Ceviche Premium', p: 10000, d: 'Loro, Camarón y Pulpo. 🏆', modal: 'ceviche' },
+            { n: 'Sopa de Mariscos', p: 8000, d: 'Incluye arroz. 🥣', modal: 'sopa' },
+            { n: 'Camarón al Ajillo', p: 9000, d: '🍤', modal: 'acompañamientos' },
+            { n: 'Pescado Entero (Pargo Rojo)', p: 10000, d: 'Frito. 🐟', modal: 'acompañamientos' },
+            { n: 'Tacos de Pulpo', p: 8000, d: '🐙', modal: 'acompañamientos' },
+            { n: 'Pulpo (Parrilla o Ajillo)', p: 9000, d: '🐙', modal: 'acompañamientos' },
+            { n: 'Camarones Empanizados', p: 8000, d: '🍤', modal: 'acompañamientos' },
+            { n: 'Quesadilla de Camarón', p: 7500, d: '🧀🍤' }
+          ]
+        },
+        {
+          cat: 'Snacks', ico: '🍟',
+          items: [
+            { n: 'Orden de Papas Fritas', p: 3000, d: 'Clásicas y crujientes. 🍟' },
+            { n: 'Dedos de Pescado o Pollo', p: 6500, d: 'Incluye 2 acompañamientos a elegir. 🐟🍗', modal: 'acompañamientos' },
+            { n: 'Víquez Fries', p: 6500, d: 'Papas con carne o pollo mechado, pico de gallo y queso. 🧀' },
+            { n: 'Nachos', p: 6500, d: 'Con frijoles molidos, queso fundido y pico de gallo. 🧀' },
+            { n: 'Quesadilla', p: 6500, d: 'Tortilla de harina con queso derretido. 🧀' },
+            { n: 'Pinchos - Skewers', p: 9000, d: 'Brochetas de carne y vegetales a la parrilla. 🥩🍢' },
+            { n: 'Taco Tico', p: 6000, d: 'Frito, relleno de carne. Estilo tradicional. 🇨🇷' },
+            { n: 'Tacos Mexicanos', p: 8000, d: '3 Tacos suaves con carne, cebolla y cilantro. 🇲🇽' },
+            { n: 'Tacos de Pescado o Camarón', p: 9000, d: '2 tacos con guarnición y aderezo especial. 🐟' },
+            { n: '2 Chalupas', p: 7000, d: 'Tortilla frita con frijoles, carne, repollo y salsas. 🌮' },
+            { n: 'Hamburguesa con Papas (Cheese Burger)', p: 6000, d: 'Carne, queso y papas fritas. 🍔' },
+            { n: 'Hamburguesa Regular', p: 6000, d: 'Sencilla, con sabor tradicional. 🍔' },
+            { n: 'Hamburguesa de Pollo', p: 6000, d: 'Con filet de pollo empanizado o a la parrilla. 🍗' },
+            { n: 'Quesadilla de Beef Steak', p: 7500, d: 'Tortilla de harina con carne asada y queso. 🥩' }
+          ]
+        },
+        {
+          cat: 'Especialidades', ico: '🥩',
+          items: [
+            { n: 'Cordon Blue', p: 8000, d: 'Pollo relleno de jamón y queso empanizado. Incluye 2 acompañamientos. 🍗', modal: 'acompañamientos' },
+            { n: 'Filet de Pollo / Pescado', p: 8500, d: 'A la plancha o al ajillo. Incluye 2 acompañamientos. 🐟🍗', modal: 'acompañamientos' },
+            { n: 'Carne o Pollo a la Parrilla', p: 8000, d: 'Corte premium a la brasa. Incluye 2 acompañamientos. 🥩🔥', modal: 'acompañamientos' },
+            { n: 'Bistec Casa', p: 8000, d: 'Receta tradicional de la casa. Incluye 2 acompañamientos. 🥩', modal: 'acompañamientos' },
+            { n: 'Milanesa de Pollo o Carne', p: 8000, d: 'Empanizado crujiente. Incluye 2 acompañamientos. 🥩🍗', modal: 'acompañamientos' },
+            { n: 'Carnitas', p: 8000, d: 'Fajitas de carne salteadas a la parrilla. Incluye 2 acompañamientos. 🥩', modal: 'acompañamientos' },
+            { n: 'Chifrijo', p: 8000, d: 'Capa de arroz, frijoles tiernos, chicharrón y pico de gallo. (Preguntar disponibilidad) 🥣' }
+          ]
+        },
+        {
+          cat: 'Bebidas', ico: '🍹',
+          items: [
+            { tipo: 'header', n: 'REFRESCOS Y CAFÉ ☕' },
+            { n: 'Botella de Agua / Natural', p: 1500, d: 'Agua purificada o jugo de frutas.' },
+            { n: 'Sodas - Gaseosa', p: 2000, d: 'Variedad de sabores.', modal: 'sabor', flavors: ['Fanta Naranja', 'Fanta Uva', 'Ginger Ale', 'Fanta Kolita', 'Coca-Cola', 'Coca-Cola Zero', 'Sprite', 'Monster', 'Tropical Melocotón', 'Tropical Blanco', 'Pepsi', 'Pepsi Zero', 'Root Beer', 'Gatorade'] },
+            { n: 'Batido Mixto', p: 4000, d: 'Smoothies de frutas naturales.', modal: 'sabor', flavors: ['Mango', 'Fresa', 'Piña', 'Mixto'] },
+            { n: 'Café Britt Especial', p: 3500, d: 'Capuccino, Espresso, Latte o Café Frío.', modal: 'sabor', flavors: ['Capuccino', 'Espresso', 'Latte', 'Café Frío'] },
+            { tipo: 'header', n: 'CERVEZAS 🍺' },
+            { n: 'Cerveza Nacional', p: 2000, d: 'Imperial (Light, Ultra, Silver) o Pilsen.', modal: 'sabor', flavors: ['Imperial', 'Imperial Light', 'Imperial Ultra', 'Imperial Silver', 'Pilsen'] },
+            { n: 'Cerveza Premium / Artesanal', p: 3500, d: 'Bavaria, Heineken, Corona o Artesanal (IPA/Lager).', modal: 'sabor', flavors: ['Bavaria', 'Heineken', 'Corona', 'Artesanal IPA', 'Artesanal Lager'] },
+            { tipo: 'header', n: 'VINOS Y LICORES 🍷' },
+            { n: 'Copa de Vino Seleccionada', p: 4000, d: 'Merlot, Cabernet, Sauvignon Blanc, Chardonnay.', modal: 'sabor', flavors: ['Merlot', 'Cabernet', 'Sauvignon Blanc', 'Chardonnay'] },
+            { n: 'Sangría', p: 5000, d: 'Receta de la casa.' },
+            { n: 'Cocktails', p: 5500, d: 'Margarita Picante, Margarita Tradicional o Vodka y Arándanos.', modal: 'sabor', flavors: ['Margarita Picante', 'Margarita Tradicional', 'Vodka y Arándanos'] },
+            { n: 'Seltzer', p: 3500, d: 'Adán y Eva.', modal: 'sabor', flavors: ['Adán y Eva'] },
+            { n: 'Whisky Old Parr', p: 4000, d: 'Servido solo o en las rocas.' },
+            { n: 'Cacique', p: 2500, d: 'Guaro nacional.' }
+          ]
+        }
+      ],
+      chefTips: {
+        tomato: "💡 Tip del Chef: Para esta receta italiana mediterránea, te recomendamos acompañarla con una fresca 'Ensalada' o añadir una 'Botella de Hot Sauce' si buscas un toque picante balanceado.",
+        white: "💡 Tip del Chef: La cremosidad de la salsa blanca combina de forma excelente con el pan de ajo incluido, pero si deseas un contraste fresco, una porción de 'Ensalada' es el balance ideal.",
+        sandwich: "💡 Tip del Chef: ¡Potencia tu sándwich! Un extra de 'Papas Fritas' dentro o al lado, combinado con 'Salsa de Nacho', eleva por completo la experiencia urbana de este plato.",
+        omelette: "💡 Tip del Chef: Para un desayuno o brunch redondo, te sugerimos acompañar tu omelette con extras tradicionales como 'Patacones' o 'Frijoles Molidos'.",
+        rice: "💡 Tip del Chef: Los arroces costeros brillan más cuando añades la textura crujiente de los 'Patacones' o el dulzor del 'Plátano Maduro'.",
+        default: "💡 Tip del Chef: ¡Dale un toque especial a tu elección agregando 'Pico de Gallo' fresco o 'Plátano Maduro' para un balance dulce-salado perfecto!"
+      },
+      chooseFlavor: 'Elige tus sabores y cantidades:',
+      chooseSide: 'Elige tu acompañamiento:',
+      cevicheSides: ['Chips de Maíz', 'Patacones con Pico de Gallo'],
+      chooseSoupBase: 'Elige la base de tu sopa:',
+      soupBases: ['Base en Agua', 'Base en Crema'],
+      chooseSides2: 'Selecciona exactamente 2 acompañamientos:',
+      sideOptions: ['Arroz', 'Frijoles', 'Puré', 'Papas Fritas', 'Ensalada', 'Patacones', 'Vegetales'],
+      chooseProteinLabel: 'Elige tu proteína (obligatorio):',
+      proteinOptions: ['Cerdo', 'Pollo', 'Res', 'Pescado'],
+      chooseSides4Label: 'Elige tus acompañamientos (hasta 4):',
+      buffetSideOptions: ['Arroz', 'Frijoles', 'Tortillas Tostadas', 'Puré / Yuca / Vegetales'],
+      addExtrasLabel: 'Añadir Extras (Opcional)',
+      extrasPriceLabel: '— ₡2,500 / $5.00 c/u:',
+      chefTipButton: 'Tip de Chef',
+      chefTipHeader: 'Recomendación del Chef',
+      confirmAddButton: 'Confirmar y Agregar al Carrito ✅',
+      packingFeeNotice: 'Se cobra ₡500 por platillo empacado (o $1.00).'
     },
     testimonials: {
       title: 'Testimonios',
@@ -333,6 +518,12 @@ const translations = {
       emailSubject: 'Cotización: {service} - {date}',
       emailBody: 'Hola Sebastián, me gustaría solicitar una cotización para el servicio de {service} el día {date} para {people} personas. Quedo atento a su respuesta.',
       disclaimer: 'Sujeto a confirmación de disponibilidad por parte de la administración. Se requiere el 50% de adelanto para bloquear la fecha.',
+      nameLabel: 'Nombre Completo',
+      namePlaceholder: 'Tu nombre completo',
+      emailLabel: 'Correo Electrónico',
+      emailPlaceholder: 'ejemplo@correo.com',
+      datePlaceholder: 'Selecciona una fecha...',
+      backLabel: 'Volver',
       items: [
         { 
           id: 'catering',
@@ -399,7 +590,7 @@ const translations = {
     },
     about: {
       title: 'Our Heritage',
-      summary: 'Roots growing from Ciudad Quesada, San Carlos. After 23 years of struggle at their first restaurant La Pradera, Abraham Víquez leaves everything with his family to start Coco Víquez Restaurant in Playa Hermosa, during 13 years of effort alongside his wife Marjorie and sons Josué, Emmanuel, and those who today continue the legacy of excellence in every dish.',
+      summary: 'Roots growing from Ciudad Quesada, San Carlos. After 23 years of struggle at their first restaurant La Pradera, Abraham Víquez leaves everything with his family to start Coco Víquez Restaurant in Playa Hermosa, during 13 years of effort alongside his wife Marjorie and sons Sebastián, Josué, Emmanuel, and those who today continue the legacy of excellence in every dish.',
       extended: '...they manage as a family to take a leap and acquire their own land in Playa Hermosa and build their own new Restaurant. This time larger, more modern and their own. Currently managed by its founder Abraham Víquez and his son Sebastián. It is located on national route 159 in front of the main entrance of Condovac and Villas Sol. Characterized by being the only 100% Costa Rican restaurant with its unique flavors and accessible prices for both foreigners and locals.',
       readMore: 'Read more',
       readLess: 'Read less',
@@ -484,12 +675,197 @@ const translations = {
       guests: 'Guests',
       guestsHint: '8+ or large groups',
       send: 'Send Reservation',
-      success: 'Reservation sent! (Simulated in console)'
+      success: 'Reservation sent! (Simulated in console)',
+      hours: 'Monday to Sunday: 7:00 AM - 9:00 PM',
+      distributionLabel: 'Restaurant Layout',
+      tableLegend: 'Table Layout',
+      clickMapHint: 'Click the map to enlarge the view',
+      minAdvanceNotice: 'RESERVATIONS REQUIRE A MINIMUM OF 72 HOURS NOTICE',
+      guestsLabel: 'Number of Guests'
     },
     footer: {
       rights: '© 2026 Coco Viquez. All rights reserved.',
       location: 'Playa Hermosa, Guanacaste, Costa Rica',
       openMaps: 'Open in Google Maps'
+    },
+    cart: {
+      title: 'YOUR ORDER',
+      empty: 'Your cart is empty',
+      backToMenu: 'Back to menu',
+      orderSummary: 'Order Summary',
+      itemTotal: 'Item Total',
+      subtotal: 'Subtotal',
+      shipping: 'Delivery',
+      packingFee: 'Packing Fee',
+      total: 'Final Total',
+      deliveryDetails: 'Delivery Details',
+      fullName: 'Full Name',
+      fullNamePlaceholder: 'E.g: Sasha Calero',
+      email: 'Email',
+      emailPlaceholder: 'you@email.com',
+      confirmEmail: 'Confirm Email',
+      confirmEmailPlaceholder: 'Confirm your email',
+      phone: 'Phone Number',
+      address: 'Exact Address',
+      addressPlaceholder: 'E.g: White house, across from the park, black gate...',
+      deliveryZone: 'DELIVERY ZONE',
+      viewDeliveryMap: 'View Delivery Map',
+      locating: '⌛ Getting location...',
+      locationSaved: '✅ Location Saved',
+      shareLocation: 'SHARE MY LOCATION',
+      selectPaymentMethod: 'Select Payment Method',
+      card: 'Card',
+      sinpe: 'SINPE',
+      cash: 'CASH',
+      payNow: 'PAY NOW',
+      sendOrder: 'SEND ORDER',
+      closeMapAria: 'Close delivery map',
+      mapAlt: 'Delivery Zone Map',
+      alertInvalidEmail: 'Please enter a valid email address.',
+      alertEmailMismatch: 'The email addresses do not match.',
+      alertInvalidPhone: 'Please enter a valid phone number for {country} ({format}).',
+      alertInvalidName: 'Please enter your full name.',
+      alertNoAddress: 'Please share your location or enter your exact address.',
+      geoUnsupported: "Geolocation is not available in this browser or requires a secure HTTPS connection. Please try another modern browser or type your address manually in the 'EXACT ADDRESS' field.",
+      geoError: "We couldn't get your GPS location. Please type your exact address below or paste your location link manually."
+    },
+    calendar: {
+      weekDays: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+      months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    },
+    foodMenu: {
+      cartHint: 'You can adjust your order later in the cart',
+      extras: ['Rice', 'Beans', 'Salad', 'Pico de Gallo', 'Corn Tortilla Chips', 'Soft Flour Tortilla', 'Patacones (Fried Plantain)', 'Sweet Plantain', 'Refried Beans', 'Guacamole', 'French Fries', 'Nacho Sauce', 'Bottle of Hot Sauce'],
+      categories: [
+        {
+          cat: 'Breakfast', ico: '☀️',
+          items: [
+            { n: 'Sandwich (Beef/Chicken/Ham)', p: 6000, d: 'With cheese and protein of your choice 🥪', tip: 'sandwich' },
+            { n: 'Traditional Breakfast', p: 6000, d: 'Includes coffee and fresh juice (both drinks) ☕🥤' },
+            { n: 'Omelette', p: 6000, d: 'Fresh ingredients 🍳', tip: 'omelette' }
+          ]
+        },
+        {
+          cat: 'Buffets', ico: '🍽️',
+          items: [
+            { n: 'Lunch/Dinner Buffet', p: 6000, d: 'Protein + 4 side dishes + Fresh juice 🥩', modal: 'buffet' },
+            { n: 'Breakfast Buffet', p: 6000, d: 'Full options + Fresh drink/Coffee ☕' }
+          ]
+        },
+        {
+          cat: 'Pasta', ico: '🍝',
+          items: [
+            { n: 'Tomato Sauce Pasta', p: 6500, d: 'Vegetarian: With mushrooms, basil and parmesan cheese. Includes garlic bread 🌿', tip: 'tomato' },
+            { n: 'White Sauce Pasta', p: 8000, d: 'Alfredo style: With mushrooms and chicken or ham. Includes garlic bread 🍗', tip: 'white' },
+            { n: 'Shrimp Pasta', p: 8000, d: 'With white sauce and garlic. Includes garlic bread 🍤' },
+            { n: 'Garlic Octopus Pasta', p: 8000, d: 'Fresh octopus in garlic sauce. Includes garlic bread 🐙' },
+            { n: 'Garlic Shrimp Pasta', p: 8000, d: 'Garlic shrimp. Includes garlic bread 🍤' },
+            { n: 'Shrimp and Octopus Pasta', p: 9000, d: 'Garlic seafood mix. Includes garlic bread 🐙🍤' }
+          ]
+        },
+        {
+          cat: 'Rice', ico: '🍚',
+          items: [
+            { n: 'Shrimp Rice', p: 8000, d: 'Classic with fresh shrimp 🍤', tip: 'rice' },
+            { n: 'Chicken Rice', p: 6500, d: 'Traditional Costa Rican recipe 🥥', tip: 'rice' },
+            { n: 'Cantonese Rice', p: 6500, d: 'Asian style with meats 🍚', tip: 'rice' },
+            { n: 'Mixed Seafood Rice', p: 9000, d: 'Octopus, squid and shrimp 🥣', tip: 'rice' }
+          ]
+        },
+        {
+          cat: 'Seafood', ico: '🐟',
+          items: [
+            { n: 'Fish Ceviche (Parrotfish)', p: 8000, d: 'Prepared fresh on the spot. 🍋', modal: 'ceviche' },
+            { n: 'Shrimp Ceviche', p: 8000, d: 'Fresh shrimp. 🍤', modal: 'ceviche' },
+            { n: 'Mixed Ceviche', p: 8500, d: 'Fish and shrimp. 🐟🍤', modal: 'ceviche' },
+            { n: 'Octopus Ceviche', p: 9000, d: 'Tender octopus. 🐙', modal: 'ceviche' },
+            { n: 'Premium Ceviche', p: 10000, d: 'Parrotfish, Shrimp and Octopus. 🏆', modal: 'ceviche' },
+            { n: 'Seafood Soup', p: 8000, d: 'Includes rice. 🥣', modal: 'sopa' },
+            { n: 'Garlic Shrimp', p: 9000, d: '🍤', modal: 'acompañamientos' },
+            { n: 'Whole Fish (Red Snapper)', p: 10000, d: 'Fried. 🐟', modal: 'acompañamientos' },
+            { n: 'Octopus Tacos', p: 8000, d: '🐙', modal: 'acompañamientos' },
+            { n: 'Octopus (Grilled or Garlic)', p: 9000, d: '🐙', modal: 'acompañamientos' },
+            { n: 'Breaded Shrimp', p: 8000, d: '🍤', modal: 'acompañamientos' },
+            { n: 'Shrimp Quesadilla', p: 7500, d: '🧀🍤' }
+          ]
+        },
+        {
+          cat: 'Snacks', ico: '🍟',
+          items: [
+            { n: 'Order of French Fries', p: 3000, d: 'Classic and crispy. 🍟' },
+            { n: 'Fish or Chicken Fingers', p: 6500, d: 'Includes 2 side dishes of your choice. 🐟🍗', modal: 'acompañamientos' },
+            { n: 'Víquez Fries', p: 6500, d: 'Fries with shredded beef or chicken, pico de gallo and cheese. 🧀' },
+            { n: 'Nachos', p: 6500, d: 'With refried beans, melted cheese and pico de gallo. 🧀' },
+            { n: 'Quesadilla', p: 6500, d: 'Flour tortilla with melted cheese. 🧀' },
+            { n: 'Pinchos - Skewers', p: 9000, d: 'Grilled meat and vegetable skewers. 🥩🍢' },
+            { n: 'Taco Tico', p: 6000, d: 'Fried, filled with beef. Traditional style. 🇨🇷' },
+            { n: 'Mexican Tacos', p: 8000, d: '3 soft tacos with beef, onion and cilantro. 🇲🇽' },
+            { n: 'Fish or Shrimp Tacos', p: 9000, d: '2 tacos with side and special dressing. 🐟' },
+            { n: '2 Chalupas', p: 7000, d: 'Fried tortilla with beans, beef, cabbage and sauces. 🌮' },
+            { n: 'Burger with Fries (Cheeseburger)', p: 6000, d: 'Beef, cheese and french fries. 🍔' },
+            { n: 'Regular Burger', p: 6000, d: 'Simple, with traditional flavor. 🍔' },
+            { n: 'Chicken Burger', p: 6000, d: 'With breaded or grilled chicken fillet. 🍗' },
+            { n: 'Beef Steak Quesadilla', p: 7500, d: 'Flour tortilla with grilled steak and cheese. 🥩' }
+          ]
+        },
+        {
+          cat: 'Specialties', ico: '🥩',
+          items: [
+            { n: 'Cordon Bleu', p: 8000, d: 'Breaded chicken stuffed with ham and cheese. Includes 2 side dishes. 🍗', modal: 'acompañamientos' },
+            { n: 'Chicken / Fish Fillet', p: 8500, d: 'Grilled or garlic style. Includes 2 side dishes. 🐟🍗', modal: 'acompañamientos' },
+            { n: 'Grilled Beef or Chicken', p: 8000, d: 'Premium cut, chargrilled. Includes 2 side dishes. 🥩🔥', modal: 'acompañamientos' },
+            { n: 'House Steak', p: 8000, d: 'Traditional house recipe. Includes 2 side dishes. 🥩', modal: 'acompañamientos' },
+            { n: 'Chicken or Beef Milanese', p: 8000, d: 'Crispy breaded. Includes 2 side dishes. 🥩🍗', modal: 'acompañamientos' },
+            { n: 'Carnitas', p: 8000, d: 'Grilled sautéed beef fajitas. Includes 2 side dishes. 🥩', modal: 'acompañamientos' },
+            { n: 'Chifrijo', p: 8000, d: 'Layers of rice, tender beans, pork rinds and pico de gallo. (Ask for availability) 🥣' }
+          ]
+        },
+        {
+          cat: 'Drinks', ico: '🍹',
+          items: [
+            { tipo: 'header', n: 'SODAS & COFFEE ☕' },
+            { n: 'Bottled Water / Fresh Juice', p: 1500, d: 'Purified water or fruit juice.' },
+            { n: 'Sodas - Soft Drinks', p: 2000, d: 'Variety of flavors.', modal: 'sabor', flavors: ['Fanta Orange', 'Fanta Grape', 'Ginger Ale', 'Fanta Kolita', 'Coca-Cola', 'Coca-Cola Zero', 'Sprite', 'Monster', 'Tropical Peach', 'Tropical White', 'Pepsi', 'Pepsi Zero', 'Root Beer', 'Gatorade'] },
+            { n: 'Mixed Smoothie', p: 4000, d: 'Natural fruit smoothies.', modal: 'sabor', flavors: ['Mango', 'Strawberry', 'Pineapple', 'Mixed'] },
+            { n: 'Special Britt Coffee', p: 3500, d: 'Cappuccino, Espresso, Latte or Iced Coffee.', modal: 'sabor', flavors: ['Cappuccino', 'Espresso', 'Latte', 'Iced Coffee'] },
+            { tipo: 'header', n: 'BEERS 🍺' },
+            { n: 'National Beer', p: 2000, d: 'Imperial (Light, Ultra, Silver) or Pilsen.', modal: 'sabor', flavors: ['Imperial', 'Imperial Light', 'Imperial Ultra', 'Imperial Silver', 'Pilsen'] },
+            { n: 'Premium / Craft Beer', p: 3500, d: 'Bavaria, Heineken, Corona or Craft (IPA/Lager).', modal: 'sabor', flavors: ['Bavaria', 'Heineken', 'Corona', 'Craft IPA', 'Craft Lager'] },
+            { tipo: 'header', n: 'WINES & SPIRITS 🍷' },
+            { n: 'Selected Glass of Wine', p: 4000, d: 'Merlot, Cabernet, Sauvignon Blanc, Chardonnay.', modal: 'sabor', flavors: ['Merlot', 'Cabernet', 'Sauvignon Blanc', 'Chardonnay'] },
+            { n: 'Sangria', p: 5000, d: 'House recipe.' },
+            { n: 'Cocktails', p: 5500, d: 'Spicy Margarita, Traditional Margarita or Vodka and Cranberry.', modal: 'sabor', flavors: ['Spicy Margarita', 'Traditional Margarita', 'Vodka and Cranberry'] },
+            { n: 'Seltzer', p: 3500, d: 'Adán y Eva.', modal: 'sabor', flavors: ['Adán y Eva'] },
+            { n: 'Old Parr Whisky', p: 4000, d: 'Served neat or on the rocks.' },
+            { n: 'Cacique', p: 2500, d: 'National guaro (sugarcane liquor).' }
+          ]
+        }
+      ],
+      chefTips: {
+        tomato: "💡 Chef's Tip: For this Italian Mediterranean recipe, we recommend pairing it with a fresh 'Salad' or adding a 'Bottle of Hot Sauce' for a balanced spicy kick.",
+        white: "💡 Chef's Tip: The creaminess of the white sauce pairs excellently with the included garlic bread, but for a fresh contrast, a side of 'Salad' is the ideal balance.",
+        sandwich: "💡 Chef's Tip: Power up your sandwich! An extra of 'French Fries' inside or on the side, combined with 'Nacho Sauce', completely elevates this dish's street-food experience.",
+        omelette: "💡 Chef's Tip: For a well-rounded breakfast or brunch, we suggest pairing your omelette with traditional extras like 'Patacones' or 'Refried Beans'.",
+        rice: "💡 Chef's Tip: Coastal rice dishes shine even more when you add the crunchy texture of 'Patacones' or the sweetness of 'Sweet Plantain'.",
+        default: "💡 Chef's Tip: Give your choice a special touch by adding fresh 'Pico de Gallo' or 'Sweet Plantain' for a perfect sweet-savory balance!"
+      },
+      chooseFlavor: 'Choose your flavors and quantities:',
+      chooseSide: 'Choose your side:',
+      cevicheSides: ['Corn Chips', 'Patacones with Pico de Gallo'],
+      chooseSoupBase: 'Choose your soup base:',
+      soupBases: ['Water-Based', 'Cream-Based'],
+      chooseSides2: 'Select exactly 2 side dishes:',
+      sideOptions: ['Rice', 'Beans', 'Mashed Potatoes', 'French Fries', 'Salad', 'Patacones', 'Vegetables'],
+      chooseProteinLabel: 'Choose your protein (required):',
+      proteinOptions: ['Pork', 'Chicken', 'Beef', 'Fish'],
+      chooseSides4Label: 'Choose your side dishes (up to 4):',
+      buffetSideOptions: ['Rice', 'Beans', 'Toasted Tortillas', 'Mashed Potatoes / Yuca / Vegetables'],
+      addExtrasLabel: 'Add Extras (Optional)',
+      extrasPriceLabel: '— ₡2,500 / $5.00 each:',
+      chefTipButton: "Chef's Tip",
+      chefTipHeader: "Chef's Recommendation",
+      confirmAddButton: 'Confirm and Add to Cart ✅',
+      packingFeeNotice: 'A packing fee of ₡500 (or $1.00) is charged per dish.'
     },
     testimonials: {
       title: 'Testimonials',
@@ -545,6 +921,12 @@ const translations = {
       emailSubject: 'Quote: {service} - {date}',
       emailBody: 'Hello Sebastian, I would like to request a quote for the {service} service on {date} for {people} people. I look forward to your response.',
       disclaimer: 'Subject to availability confirmation by the administration. A 50% deposit is required to block the date.',
+      nameLabel: 'Full Name',
+      namePlaceholder: 'Your full name',
+      emailLabel: 'Email',
+      emailPlaceholder: 'example@email.com',
+      datePlaceholder: 'Select a date...',
+      backLabel: 'Back',
       items: [
         { 
           id: 'catering',
@@ -610,7 +992,7 @@ const translations = {
     },
     about: {
       title: 'Notre Héritage',
-      summary: 'Des racines qui poussent depuis Ciudad Quesada, San Carlos. Après 23 ans de lutte dans son premier restaurant La Pradera, Abraham Víquez quitte tout avec sa famille pour fonder le restaurant Coco Víquez à Playa Hermosa, pendant 13 ans d\'effort aux côtés de sa femme Marjorie et de ses fils Josué, Emmanuel et ceux qui continuent aujourd\'hui l\'héritage d\'excellence dans chaque plat.',
+      summary: 'Des racines qui poussent depuis Ciudad Quesada, San Carlos. Après 23 ans de lutte dans son premier restaurant La Pradera, Abraham Víquez quitte tout avec sa famille pour fonder le restaurant Coco Víquez à Playa Hermosa, pendant 13 ans d\'effort aux côtés de sa femme Marjorie et de ses fils Sebastián, Josué, Emmanuel et ceux qui continuent aujourd\'hui l\'héritage d\'excellence dans chaque plat.',
       extended: '...ils réussissent en famille à faire un saut et acquièrent leur propre terrain à Playa Hermosa et construisent leur propre nouveau restaurant. Cette fois plus grand, plus moderne et à eux. Actuellement géré par son fondateur Abraham Víquez et son fils Sebastián. Il est situé sur la route nationale 159 en face de l\'entrée principale de Condovac et Villas Sol. Caractérisé par le fait d\'être le seul restaurant 100 % costaricien avec ses saveurs uniques et ses prix accessibles tant pour les étrangers que pour les locaux.',
       readMore: 'Lire la suite',
       readLess: 'Lire moins',
@@ -696,12 +1078,197 @@ const translations = {
       guests: 'Personnes',
       guestsHint: '8+ ou grands groupes',
       send: 'Envoyer la Réservation',
-      success: 'Réservation envoyée ! (Simulé en console)'
+      success: 'Réservation envoyée ! (Simulé en console)',
+      hours: 'Lundi à Dimanche : 7h00 - 21h00',
+      distributionLabel: 'Plan du Restaurant',
+      tableLegend: 'Plan des Tables',
+      clickMapHint: 'Cliquez sur la carte pour agrandir la vue',
+      minAdvanceNotice: 'LES RÉSERVATIONS NÉCESSITENT UN PRÉAVIS MINIMUM DE 72 HEURES',
+      guestsLabel: 'Nombre de Personnes'
     },
     footer: {
       rights: '© 2026 Coco Viquez. Tous droits réservés.',
       location: 'Playa Hermosa, Guanacaste, Costa Rica',
       openMaps: 'Ouvrir dans Google Maps'
+    },
+    cart: {
+      title: 'VOTRE COMMANDE',
+      empty: 'Votre panier est vide',
+      backToMenu: 'Retour au menu',
+      orderSummary: 'Résumé de la Commande',
+      itemTotal: 'Total Article',
+      subtotal: 'Sous-total',
+      shipping: 'Livraison',
+      packingFee: 'Frais d\'Emballage',
+      total: 'Total Final',
+      deliveryDetails: 'Détails de Livraison',
+      fullName: 'Nom Complet',
+      fullNamePlaceholder: 'Ex : Sasha Calero',
+      email: 'E-mail',
+      emailPlaceholder: 'vous@email.com',
+      confirmEmail: "Confirmer l'E-mail",
+      confirmEmailPlaceholder: 'Confirmez votre e-mail',
+      phone: 'Numéro de Téléphone',
+      address: 'Adresse Exacte',
+      addressPlaceholder: 'Ex : Maison blanche, en face du parc, portail noir...',
+      deliveryZone: 'ZONE DE LIVRAISON',
+      viewDeliveryMap: 'Voir la Carte de Livraison',
+      locating: '⌛ Localisation en cours...',
+      locationSaved: '✅ Position Enregistrée',
+      shareLocation: 'PARTAGER MA POSITION',
+      selectPaymentMethod: 'Choisissez un Mode de Paiement',
+      card: 'Carte',
+      sinpe: 'SINPE',
+      cash: 'ESPÈCES',
+      payNow: 'PAYER MAINTENANT',
+      sendOrder: 'ENVOYER LA COMMANDE',
+      closeMapAria: 'Fermer la carte de livraison',
+      mapAlt: 'Carte des Zones de Livraison',
+      alertInvalidEmail: 'Veuillez saisir une adresse e-mail valide.',
+      alertEmailMismatch: 'Les adresses e-mail ne correspondent pas.',
+      alertInvalidPhone: 'Veuillez saisir un numéro de téléphone valide pour {country} ({format}).',
+      alertInvalidName: 'Veuillez saisir votre nom complet.',
+      alertNoAddress: 'Veuillez partager votre position ou saisir votre adresse exacte.',
+      geoUnsupported: "La géolocalisation n'est pas disponible sur ce navigateur ou nécessite une connexion HTTPS sécurisée. Veuillez essayer un autre navigateur moderne ou saisir votre adresse manuellement dans le champ 'ADRESSE EXACTE'.",
+      geoError: "Nous n'avons pas pu obtenir votre position GPS. Veuillez saisir votre adresse exacte ci-dessous ou coller le lien de votre position manuellement."
+    },
+    calendar: {
+      weekDays: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+      months: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
+    },
+    foodMenu: {
+      cartHint: 'Vous pourrez ajuster votre commande plus tard dans le panier',
+      extras: ['Riz', 'Haricots', 'Salade', 'Pico de Gallo', 'Chips de Tortilla de Maïs', 'Tortilla Souple de Blé', 'Patacones (Banane Plantain Frite)', 'Banane Plantain Sucrée', 'Haricots Frits', 'Guacamole', 'Frites', 'Sauce Nacho', 'Bouteille de Sauce Piquante'],
+      categories: [
+        {
+          cat: 'Petits-déjeuners', ico: '☀️',
+          items: [
+            { n: 'Sandwich (Bœuf/Poulet/Jambon)', p: 6000, d: 'Avec fromage et protéine au choix 🥪', tip: 'sandwich' },
+            { n: 'Petit-déjeuner Typique', p: 6000, d: 'Inclut café et jus naturel (les deux boissons) ☕🥤' },
+            { n: 'Omelette', p: 6000, d: 'Ingrédients frais 🍳', tip: 'omelette' }
+          ]
+        },
+        {
+          cat: 'Buffets', ico: '🍽️',
+          items: [
+            { n: 'Buffet Déjeuner/Dîner', p: 6000, d: 'Protéine + 4 accompagnements + Jus naturel 🥩', modal: 'buffet' },
+            { n: 'Buffet Petit-déjeuner', p: 6000, d: 'Options complètes + Boisson naturelle/Café ☕' }
+          ]
+        },
+        {
+          cat: 'Pâtes', ico: '🍝',
+          items: [
+            { n: 'Pâtes Sauce Tomate', p: 6500, d: "Végétarien : Avec champignons, basilic et parmesan. Inclut du pain à l'ail 🌿", tip: 'tomato' },
+            { n: 'Pâtes Sauce Blanche', p: 8000, d: "Style Alfredo : Avec champignons et poulet ou jambon. Inclut du pain à l'ail 🍗", tip: 'white' },
+            { n: 'Pâtes aux Crevettes', p: 8000, d: "Avec sauce blanche et ail. Inclut du pain à l'ail 🍤" },
+            { n: "Pâtes à l'Ail au Poulpe", p: 8000, d: "Poulpe frais à l'ail. Inclut du pain à l'ail 🐙" },
+            { n: "Pâtes à l'Ail aux Crevettes", p: 8000, d: "Crevettes à l'ail. Inclut du pain à l'ail 🍤" },
+            { n: 'Pâtes Crevettes et Poulpe', p: 9000, d: "Mélange de fruits de mer à l'ail. Inclut du pain à l'ail 🐙🍤" }
+          ]
+        },
+        {
+          cat: 'Riz', ico: '🍚',
+          items: [
+            { n: 'Riz aux Crevettes', p: 8000, d: 'Classique aux crevettes fraîches 🍤', tip: 'rice' },
+            { n: 'Riz au Poulet', p: 6500, d: 'Recette traditionnelle costaricienne 🥥', tip: 'rice' },
+            { n: 'Riz Cantonais', p: 6500, d: 'Style asiatique avec viandes 🍚', tip: 'rice' },
+            { n: 'Riz Mixte aux Fruits de Mer', p: 9000, d: 'Poulpe, calmar et crevette 🥣', tip: 'rice' }
+          ]
+        },
+        {
+          cat: 'Fruits de mer', ico: '🐟',
+          items: [
+            { n: 'Ceviche de Poisson (Poisson-perroquet)', p: 8000, d: 'Préparé sur place à la minute. 🍋', modal: 'ceviche' },
+            { n: 'Ceviche de Crevettes', p: 8000, d: 'Crevettes fraîches. 🍤', modal: 'ceviche' },
+            { n: 'Ceviche Mixte', p: 8500, d: 'Poisson et crevette. 🐟🍤', modal: 'ceviche' },
+            { n: 'Ceviche de Poulpe', p: 9000, d: 'Poulpe tendre. 🐙', modal: 'ceviche' },
+            { n: 'Ceviche Premium', p: 10000, d: 'Poisson-perroquet, Crevette et Poulpe. 🏆', modal: 'ceviche' },
+            { n: 'Soupe de Fruits de Mer', p: 8000, d: 'Inclut du riz. 🥣', modal: 'sopa' },
+            { n: "Crevettes à l'Ail", p: 9000, d: '🍤', modal: 'acompañamientos' },
+            { n: 'Poisson Entier (Vivaneau Rouge)', p: 10000, d: 'Frit. 🐟', modal: 'acompañamientos' },
+            { n: 'Tacos au Poulpe', p: 8000, d: '🐙', modal: 'acompañamientos' },
+            { n: "Poulpe (Grillé ou à l'Ail)", p: 9000, d: '🐙', modal: 'acompañamientos' },
+            { n: 'Crevettes Panées', p: 8000, d: '🍤', modal: 'acompañamientos' },
+            { n: 'Quesadilla aux Crevettes', p: 7500, d: '🧀🍤' }
+          ]
+        },
+        {
+          cat: 'Snacks', ico: '🍟',
+          items: [
+            { n: 'Portion de Frites', p: 3000, d: 'Classiques et croustillantes. 🍟' },
+            { n: 'Bâtonnets de Poisson ou Poulet', p: 6500, d: 'Inclut 2 accompagnements au choix. 🐟🍗', modal: 'acompañamientos' },
+            { n: 'Víquez Fries', p: 6500, d: 'Frites avec bœuf ou poulet effiloché, pico de gallo et fromage. 🧀' },
+            { n: 'Nachos', p: 6500, d: 'Avec haricots frits, fromage fondu et pico de gallo. 🧀' },
+            { n: 'Quesadilla', p: 6500, d: 'Tortilla de blé avec fromage fondu. 🧀' },
+            { n: 'Pinchos - Brochettes', p: 9000, d: 'Brochettes de viande et légumes grillés. 🥩🍢' },
+            { n: 'Taco Tico', p: 6000, d: 'Frit, farci de bœuf. Style traditionnel. 🇨🇷' },
+            { n: 'Tacos Mexicains', p: 8000, d: '3 tacos souples avec bœuf, oignon et coriandre. 🇲🇽' },
+            { n: 'Tacos au Poisson ou Crevette', p: 9000, d: '2 tacos avec accompagnement et sauce spéciale. 🐟' },
+            { n: '2 Chalupas', p: 7000, d: 'Tortilla frite avec haricots, bœuf, chou et sauces. 🌮' },
+            { n: 'Burger avec Frites (Cheeseburger)', p: 6000, d: 'Bœuf, fromage et frites. 🍔' },
+            { n: 'Burger Classique', p: 6000, d: 'Simple, au goût traditionnel. 🍔' },
+            { n: 'Burger au Poulet', p: 6000, d: 'Avec filet de poulet pané ou grillé. 🍗' },
+            { n: 'Quesadilla au Bœuf', p: 7500, d: 'Tortilla de blé avec steak grillé et fromage. 🥩' }
+          ]
+        },
+        {
+          cat: 'Spécialités', ico: '🥩',
+          items: [
+            { n: 'Cordon Bleu', p: 8000, d: 'Poulet pané farci au jambon et fromage. Inclut 2 accompagnements. 🍗', modal: 'acompañamientos' },
+            { n: 'Filet de Poulet / Poisson', p: 8500, d: "Grillé ou à l'ail. Inclut 2 accompagnements. 🐟🍗", modal: 'acompañamientos' },
+            { n: 'Bœuf ou Poulet Grillé', p: 8000, d: 'Coupe premium au feu de bois. Inclut 2 accompagnements. 🥩🔥', modal: 'acompañamientos' },
+            { n: 'Steak Maison', p: 8000, d: 'Recette traditionnelle de la maison. Inclut 2 accompagnements. 🥩', modal: 'acompañamientos' },
+            { n: 'Milanaise de Poulet ou Bœuf', p: 8000, d: 'Panure croustillante. Inclut 2 accompagnements. 🥩🍗', modal: 'acompañamientos' },
+            { n: 'Carnitas', p: 8000, d: 'Fajitas de bœuf sautées à la grillade. Inclut 2 accompagnements. 🥩', modal: 'acompañamientos' },
+            { n: 'Chifrijo', p: 8000, d: 'Couches de riz, haricots tendres, couenne de porc et pico de gallo. (Demander la disponibilité) 🥣' }
+          ]
+        },
+        {
+          cat: 'Boissons', ico: '🍹',
+          items: [
+            { tipo: 'header', n: 'BOISSONS ET CAFÉ ☕' },
+            { n: "Bouteille d'Eau / Jus Naturel", p: 1500, d: 'Eau purifiée ou jus de fruits.' },
+            { n: 'Sodas - Boissons Gazeuses', p: 2000, d: 'Variété de saveurs.', modal: 'sabor', flavors: ['Fanta Orange', 'Fanta Raisin', 'Ginger Ale', 'Fanta Kolita', 'Coca-Cola', 'Coca-Cola Zero', 'Sprite', 'Monster', 'Tropical Pêche', 'Tropical Blanc', 'Pepsi', 'Pepsi Zero', 'Root Beer', 'Gatorade'] },
+            { n: 'Smoothie Mixte', p: 4000, d: 'Smoothies aux fruits naturels.', modal: 'sabor', flavors: ['Mangue', 'Fraise', 'Ananas', 'Mixte'] },
+            { n: 'Café Britt Spécial', p: 3500, d: 'Cappuccino, Espresso, Latte ou Café Glacé.', modal: 'sabor', flavors: ['Cappuccino', 'Espresso', 'Latte', 'Café Glacé'] },
+            { tipo: 'header', n: 'BIÈRES 🍺' },
+            { n: 'Bière Nationale', p: 2000, d: 'Imperial (Light, Ultra, Silver) ou Pilsen.', modal: 'sabor', flavors: ['Imperial', 'Imperial Light', 'Imperial Ultra', 'Imperial Silver', 'Pilsen'] },
+            { n: 'Bière Premium / Artisanale', p: 3500, d: 'Bavaria, Heineken, Corona ou Artisanale (IPA/Lager).', modal: 'sabor', flavors: ['Bavaria', 'Heineken', 'Corona', 'Artisanale IPA', 'Artisanale Lager'] },
+            { tipo: 'header', n: 'VINS ET SPIRITUEUX 🍷' },
+            { n: 'Verre de Vin Sélectionné', p: 4000, d: 'Merlot, Cabernet, Sauvignon Blanc, Chardonnay.', modal: 'sabor', flavors: ['Merlot', 'Cabernet', 'Sauvignon Blanc', 'Chardonnay'] },
+            { n: 'Sangria', p: 5000, d: 'Recette maison.' },
+            { n: 'Cocktails', p: 5500, d: 'Margarita Épicée, Margarita Traditionnelle ou Vodka et Canneberge.', modal: 'sabor', flavors: ['Margarita Épicée', 'Margarita Traditionnelle', 'Vodka et Canneberge'] },
+            { n: 'Seltzer', p: 3500, d: 'Adán y Eva.', modal: 'sabor', flavors: ['Adán y Eva'] },
+            { n: 'Whisky Old Parr', p: 4000, d: 'Servi sec ou avec glaçons.' },
+            { n: 'Cacique', p: 2500, d: 'Guaro national (alcool de canne à sucre).' }
+          ]
+        }
+      ],
+      chefTips: {
+        tomato: "💡 Astuce du Chef : Pour cette recette italienne méditerranéenne, accompagnez-la d'une 'Salade' fraîche ou ajoutez une 'Bouteille de Sauce Piquante' pour une touche épicée équilibrée.",
+        white: "💡 Astuce du Chef : L'onctuosité de la sauce blanche se marie parfaitement avec le pain à l'ail inclus, mais pour un contraste frais, une portion de 'Salade' est l'équilibre idéal.",
+        sandwich: "💡 Astuce du Chef : Boostez votre sandwich ! Un extra de 'Frites' à l'intérieur ou à côté, combiné à la 'Sauce Nacho', sublime complètement l'expérience urbaine de ce plat.",
+        omelette: "💡 Astuce du Chef : Pour un petit-déjeuner ou brunch complet, accompagnez votre omelette d'extras traditionnels comme les 'Patacones' ou les 'Haricots Frits'.",
+        rice: "💡 Astuce du Chef : Les riz côtiers brillent encore plus avec la texture croustillante des 'Patacones' ou la douceur de la 'Banane Plantain Sucrée'.",
+        default: "💡 Astuce du Chef : Donnez une touche spéciale à votre choix en ajoutant du 'Pico de Gallo' frais ou de la 'Banane Plantain Sucrée' pour un équilibre sucré-salé parfait !"
+      },
+      chooseFlavor: 'Choisissez vos saveurs et quantités :',
+      chooseSide: 'Choisissez votre accompagnement :',
+      cevicheSides: ['Chips de Maïs', 'Patacones avec Pico de Gallo'],
+      chooseSoupBase: 'Choisissez la base de votre soupe :',
+      soupBases: ['Base à l\'Eau', 'Base à la Crème'],
+      chooseSides2: 'Sélectionnez exactement 2 accompagnements :',
+      sideOptions: ['Riz', 'Haricots', 'Purée', 'Frites', 'Salade', 'Patacones', 'Légumes'],
+      chooseProteinLabel: 'Choisissez votre protéine (obligatoire) :',
+      proteinOptions: ['Porc', 'Poulet', 'Bœuf', 'Poisson'],
+      chooseSides4Label: 'Choisissez vos accompagnements (jusqu\'à 4) :',
+      buffetSideOptions: ['Riz', 'Haricots', 'Tortillas Grillées', 'Purée / Yuca / Légumes'],
+      addExtrasLabel: 'Ajouter des Extras (Optionnel)',
+      extrasPriceLabel: '— ₡2 500 / 5,00 $ chacun :',
+      chefTipButton: 'Astuce du Chef',
+      chefTipHeader: 'Recommandation du Chef',
+      confirmAddButton: 'Confirmer et Ajouter au Panier ✅',
+      packingFeeNotice: 'Frais d\'emballage de ₡500 (ou $1.00) par plat.'
     },
     testimonials: {
       title: 'Témoignages',
@@ -729,6 +1296,12 @@ const translations = {
       emailSubject: 'Demande de Réservation : {service}',
       emailBody: 'Bonjour Sebastián, je me renseigne sur la disponibilité du service {service} le {date} pour {people} personnes. Veuillez me confirmer la disponibilité pour effectuer l\'acompte de 50 %.',
       disclaimer: 'Sous réserve de confirmation de disponibilité par l\'administration. Un acompte de 50 % est requis pour bloquer la date.',
+      nameLabel: 'Nom Complet',
+      namePlaceholder: 'Votre nom complet',
+      emailLabel: 'E-mail',
+      emailPlaceholder: 'exemple@email.com',
+      datePlaceholder: 'Sélectionnez une date...',
+      backLabel: 'Retour',
       items: [
         { id: 'catering', name: 'Service Traiteur', desc: 'Service professionnel pour vos événements avec le sceau de Coco Víquez.', icon: 'ChefHat' },
         { id: 'parrilladas', name: 'Grillades', desc: 'Profitez des meilleures viandes grillées directement sur votre lieu.', icon: 'Flame' },
@@ -763,7 +1336,7 @@ const translations = {
     },
     about: {
       title: 'Unser Erbe',
-      summary: 'Wurzeln, die in Ciudad Quesada, San Carlos, wachsen. Nach 23 Jahren Kampf in seinem ersten Restaurant La Pradera verlässt Abraham Víquez mit seiner Familie alles, um das Restaurant Coco Víquez in Playa Hermosa zu gründen, während 13 Jahren Anstrengung an der Seite seiner Frau Marjorie und seiner Söhne Josué, Emmanuel und die heute das Erbe der Exzellenz in jedem Gericht fortsetzen.',
+      summary: 'Wurzeln, die in Ciudad Quesada, San Carlos, wachsen. Nach 23 Jahren Kampf in seinem ersten Restaurant La Pradera verlässt Abraham Víquez mit seiner Familie alles, um das Restaurant Coco Víquez in Playa Hermosa zu gründen, während 13 Jahren Anstrengung an der Seite seiner Frau Marjorie und seiner Söhne Sebastián, Josué, Emmanuel und die heute das Erbe der Exzellenz in jedem Gericht fortsetzen.',
       extended: '...es gelingt ihnen als Familie, einen Sprung zu machen und ihr eigenes Grundstück in Playa Hermosa zu erwerben und ihr eigenes neues Restaurant zu bauen. Diesmal größer, moderner und eigenständig. Derzeit von seinem Gründer Abraham Víquez und seinem Sohn Sebastián geführt. Es befindet sich an der Nationalstraße 159 gegenüber dem Haupteingang von Condovac und Villas Sol. Es zeichnet sich dadurch aus, dass es das einzige 100 % costa-ricanische Restaurant mit seinen einzigartigen Aromen und erschwinglichen Preisen sowohl für Ausländer als auch für Einheimische ist.',
       readMore: 'Weiterlesen',
       readLess: 'Weniger lesen',
@@ -849,12 +1422,197 @@ const translations = {
       guests: 'Personen',
       guestsHint: '8+ oder große Gruppen',
       send: 'Reservierung Senden',
-      success: 'Reservierung gesendet! (Simuliert in Konsole)'
+      success: 'Reservierung gesendet! (Simuliert in Konsole)',
+      hours: 'Montag bis Sonntag: 7:00 - 21:00 Uhr',
+      distributionLabel: 'Restaurantaufteilung',
+      tableLegend: 'Tischaufteilung',
+      clickMapHint: 'Klicken Sie auf die Karte, um die Ansicht zu vergrößern',
+      minAdvanceNotice: 'RESERVIERUNGEN ERFORDERN MINDESTENS 72 STUNDEN VORLAUFZEIT',
+      guestsLabel: 'Anzahl der Personen'
     },
     footer: {
       rights: '© 2026 Coco Viquez. Alle Rechte vorbehalten.',
       location: 'Playa Hermosa, Guanacaste, Costa Rica',
       openMaps: 'In Google Maps öffnen'
+    },
+    cart: {
+      title: 'IHRE BESTELLUNG',
+      empty: 'Ihr Warenkorb ist leer',
+      backToMenu: 'Zurück zum Menü',
+      orderSummary: 'Bestellübersicht',
+      itemTotal: 'Artikel Gesamt',
+      subtotal: 'Zwischensumme',
+      shipping: 'Lieferung',
+      packingFee: 'Verpackungsgebühr',
+      total: 'Gesamtsumme',
+      deliveryDetails: 'Lieferdetails',
+      fullName: 'Vollständiger Name',
+      fullNamePlaceholder: 'Z.B.: Sasha Calero',
+      email: 'E-Mail',
+      emailPlaceholder: 'du@email.com',
+      confirmEmail: 'E-Mail Bestätigen',
+      confirmEmailPlaceholder: 'Bestätigen Sie Ihre E-Mail',
+      phone: 'Telefonnummer',
+      address: 'Genaue Adresse',
+      addressPlaceholder: 'Z.B.: Weißes Haus, gegenüber dem Park, schwarzes Tor...',
+      deliveryZone: 'LIEFERZONE',
+      viewDeliveryMap: 'Lieferkarte Ansehen',
+      locating: '⌛ Standort wird ermittelt...',
+      locationSaved: '✅ Standort Gespeichert',
+      shareLocation: 'MEINEN STANDORT TEILEN',
+      selectPaymentMethod: 'Zahlungsmethode Auswählen',
+      card: 'Karte',
+      sinpe: 'SINPE',
+      cash: 'BARGELD',
+      payNow: 'JETZT BEZAHLEN',
+      sendOrder: 'BESTELLUNG SENDEN',
+      closeMapAria: 'Lieferkarte schließen',
+      mapAlt: 'Lieferzonenkarte',
+      alertInvalidEmail: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.',
+      alertEmailMismatch: 'Die E-Mail-Adressen stimmen nicht überein.',
+      alertInvalidPhone: 'Bitte geben Sie eine gültige Telefonnummer für {country} ({format}) ein.',
+      alertInvalidName: 'Bitte geben Sie Ihren vollständigen Namen ein.',
+      alertNoAddress: 'Bitte teilen Sie Ihren Standort oder geben Sie Ihre genaue Adresse ein.',
+      geoUnsupported: "Die Standortbestimmung ist in diesem Browser nicht verfügbar oder erfordert eine sichere HTTPS-Verbindung. Bitte versuchen Sie einen anderen modernen Browser oder geben Sie Ihre Adresse manuell im Feld 'GENAUE ADRESSE' ein.",
+      geoError: "Wir konnten Ihren GPS-Standort nicht ermitteln. Bitte geben Sie unten Ihre genaue Adresse ein oder fügen Sie Ihren Standort-Link manuell ein."
+    },
+    calendar: {
+      weekDays: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+      months: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
+    },
+    foodMenu: {
+      cartHint: 'Du kannst deine Bestellung später im Warenkorb anpassen',
+      extras: ['Reis', 'Bohnen', 'Salat', 'Pico de Gallo', 'Mais-Tortilla-Chips', 'Weiche Weizentortilla', 'Patacones (Frittierte Kochbanane)', 'Süße Kochbanane', 'Pürierte Bohnen', 'Guacamole', 'Pommes Frites', 'Nacho-Sauce', 'Flasche Hot Sauce'],
+      categories: [
+        {
+          cat: 'Frühstück', ico: '☀️',
+          items: [
+            { n: 'Sandwich (Rind/Hähnchen/Schinken)', p: 6000, d: 'Mit Käse und Protein nach Wahl 🥪', tip: 'sandwich' },
+            { n: 'Typisches Frühstück', p: 6000, d: 'Inklusive Kaffee und frischer Saft (beide Getränke) ☕🥤' },
+            { n: 'Omelett', p: 6000, d: 'Frische Zutaten 🍳', tip: 'omelette' }
+          ]
+        },
+        {
+          cat: 'Buffets', ico: '🍽️',
+          items: [
+            { n: 'Mittag-/Abendbuffet', p: 6000, d: 'Protein + 4 Beilagen + Frischer Saft 🥩', modal: 'buffet' },
+            { n: 'Frühstücksbuffet', p: 6000, d: 'Alle Optionen + Frisches Getränk/Kaffee ☕' }
+          ]
+        },
+        {
+          cat: 'Pasta', ico: '🍝',
+          items: [
+            { n: 'Pasta mit Tomatensauce', p: 6500, d: 'Vegetarisch: Mit Pilzen, Basilikum und Parmesan. Inklusive Knoblauchbrot 🌿', tip: 'tomato' },
+            { n: 'Pasta mit weißer Sauce', p: 8000, d: 'Alfredo-Stil: Mit Pilzen und Hähnchen oder Schinken. Inklusive Knoblauchbrot 🍗', tip: 'white' },
+            { n: 'Garnelen-Pasta', p: 8000, d: 'Mit weißer Sauce und Knoblauch. Inklusive Knoblauchbrot 🍤' },
+            { n: 'Knoblauch-Oktopus-Pasta', p: 8000, d: 'Frischer Oktopus in Knoblauchsauce. Inklusive Knoblauchbrot 🐙' },
+            { n: 'Knoblauch-Garnelen-Pasta', p: 8000, d: 'Knoblauch-Garnelen. Inklusive Knoblauchbrot 🍤' },
+            { n: 'Garnelen-Oktopus-Pasta', p: 9000, d: 'Knoblauch-Meeresfrüchte-Mix. Inklusive Knoblauchbrot 🐙🍤' }
+          ]
+        },
+        {
+          cat: 'Reis', ico: '🍚',
+          items: [
+            { n: 'Garnelenreis', p: 8000, d: 'Klassiker mit frischen Garnelen 🍤', tip: 'rice' },
+            { n: 'Hähnchenreis', p: 6500, d: 'Traditionelles costa-ricanisches Rezept 🥥', tip: 'rice' },
+            { n: 'Kantonesischer Reis', p: 6500, d: 'Asiatischer Stil mit Fleisch 🍚', tip: 'rice' },
+            { n: 'Gemischter Meeresfrüchtereis', p: 9000, d: 'Oktopus, Tintenfisch und Garnelen 🥣', tip: 'rice' }
+          ]
+        },
+        {
+          cat: 'Meeresfrüchte', ico: '🐟',
+          items: [
+            { n: 'Fisch-Ceviche (Papageifisch)', p: 8000, d: 'Frisch vor Ort zubereitet. 🍋', modal: 'ceviche' },
+            { n: 'Garnelen-Ceviche', p: 8000, d: 'Frische Garnelen. 🍤', modal: 'ceviche' },
+            { n: 'Gemischtes Ceviche', p: 8500, d: 'Fisch und Garnelen. 🐟🍤', modal: 'ceviche' },
+            { n: 'Oktopus-Ceviche', p: 9000, d: 'Zarter Oktopus. 🐙', modal: 'ceviche' },
+            { n: 'Premium-Ceviche', p: 10000, d: 'Papageifisch, Garnelen und Oktopus. 🏆', modal: 'ceviche' },
+            { n: 'Meeresfrüchtesuppe', p: 8000, d: 'Inklusive Reis. 🥣', modal: 'sopa' },
+            { n: 'Knoblauch-Garnelen', p: 9000, d: '🍤', modal: 'acompañamientos' },
+            { n: 'Ganzer Fisch (Roter Schnapper)', p: 10000, d: 'Frittiert. 🐟', modal: 'acompañamientos' },
+            { n: 'Oktopus-Tacos', p: 8000, d: '🐙', modal: 'acompañamientos' },
+            { n: 'Oktopus (Gegrillt oder mit Knoblauch)', p: 9000, d: '🐙', modal: 'acompañamientos' },
+            { n: 'Panierte Garnelen', p: 8000, d: '🍤', modal: 'acompañamientos' },
+            { n: 'Garnelen-Quesadilla', p: 7500, d: '🧀🍤' }
+          ]
+        },
+        {
+          cat: 'Snacks', ico: '🍟',
+          items: [
+            { n: 'Portion Pommes Frites', p: 3000, d: 'Klassisch und knusprig. 🍟' },
+            { n: 'Fisch- oder Hähnchen-Finger', p: 6500, d: 'Inklusive 2 Beilagen nach Wahl. 🐟🍗', modal: 'acompañamientos' },
+            { n: 'Víquez Fries', p: 6500, d: 'Pommes mit gezupftem Rind- oder Hähnchenfleisch, Pico de Gallo und Käse. 🧀' },
+            { n: 'Nachos', p: 6500, d: 'Mit pürierten Bohnen, geschmolzenem Käse und Pico de Gallo. 🧀' },
+            { n: 'Quesadilla', p: 6500, d: 'Weizentortilla mit geschmolzenem Käse. 🧀' },
+            { n: 'Pinchos - Spieße', p: 9000, d: 'Gegrillte Fleisch- und Gemüsespieße. 🥩🍢' },
+            { n: 'Taco Tico', p: 6000, d: 'Frittiert, gefüllt mit Rindfleisch. Traditioneller Stil. 🇨🇷' },
+            { n: 'Mexikanische Tacos', p: 8000, d: '3 weiche Tacos mit Rindfleisch, Zwiebel und Koriander. 🇲🇽' },
+            { n: 'Fisch- oder Garnelen-Tacos', p: 9000, d: '2 Tacos mit Beilage und besonderem Dressing. 🐟' },
+            { n: '2 Chalupas', p: 7000, d: 'Frittierte Tortilla mit Bohnen, Rindfleisch, Kohl und Saucen. 🌮' },
+            { n: 'Burger mit Pommes (Cheeseburger)', p: 6000, d: 'Rindfleisch, Käse und Pommes Frites. 🍔' },
+            { n: 'Normaler Burger', p: 6000, d: 'Einfach, mit traditionellem Geschmack. 🍔' },
+            { n: 'Hähnchen-Burger', p: 6000, d: 'Mit paniertem oder gegrilltem Hähnchenfilet. 🍗' },
+            { n: 'Beefsteak-Quesadilla', p: 7500, d: 'Weizentortilla mit gegrilltem Steak und Käse. 🥩' }
+          ]
+        },
+        {
+          cat: 'Spezialitäten', ico: '🥩',
+          items: [
+            { n: 'Cordon Bleu', p: 8000, d: 'Paniertes Hähnchen gefüllt mit Schinken und Käse. Inklusive 2 Beilagen. 🍗', modal: 'acompañamientos' },
+            { n: 'Hähnchen-/Fischfilet', p: 8500, d: 'Gegrillt oder mit Knoblauch. Inklusive 2 Beilagen. 🐟🍗', modal: 'acompañamientos' },
+            { n: 'Gegrilltes Rind- oder Hähnchenfleisch', p: 8000, d: 'Premium-Cut vom Grill. Inklusive 2 Beilagen. 🥩🔥', modal: 'acompañamientos' },
+            { n: 'Haus-Steak', p: 8000, d: 'Traditionelles Hausrezept. Inklusive 2 Beilagen. 🥩', modal: 'acompañamientos' },
+            { n: 'Hähnchen- oder Rind-Milanese', p: 8000, d: 'Knusprig paniert. Inklusive 2 Beilagen. 🥩🍗', modal: 'acompañamientos' },
+            { n: 'Carnitas', p: 8000, d: 'Gegrillte, sautierte Rindfleisch-Fajitas. Inklusive 2 Beilagen. 🥩', modal: 'acompañamientos' },
+            { n: 'Chifrijo', p: 8000, d: 'Schichten aus Reis, zarten Bohnen, Schweineschwarten und Pico de Gallo. (Verfügbarkeit erfragen) 🥣' }
+          ]
+        },
+        {
+          cat: 'Getränke', ico: '🍹',
+          items: [
+            { tipo: 'header', n: 'GETRÄNKE & KAFFEE ☕' },
+            { n: 'Flasche Wasser / Frischer Saft', p: 1500, d: 'Gereinigtes Wasser oder Fruchtsaft.' },
+            { n: 'Limonaden - Erfrischungsgetränke', p: 2000, d: 'Verschiedene Geschmacksrichtungen.', modal: 'sabor', flavors: ['Fanta Orange', 'Fanta Traube', 'Ginger Ale', 'Fanta Kolita', 'Coca-Cola', 'Coca-Cola Zero', 'Sprite', 'Monster', 'Tropical Pfirsich', 'Tropical Weiß', 'Pepsi', 'Pepsi Zero', 'Root Beer', 'Gatorade'] },
+            { n: 'Gemischter Smoothie', p: 4000, d: 'Natürliche Frucht-Smoothies.', modal: 'sabor', flavors: ['Mango', 'Erdbeere', 'Ananas', 'Gemischt'] },
+            { n: 'Britt-Spezialkaffee', p: 3500, d: 'Cappuccino, Espresso, Latte oder Eiskaffee.', modal: 'sabor', flavors: ['Cappuccino', 'Espresso', 'Latte', 'Eiskaffee'] },
+            { tipo: 'header', n: 'BIERE 🍺' },
+            { n: 'Einheimisches Bier', p: 2000, d: 'Imperial (Light, Ultra, Silver) oder Pilsen.', modal: 'sabor', flavors: ['Imperial', 'Imperial Light', 'Imperial Ultra', 'Imperial Silver', 'Pilsen'] },
+            { n: 'Premium-/Craft-Bier', p: 3500, d: 'Bavaria, Heineken, Corona oder Craft (IPA/Lager).', modal: 'sabor', flavors: ['Bavaria', 'Heineken', 'Corona', 'Craft IPA', 'Craft Lager'] },
+            { tipo: 'header', n: 'WEINE & SPIRITUOSEN 🍷' },
+            { n: 'Ausgewähltes Glas Wein', p: 4000, d: 'Merlot, Cabernet, Sauvignon Blanc, Chardonnay.', modal: 'sabor', flavors: ['Merlot', 'Cabernet', 'Sauvignon Blanc', 'Chardonnay'] },
+            { n: 'Sangria', p: 5000, d: 'Hausrezept.' },
+            { n: 'Cocktails', p: 5500, d: 'Scharfe Margarita, Traditionelle Margarita oder Wodka mit Cranberry.', modal: 'sabor', flavors: ['Scharfe Margarita', 'Traditionelle Margarita', 'Wodka mit Cranberry'] },
+            { n: 'Seltzer', p: 3500, d: 'Adán y Eva.', modal: 'sabor', flavors: ['Adán y Eva'] },
+            { n: 'Old Parr Whisky', p: 4000, d: 'Pur oder auf Eis serviert.' },
+            { n: 'Cacique', p: 2500, d: 'Einheimischer Guaro (Zuckerrohrschnaps).' }
+          ]
+        }
+      ],
+      chefTips: {
+        tomato: "💡 Tipp des Chefs: Zu diesem mediterran-italienischen Rezept empfehlen wir einen frischen 'Salat' oder eine 'Flasche Hot Sauce' für eine ausgewogene Schärfe.",
+        white: "💡 Tipp des Chefs: Die Cremigkeit der weißen Sauce passt hervorragend zum enthaltenen Knoblauchbrot, aber für einen frischen Kontrast ist eine Portion 'Salat' die ideale Balance.",
+        sandwich: "💡 Tipp des Chefs: Pimp your Sandwich! Ein Extra 'Pommes Frites' innen oder daneben, kombiniert mit 'Nacho-Sauce', hebt das Street-Food-Erlebnis dieses Gerichts komplett an.",
+        omelette: "💡 Tipp des Chefs: Für ein rundes Frühstück oder Brunch empfehlen wir, dein Omelett mit traditionellen Extras wie 'Patacones' oder 'Pürierten Bohnen' zu ergänzen.",
+        rice: "💡 Tipp des Chefs: Küstenreisgerichte glänzen noch mehr mit der knusprigen Textur von 'Patacones' oder der Süße der 'Süßen Kochbanane'.",
+        default: "💡 Tipp des Chefs: Verleih deiner Wahl eine besondere Note mit frischem 'Pico de Gallo' oder 'Süßer Kochbanane' für die perfekte süß-herzhafte Balance!"
+      },
+      chooseFlavor: 'Wähle deine Geschmacksrichtungen und Mengen:',
+      chooseSide: 'Wähle deine Beilage:',
+      cevicheSides: ['Maischips', 'Patacones mit Pico de Gallo'],
+      chooseSoupBase: 'Wähle die Basis deiner Suppe:',
+      soupBases: ['Wasserbasis', 'Sahnebasis'],
+      chooseSides2: 'Wähle genau 2 Beilagen aus:',
+      sideOptions: ['Reis', 'Bohnen', 'Kartoffelpüree', 'Pommes Frites', 'Salat', 'Patacones', 'Gemüse'],
+      chooseProteinLabel: 'Wähle dein Protein (erforderlich):',
+      proteinOptions: ['Schwein', 'Hähnchen', 'Rind', 'Fisch'],
+      chooseSides4Label: 'Wähle deine Beilagen (bis zu 4):',
+      buffetSideOptions: ['Reis', 'Bohnen', 'Geröstete Tortillas', 'Kartoffelpüree / Yuca / Gemüse'],
+      addExtrasLabel: 'Extras Hinzufügen (Optional)',
+      extrasPriceLabel: '— ₡2.500 / 5,00 $ pro Stück:',
+      chefTipButton: 'Tipp des Chefs',
+      chefTipHeader: 'Empfehlung des Chefs',
+      confirmAddButton: 'Bestätigen und in den Warenkorb ✅',
+      packingFeeNotice: 'Es wird eine Verpackungsgebühr von ₡500 (oder $1.00) pro Gericht berechnet.'
     },
     testimonials: {
       title: 'Testimonials',
@@ -882,6 +1640,12 @@ const translations = {
       emailSubject: 'Reservierungsanfrage: {service}',
       emailBody: 'Hallo Sebastián, ich erkundige mich nach der Verfügbarkeit für den Service {service} am {date} für {people} Personen. Bitte bestätigen Sie die Verfügbarkeit, um die 50%ige Anzahlung zu leisten.',
       disclaimer: 'Vorbehaltlich der Verfügbarkeitsbestätigung durch die Verwaltung. Eine Anzahlung von 50 % ist erforderlich, um das Datum zu blockieren.',
+      nameLabel: 'Vollständiger Name',
+      namePlaceholder: 'Ihr vollständiger Name',
+      emailLabel: 'E-Mail',
+      emailPlaceholder: 'beispiel@email.com',
+      datePlaceholder: 'Datum auswählen...',
+      backLabel: 'Zurück',
       items: [
         { id: 'catering', name: 'Catering-Service', desc: 'Professioneller Service für Ihre Veranstaltungen mit dem Siegel von Coco Víquez.', icon: 'ChefHat' },
         { id: 'parrilladas', name: 'Grillabende', desc: 'Genießen Sie die besten Grillfleische direkt an Ihrem Standort.', icon: 'Flame' },
@@ -1051,34 +1815,36 @@ const LegalModal = ({ isOpen, type, onClose }: { isOpen: boolean; type: 'privacy
 };
 
 // --- Table Map Component ---
-const TableMap = ({ 
-  onOpenModal 
-}: { 
+const TableMap = ({
+  onOpenModal,
+  legendLabel = 'Distribución de Mesas'
+}: {
   onOpenModal?: () => void
+  legendLabel?: string
 }) => {
   return (
-    <div 
+    <div
       onClick={onOpenModal}
       className={`relative w-full bg-ocean/5 rounded-2xl overflow-hidden shadow-2xl border border-white/10 group cursor-zoom-in`}
     >
-      <img 
-        src="/mapa/mapa.jpg" 
-        alt="Restaurante Coco Víquez Floor Plan - Distribución de mesas" 
+      <img
+        src="/mapa/mapa.jpg"
+        alt={legendLabel}
         className="reservation-map-fluid w-full h-auto opacity-95 transition-all duration-700 group-hover:scale-105"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-ocean/20 to-transparent pointer-events-none" />
-      
+
       <div className="absolute inset-0 flex items-center justify-center bg-ocean/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-[2px]">
         <div className="bg-white/10 backdrop-blur-md p-4 rounded-full border border-white/20">
           <Maximize2 size={32} className="text-white animate-pulse" />
         </div>
       </div>
-      
+
       {/* Legend Overlay */}
       <div className="absolute bottom-4 left-4 flex gap-4 bg-ocean/90 backdrop-blur-md p-3 rounded-xl border border-white/10 text-[9px] uppercase tracking-widest font-bold z-50">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full border-2 border-white/30" />
-          <span>Distribución de Mesas</span>
+          <span>{legendLabel}</span>
         </div>
       </div>
     </div>
@@ -1160,10 +1926,21 @@ export const sendServiceEmailQuote = ({ nombre, servicio, fecha, personas, email
   }
 };
 
-const ServiceCard: React.FC<{ 
-  item: any; 
-  cta: string; 
-  reserveNote: string; 
+// Devuelve la fecha/hora ACTUAL de Costa Rica (America/Costa_Rica, UTC-6, sin horario de
+// verano) sin importar la zona horaria del dispositivo del visitante. Formateamos el
+// instante actual como hora de Costa Rica y lo reinterpretamos como si fuera hora local,
+// así getHours()/getFullYear()/etc. devuelven siempre los valores de Costa Rica. Compartida
+// por todos los formularios de reserva (mesas, catering, eventos, clases, etc.) para que
+// "hoy" y los límites de anticipación se calculen siempre igual sin importar quién visite el sitio.
+const getCostaRicaNow = () => {
+  const crString = new Date().toLocaleString('en-US', { timeZone: 'America/Costa_Rica' });
+  return new Date(crString);
+};
+
+const ServiceCard: React.FC<{
+  item: any;
+  cta: string;
+  reserveNote: string;
   eventDateLabel: string;
   peopleCountLabel: string;
   checkAvailabilityLabel: string;
@@ -1172,24 +1949,40 @@ const ServiceCard: React.FC<{
   emailSubjectTemplate: string;
   emailBodyTemplate: string;
   disclaimerText: string;
+  nameLabel: string;
+  namePlaceholder: string;
+  emailLabel: string;
+  emailPlaceholder: string;
+  datePlaceholder: string;
+  backLabel: string;
+  calendarWeekDays: string[];
+  calendarMonths: string[];
   onClassReserve?: () => void;
   fechasBloqueadas?: string[];
   isAdmin?: boolean;
   onToggleBlockedDate?: (dateStr: string) => Promise<void>;
   onSelectService?: (serviceName: string) => void;
   servicioTipo?: string;
-}> = ({ 
-  item, 
-  cta, 
-  reserveNote, 
-  eventDateLabel, 
-  peopleCountLabel, 
-  checkAvailabilityLabel, 
-  requestQuoteLabel, 
+}> = ({
+  item,
+  cta,
+  reserveNote,
+  eventDateLabel,
+  peopleCountLabel,
+  checkAvailabilityLabel,
+  requestQuoteLabel,
   waMessageTemplate,
   emailSubjectTemplate,
   emailBodyTemplate,
   disclaimerText,
+  nameLabel,
+  namePlaceholder,
+  emailLabel,
+  emailPlaceholder,
+  datePlaceholder,
+  backLabel,
+  calendarWeekDays,
+  calendarMonths,
   onClassReserve,
   fechasBloqueadas = [],
   isAdmin = false,
@@ -1217,7 +2010,7 @@ const ServiceCard: React.FC<{
   const [localFechasBloqueadas, setLocalFechasBloqueadas] = useState<string[]>([]);
 
   const [currentMonth, setCurrentMonth] = useState<Date>(() => {
-    const d = new Date();
+    const d = getCostaRicaNow();
     return new Date(d.getFullYear(), d.getMonth(), 1);
   });
 
@@ -1228,37 +2021,37 @@ const ServiceCard: React.FC<{
   const minCapacity = isClase ? 5 : 1;
   const maxCapacity = isClase ? 15 : (isEventos ? 50 : 20);
 
-  const monthNamesEs = [
-    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-  ];
-
   // 2. LÓGICA Y FUNCIONES
   const getTodayISO = () => {
-    const d = new Date();
+    const d = getCostaRicaNow();
     return `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
   };
 
+  // Local-date formatter - never use .toISOString() for date-only math here, it
+  // converts to UTC and silently shifts the date by one day in the evening for
+  // any timezone behind UTC (e.g. Costa Rica, UTC-6, from ~6pm onward).
+  const toLocalISO = (d: Date) => `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
+
   const getMinDateLimit = () => {
     if (isAdmin) return getTodayISO();
-    const today = new Date();
+    const today = getCostaRicaNow();
     if (isEventos) {
-      const minDate = new Date();
+      const minDate = getCostaRicaNow();
       minDate.setDate(today.getDate() + 7);
-      return minDate.toISOString().split('T')[0];
+      return toLocalISO(minDate);
     } else {
-      const minDate = new Date();
+      const minDate = getCostaRicaNow();
       minDate.setDate(today.getDate() + 3);
-      return minDate.toISOString().split('T')[0];
+      return toLocalISO(minDate);
     }
   };
 
   const getMaxDateLimit = () => {
     if (isEventos) {
-      const today = new Date();
-      const maxDate = new Date();
+      const today = getCostaRicaNow();
+      const maxDate = getCostaRicaNow();
       maxDate.setMonth(today.getMonth() + 3);
-      return maxDate.toISOString().split('T')[0];
+      return toLocalISO(maxDate);
     }
     return undefined;
   };
@@ -1366,9 +2159,9 @@ const ServiceCard: React.FC<{
   };
 
   const getMaxDate = () => {
-    const d = new Date();
+    const d = getCostaRicaNow();
     d.setDate(d.getDate() + 90);
-    return d.toISOString().split('T')[0];
+    return `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
   };
 
   const formatMessage = (template: string) => {
@@ -1592,7 +2385,7 @@ const ServiceCard: React.FC<{
               setIsFlipped(false);
             }}
             className="absolute top-4 right-5 text-[#F27F57] hover:text-white bg-[#F27F57]/10 border border-[#F27F57]/20 rounded-full w-8 h-8 flex items-center justify-center text-sm transition-all duration-300 z-50 hover:scale-110 active:scale-95 shadow-[0_0_8px_rgba(242,127,87,0.2)] cursor-pointer"
-            title="Volver"
+            title={backLabel}
           >
             ✕
           </button>
@@ -1610,11 +2403,11 @@ const ServiceCard: React.FC<{
             <div className="flex flex-col gap-2.5 w-full mb-3">
               <div className="text-left w-full">
                 <label className="block text-[9px] uppercase tracking-widest text-[#F9F7F2]/60 mb-1 ml-1">
-                  Nombre Completo
+                  {nameLabel}
                 </label>
                 <input
                   type="text"
-                  placeholder="Tu nombre completo"
+                  placeholder={namePlaceholder}
                   value={clientName}
                   onChange={(e) => setClientName(e.target.value)}
                   onClick={(e) => e.stopPropagation()}
@@ -1624,11 +2417,11 @@ const ServiceCard: React.FC<{
 
               <div className="text-left w-full">
                 <label className="block text-[9px] uppercase tracking-widest text-[#F9F7F2]/60 mb-1 ml-1">
-                  Correo Electrónico
+                  {emailLabel}
                 </label>
                 <input
                   type="email"
-                  placeholder="ejemplo@correo.com"
+                  placeholder={emailPlaceholder}
                   value={emailCliente}
                   onChange={(e) => setEmailCliente(e.target.value)}
                   onClick={(e) => e.stopPropagation()}
@@ -1655,8 +2448,8 @@ const ServiceCard: React.FC<{
                   <input 
                     readOnly
                     type="text" 
-                    value={selectedDate ? selectedDate.split('-').reverse().join('/') : ''} 
-                    placeholder="Selecciona una fecha..." 
+                    value={selectedDate ? selectedDate.split('-').reverse().join('/') : ''}
+                    placeholder={datePlaceholder}
                     className="w-full bg-slate-950 text-white placeholder-[#F9F7F2]/20 border border-[#F27F57]/30 group-hover:border-[#F27F57]/60 rounded-xl px-4 py-2 text-xs font-mono cursor-pointer transition-all duration-300 outline-none shadow-[0_0_15px_rgba(242,127,87,0.1)] focus:shadow-[0_0_15px_rgba(242,127,87,0.3)] h-11 fecha-input"
                   />
                   <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[#F27F57]/60 pointer-events-none group-hover:scale-110 transition-transform duration-300">
@@ -1691,22 +2484,22 @@ const ServiceCard: React.FC<{
                           &lt;
                         </button>
                         <span className="text-[10px] font-bold uppercase tracking-widest text-[#F9F7F2]">
-                          {monthNamesEs[currentMonth.getMonth()].toUpperCase()}, {currentMonth.getFullYear()}
+                          {calendarMonths[currentMonth.getMonth()].toUpperCase()}, {currentMonth.getFullYear()}
                         </span>
-                        <button 
+                        <button
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
                             changeMonth(1);
-                          }} 
+                          }}
                           className="text-[#F27F57] hover:text-[#ff8a50] text-sm font-bold p-1 transition-colors"
                         >
                           &gt;
                         </button>
                       </div>
-                      
+
                       <div className="grid grid-cols-7 gap-1 text-center text-[8px] font-bold uppercase tracking-wider text-gray-500 mb-2">
-                        <div>Do</div><div>Lu</div><div>Ma</div><div>Mi</div><div>Ju</div><div>Vi</div><div>Sá</div>
+                        {calendarWeekDays.map((d, i) => <div key={i}>{d}</div>)}
                       </div>
                       
                       <div className="grid grid-cols-7 gap-1 text-center text-xs">
@@ -1881,6 +2674,9 @@ const ServiceCard: React.FC<{
 };
 
 
+// Cargo de empaque: se cobra por cada platillo (unidad), no por tipo de producto.
+const PACKING_FEE_PER_DISH = 500;
+
 interface CartItem {
   name: string;
   price: string;
@@ -2019,14 +2815,16 @@ const countryConfigs: Record<string, CountryConfig> = {
   }
 };
 
-const Cart = ({ items, onUpdate, onRemove, onConfirm, isOpen, setIsOpen }: { 
-  items: CartItem[]; 
+const Cart = ({ items, onUpdate, onRemove, onConfirm, isOpen, setIsOpen, t }: {
+  items: CartItem[];
   onUpdate: (name: string, delta: number) => void;
   onRemove: (name: string) => void;
   onConfirm: (location: string | null, address: string, paymentMethod: 'card' | 'sinpe' | 'cash', email: string, phone: string, name: string, deliveryFee: number) => void;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  t: typeof translations['es'];
 }) => {
+  const ct = t.cart;
   const [location, setLocation] = useState<string | null>(null);
   const [address, setAddress] = useState('');
   const [name, setName] = useState('');
@@ -2067,13 +2865,15 @@ const Cart = ({ items, onUpdate, onRemove, onConfirm, isOpen, setIsOpen }: {
     return acc + (price * item.quantity);
   }, 0);
 
-  const iva = Math.round(subtotal * 0.13);
-  const totalNumeric = subtotal + iva + deliveryFee;
+  const dishCount = items.reduce((acc, item) => acc + item.quantity, 0);
+  const packingFee = dishCount * PACKING_FEE_PER_DISH;
+
+  const totalNumeric = subtotal + deliveryFee + packingFee;
 
   const handleGetLocation = () => {
     // 1. COMPROBACIÓN DE COMPATIBILIDAD Y HTTPS:
     if (!navigator.geolocation) {
-      alert("La geolocalización no está disponible en este navegador o requiere de una conexión HTTPS segura. Por favor, intente con otro navegador moderno o escriba su dirección de forma manual en el campo 'DIRECCIÓN EXACTA'.");
+      alert(ct.geoUnsupported);
       return;
     }
 
@@ -2101,7 +2901,7 @@ const Cart = ({ items, onUpdate, onRemove, onConfirm, isOpen, setIsOpen }: {
       (error) => {
         // 3. MANEJO DE ERRORES Y PLAN B (FALLBACK):
         setIsLocating(false);
-        alert("No pudimos obtener tu GPS. Por favor, escribe tu dirección exacta abajo o copia el enlace de tu ubicación manualmente.");
+        alert(ct.geoError);
         setTimeout(() => {
           if (addressInputRef.current) {
             addressInputRef.current.focus();
@@ -2172,7 +2972,7 @@ const Cart = ({ items, onUpdate, onRemove, onConfirm, isOpen, setIsOpen }: {
               <div className="p-6 bg-white/[0.02] flex justify-between items-center border-b border-white/5 sticky top-0 bg-slate-950/90 backdrop-blur-md z-20 shrink-0">
                 <div className="flex items-center gap-3">
                   <ShoppingCart className="text-[#F27F57]" />
-                  <h2 className="text-xl font-black uppercase tracking-tighter italic">TU PEDIDO</h2>
+                  <h2 className="text-xl font-black uppercase tracking-tighter italic">{ct.title}</h2>
                 </div>
                 <button 
                   onClick={() => setIsOpen(false)} 
@@ -2190,12 +2990,12 @@ const Cart = ({ items, onUpdate, onRemove, onConfirm, isOpen, setIsOpen }: {
                 {items.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center text-white/20 py-20 space-y-4">
                     <Utensils size={64} />
-                    <p className="font-bold uppercase tracking-widest text-sm">El carrito está vacío</p>
-                    <button 
+                    <p className="font-bold uppercase tracking-widest text-sm">{ct.empty}</p>
+                    <button
                       onClick={() => setIsOpen(false)}
                       className="text-[#F27F57] text-xs font-bold underline underline-offset-4"
                     >
-                      Volver al menú
+                      {ct.backToMenu}
                     </button>
                   </div>
                 ) : (
@@ -2205,7 +3005,7 @@ const Cart = ({ items, onUpdate, onRemove, onConfirm, isOpen, setIsOpen }: {
                     <div className="space-y-6">
                       <h3 className="text-xs font-black uppercase tracking-[0.2em] text-[#F27F57] flex items-center gap-3">
                         <span className="w-6 h-[1px] bg-[#F27F57]/30"></span>
-                        Resumen de Pedido
+                        {ct.orderSummary}
                       </h3>
 
                       <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
@@ -2248,7 +3048,7 @@ const Cart = ({ items, onUpdate, onRemove, onConfirm, isOpen, setIsOpen }: {
 
                                   {/* 3. TOTALIZADOR DEL PRODUCTO */}
                                   <div className="flex justify-between items-center mt-3 pt-2 border-t border-white/[0.04]">
-                                    <span className="text-[10px] text-white/30 uppercase tracking-widest font-semibold">Total Item</span>
+                                    <span className="text-[10px] text-white/30 uppercase tracking-widest font-semibold">{ct.itemTotal}</span>
                                     <span className="text-xs font-mono font-black text-[#FFD700]">
                                       ₡{(finalPriceVal * item.quantity).toLocaleString()}
                                     </span>
@@ -2271,20 +3071,20 @@ const Cart = ({ items, onUpdate, onRemove, onConfirm, isOpen, setIsOpen }: {
 
                       <div className="space-y-3 p-5 bg-white/[0.02] rounded-2xl border border-white/5">
                         <div className="flex justify-between text-xs text-white/40 font-bold uppercase tracking-widest">
-                          <span>Subtotal</span>
+                          <span>{ct.subtotal}</span>
                           <span className="text-white">₡{subtotal.toLocaleString()}</span>
                         </div>
                         <div className="flex justify-between text-xs text-white/40 font-bold uppercase tracking-widest">
-                          <span>IVA (13%)</span>
-                          <span className="text-white">₡{iva.toLocaleString()}</span>
+                          <span>{ct.shipping}</span>
+                          <span className="text-white">₡{deliveryFee.toLocaleString()}</span>
                         </div>
                         <div className="flex justify-between text-xs text-white/40 font-bold uppercase tracking-widest">
-                          <span>Envío</span>
-                          <span className="text-white">₡{deliveryFee.toLocaleString()}</span>
+                          <span>{ct.packingFee} ({dishCount}x ₡{PACKING_FEE_PER_DISH.toLocaleString()})</span>
+                          <span className="text-white">₡{packingFee.toLocaleString()}</span>
                         </div>
                         <div className="h-[1px] bg-white/5 my-2"></div>
                         <div className="flex justify-between items-end">
-                          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#F27F57]">Total Final</span>
+                          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#F27F57]">{ct.total}</span>
                           <span className="text-3xl font-black text-[#FFD700] leading-none font-mono tracking-tighter italic">
                             ₡{totalNumeric.toLocaleString()}
                           </span>
@@ -2296,46 +3096,46 @@ const Cart = ({ items, onUpdate, onRemove, onConfirm, isOpen, setIsOpen }: {
                     <div className="space-y-6">
                       <h3 className="text-xs font-black uppercase tracking-[0.2em] text-[#F27F57] flex items-center gap-3">
                         <span className="w-6 h-[1px] bg-[#F27F57]/30"></span>
-                        Datos de Entrega
+                        {ct.deliveryDetails}
                       </h3>
-                      
+
                       <div className="grid grid-cols-1 gap-5">
                         <div className="space-y-1">
-                          <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-1">Nombre Completo</label>
-                          <input 
+                          <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-1">{ct.fullName}</label>
+                          <input
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             className={`w-full bg-[#112240] border rounded-xl p-3 text-sm focus:border-[#F27F57] outline-none transition-all ${name && name.length < 3 ? 'border-red-500/50' : 'border-white/10'}`}
-                            placeholder="Ej: Sasha Calero"
+                            placeholder={ct.fullNamePlaceholder}
                           />
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                           <div className="space-y-1">
-                            <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-1">Correo Electrónico</label>
-                            <input 
+                            <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-1">{ct.email}</label>
+                            <input
                               type="email"
                               value={email}
                               onChange={(e) => setEmail(e.target.value)}
                               className={`w-full bg-[#112240] border rounded-xl p-3 text-sm focus:border-[#F27F57] outline-none transition-all ${email && !isEmailValid(email) ? 'border-red-500/50' : 'border-white/10'}`}
-                              placeholder="tu@correo.com"
+                              placeholder={ct.emailPlaceholder}
                             />
                           </div>
                           <div className="space-y-1">
-                            <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-1">Confirmar Correo</label>
-                            <input 
+                            <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-1">{ct.confirmEmail}</label>
+                            <input
                               type="email"
                               value={confirmEmail}
                               onChange={(e) => setConfirmEmail(e.target.value)}
                               className={`w-full bg-[#112240] border rounded-xl p-3 text-sm focus:border-[#F27F57] outline-none transition-all ${confirmEmail && email !== confirmEmail ? 'border-red-500/50' : 'border-white/10'}`}
-                              placeholder="Confirma tu correo"
+                              placeholder={ct.confirmEmailPlaceholder}
                             />
                           </div>
                         </div>
 
                         <div className="space-y-1">
-                          <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-1">Número de Teléfono</label>
+                          <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-1">{ct.phone}</label>
                           <div className="flex gap-2">
                             <select 
                               value={selectedCountry}
@@ -2372,13 +3172,13 @@ const Cart = ({ items, onUpdate, onRemove, onConfirm, isOpen, setIsOpen }: {
                         </div>
 
                         <div className="space-y-1">
-                          <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-1">Dirección Exacta</label>
-                          <textarea 
+                          <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold ml-1">{ct.address}</label>
+                          <textarea
                             ref={addressInputRef}
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
                             className={`w-full bg-[#112240] border rounded-xl p-3 text-sm focus:border-[#F27F57] outline-none transition-all resize-none h-24 ${address && address.length < 5 ? 'border-red-500/50' : 'border-white/10'}`}
-                            placeholder="Ej: Casa blanca, frente al parque, portón negro..."
+                            placeholder={ct.addressPlaceholder}
                           />
                         </div>
 
@@ -2386,7 +3186,7 @@ const Cart = ({ items, onUpdate, onRemove, onConfirm, isOpen, setIsOpen }: {
                         <div className="space-y-1.5">
                           <div className="flex justify-between items-center ml-1">
                             <label className="text-[10px] uppercase tracking-widest text-white/40 font-bold">
-                              ZONA DE ENTREGA
+                              {ct.deliveryZone}
                             </label>
                             <button
                               type="button"
@@ -2398,7 +3198,7 @@ const Cart = ({ items, onUpdate, onRemove, onConfirm, isOpen, setIsOpen }: {
                               }}
                               className="text-[#FFD700] hover:text-[#ffea70] text-[10px] font-bold uppercase tracking-wider bg-transparent border-none cursor-pointer flex items-center gap-1 transition-colors"
                             >
-                              🗺️ View Delivery Map
+                              🗺️ {ct.viewDeliveryMap}
                             </button>
                           </div>
                           <select
@@ -2427,7 +3227,7 @@ const Cart = ({ items, onUpdate, onRemove, onConfirm, isOpen, setIsOpen }: {
                           className={`w-full py-4 rounded-xl font-bold uppercase tracking-[0.2em] text-[10px] flex items-center justify-center gap-3 transition-all ${location ? 'bg-green-500/10 text-green-400 border border-green-500/30 shadow-[0_0_20px_rgba(34,197,94,0.1)]' : 'bg-[#112240] text-white/70 hover:bg-white/5 border border-white/10 hover:text-white'}`}
                         >
                           <MapPin size={16} />
-                          {isLocating ? '⌛ Obteniendo ubicación...' : location ? '✅ Ubicación Guardada' : 'COMPARTIR MI UBICACIÓN'}
+                          {isLocating ? ct.locating : location ? ct.locationSaved : ct.shareLocation}
                         </button>
                       </div>
                     </div>
@@ -2436,44 +3236,44 @@ const Cart = ({ items, onUpdate, onRemove, onConfirm, isOpen, setIsOpen }: {
                     <div className="space-y-6 pt-2 border-t border-white/5">
                       {/* Payment Toggle */}
                       <div className="flex flex-col gap-2">
-                        <p className="text-[9px] font-black uppercase tracking-widest text-white/30 text-center mb-1">Selecciona Método de Pago</p>
+                        <p className="text-[9px] font-black uppercase tracking-widest text-white/30 text-center mb-1">{ct.selectPaymentMethod}</p>
                         <div className="grid grid-cols-3 gap-2">
-                          <button 
+                          <button
                             onClick={() => setPaymentMethod('card')}
                             className={`py-3 px-1 rounded-xl border flex flex-col items-center gap-1 transition-all justify-center ${paymentMethod === 'card' ? 'bg-[#F27F57] border-[#F27F57] text-white shadow-[0_0_20px_rgba(242,127,87,0.3)]' : 'bg-white/5 border-white/10 text-white/40 hover:border-white/20'}`}
                           >
                             <CreditCard size={16} />
-                            <span className="text-[9px] font-black uppercase tracking-widest text-center">Tarjeta</span>
+                            <span className="text-[9px] font-black uppercase tracking-widest text-center">{ct.card}</span>
                           </button>
-                          <button 
+                          <button
                             onClick={() => setPaymentMethod('sinpe')}
                             className={`py-3 px-1 rounded-xl border flex flex-col items-center gap-1 transition-all justify-center ${paymentMethod === 'sinpe' ? 'bg-[#25D366] border-[#25D366] text-white shadow-[0_0_20px_rgba(37,211,102,0.2)]' : 'bg-white/5 border-white/10 text-white/40 hover:border-white/20'}`}
                           >
                             <Smartphone size={16} />
-                            <span className="text-[9px] font-black uppercase tracking-widest text-center">SINPE</span>
+                            <span className="text-[9px] font-black uppercase tracking-widest text-center">{ct.sinpe}</span>
                           </button>
-                          <button 
+                          <button
                             onClick={() => setPaymentMethod('cash')}
                             className={`py-3 px-1 rounded-xl border flex flex-col items-center gap-1 transition-all justify-center ${paymentMethod === 'cash' ? 'bg-[#FFD700] border-[#FFD700] text-black shadow-[0_0_20px_rgba(255,215,0,0.2)]' : 'bg-white/5 border-white/10 text-white/40 hover:border-white/20'}`}
                           >
                             <Wallet size={16} />
-                            <span className="text-[9px] font-black uppercase tracking-widest text-center">EFECTIVO</span>
+                            <span className="text-[9px] font-black uppercase tracking-widest text-center">{ct.cash}</span>
                           </button>
                         </div>
                       </div>
 
-                      <button 
+                      <button
                         id="btn-enviar-pedido"
                         onClick={() => {
-                          if (!isEmailValid(email)) { alert('Por favor, ingrese un correo electrónico válido.'); return; }
-                          if (email !== confirmEmail) { alert('Los correos electrónicos no coinciden.'); return; }
+                          if (!isEmailValid(email)) { alert(ct.alertInvalidEmail); return; }
+                          if (email !== confirmEmail) { alert(ct.alertEmailMismatch); return; }
                           const rawLength = phone.replace(/\D/g, '').length;
-                          if (rawLength !== currentCountryConfig.maxDigits) { 
-                            alert(`Por favor, ingrese un número de teléfono válido para ${currentCountryConfig.name} (${currentCountryConfig.placeholder}).`); 
-                            return; 
+                          if (rawLength !== currentCountryConfig.maxDigits) {
+                            alert(ct.alertInvalidPhone.replace('{country}', currentCountryConfig.name).replace('{format}', currentCountryConfig.placeholder));
+                            return;
                           }
-                          if (name.length < 3) { alert('Por favor, ingrese su nombre completo.'); return; }
-                          if (!location && address.length < 5) { alert('Por favor, comparta su ubicación o ingrese su dirección exacta.'); return; }
+                          if (name.length < 3) { alert(ct.alertInvalidName); return; }
+                          if (!location && address.length < 5) { alert(ct.alertNoAddress); return; }
                           onConfirm(location, address, paymentMethod, email, countryCode + ' ' + phone, name, deliveryFee);
                         }}
                         disabled={!isFormValid}
@@ -2486,7 +3286,7 @@ const Cart = ({ items, onUpdate, onRemove, onConfirm, isOpen, setIsOpen }: {
                         ) : (
                           <MessageCircle size={18} />
                         )}
-                        {paymentMethod === 'sinpe' ? 'PAGAR AHORA' : 'ENVIAR PEDIDO'}
+                        {paymentMethod === 'sinpe' ? ct.payNow : ct.sendOrder}
                       </button>
                     </div>
 
@@ -2519,14 +3319,14 @@ const Cart = ({ items, onUpdate, onRemove, onConfirm, isOpen, setIsOpen }: {
                 <button 
                   onClick={() => setIsDeliveryMapOpen(false)}
                   className="w-10 h-10 bg-black/60 hover:bg-[#ff8a50] text-white rounded-full flex items-center justify-center transition-all duration-300 shadow-xl group border border-white/10"
-                  aria-label="Cerrar mapa de entrega"
+                  aria-label={ct.closeMapAria}
                 >
                   <X size={20} strokeWidth={3} className="group-hover:rotate-90 transition-transform duration-300" />
                 </button>
               </div>
-              <img 
-                src="/delivery-map.png" 
-                alt="Mapa de Zonas de Entrega" 
+              <img
+                src="/delivery-map.png"
+                alt={ct.mapAlt}
                 className="w-full h-auto object-contain rounded-2xl block"
                 referrerPolicy="no-referrer"
               />
@@ -2696,7 +3496,7 @@ const SeaFoam = () => {
 };
 
 // --- Cooking Class Modal ---
-const ClassModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+const ClassModal = ({ isOpen, onClose, minAdvanceNoticeText = 'LAS RESERVAS REQUIEREN UN MÍNIMO DE 72 HORAS DE ANTICIPACIÓN' }: { isOpen: boolean; onClose: () => void; minAdvanceNoticeText?: string }) => {
   const [formData, setFormData] = useState({
     name: '',
     guests: '5',
@@ -2704,9 +3504,11 @@ const ClassModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
     time: '10:00'
   });
 
-  const minDate = new Date();
+  const minDate = getCostaRicaNow();
   minDate.setDate(minDate.getDate() + 3);
-  const minDateStr = minDate.toISOString().split('T')[0];
+  // Local-date format, not .toISOString() - that converts to UTC and shifts the
+  // date by one day in the evening for timezones behind UTC (e.g. Costa Rica).
+  const minDateStr = `${minDate.getFullYear()}-${(minDate.getMonth() + 1).toString().padStart(2, '0')}-${minDate.getDate().toString().padStart(2, '0')}`;
 
   const [dateError, setDateError] = useState(false);
 
@@ -2864,7 +3666,7 @@ const ClassModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
                       animate={{ opacity: 1, y: 0 }}
                       className="absolute -bottom-8 left-0 w-full text-[8px] font-bold text-red-500 uppercase tracking-tighter bg-red-50 py-1 px-2 rounded border border-red-200 text-center z-10"
                     >
-                      LAS RESERVAS REQUIEREN UN MÍNIMO DE 72 HORAS DE ANTICIPACIÓN
+                      {minAdvanceNoticeText}
                     </motion.div>
                   )}
                 </div>
@@ -2891,7 +3693,34 @@ const TripAdvisorIcon = ({ size = 20 }: { size?: number }) => (
   </svg>
 );
 
-const HorizontalTabsMenu = ({ onAdd }: { onAdd: (item: any) => void }) => {
+const PackingFeeNotice = ({ text }: { text: string }) => (
+  <div className="px-4 md:px-6 pt-4">
+    <style>{`
+      @keyframes packingFeePulse {
+        0%, 100% { opacity: 1; text-shadow: 0 0 8px rgba(249,255,0,0.6), 0 0 16px rgba(249,255,0,0.35); }
+        50% { opacity: 0.75; text-shadow: 0 0 16px rgba(249,255,0,0.9), 0 0 28px rgba(249,255,0,0.55); }
+      }
+      .packing-fee-notice {
+        animation: packingFeePulse 2s ease-in-out infinite;
+      }
+    `}</style>
+    <p
+      className="packing-fee-notice text-center text-[11px] sm:text-xs md:text-sm font-black uppercase tracking-wide sm:tracking-wider break-words"
+      style={{ color: '#F9FF00' }}
+    >
+      {text}
+    </p>
+  </div>
+);
+
+const HorizontalTabsMenu = ({ onAdd, t }: {
+  onAdd: (item: any) => void;
+  t: typeof translations['es'];
+}) => {
+  const fm = t.foodMenu;
+  const menuData = fm.categories;
+  const extrasList = fm.extras;
+  const cartHint = fm.cartHint;
   const [activeTab, setActiveTab] = useState(0);
   const [selectedItemForModal, setSelectedItemForModal] = useState<any>(null);
   const [modalOptions, setModalOptions] = useState<any>({});
@@ -2899,167 +3728,13 @@ const HorizontalTabsMenu = ({ onAdd }: { onAdd: (item: any) => void }) => {
 
   const getChefTip = (item: any) => {
     if (!item) return "";
-    const name = (item.n || "").toLowerCase();
-
-    const chefTips: Record<string, string> = {
-      "pasta salsa de tomate": "💡 Tip del Chef: Para esta receta italiana mediterránea, te recomendamos acompañarla con una fresca 'Ensalada' o añadir una 'Botella de Hot Sauce' si buscas un toque picante balanceado.",
-      "pasta salsa blanca": "💡 Tip del Chef: La cremosidad de la salsa blanca combina de forma excelente con el pan de ajo incluido, pero si deseas un contraste fresco, una porción de 'Ensalada' es el balance ideal.",
-      "sándwich": "💡 Tip del Chef: ¡Potencia tu sándwich! Un extra de 'Papas Fritas' dentro o al lado, combinado con 'Salsa de Nacho', eleva por completo la experiencia urbana de este plato.",
-      "omelette": "💡 Tip del Chef: Para un desayuno o brunch redondo, te sugerimos acompañar tu omelette con extras tradicionales como 'Patacones' o 'Frijoles Molidos'.",
-      "arroz": "💡 Tip del Chef: Los arroces costeros brillan más cuando añades la textura crujiente de los 'Patacones' o el dulzor del 'Plátano Maduro'.",
-      "default": "💡 Tip del Chef: ¡Dale un toque especial a tu elección agregando 'Pico de Gallo' fresco o 'Plátano Maduro' para un balance dulce-salado perfecto!"
-    };
-
-    // Find custom match
-    for (const key of Object.keys(chefTips)) {
-      if (key !== "default" && (name.includes(key) || key.includes(name))) {
-        return chefTips[key];
-      }
-    }
-    if (name.includes("sandwich")) {
-      return chefTips["sándwich"];
-    }
-    return chefTips["default"];
+    return fm.chefTips[item.tip as keyof typeof fm.chefTips] || fm.chefTips.default;
   };
 
-  const menuData = [
-    {
-      "cat": "Desayunos", "ico": "☀️",
-      "items": [
-        {"n": "Sándwich (Carne/Pollo/Jamón)", "p": 6000, "d": "Con queso y proteína a elegir 🥪"},
-        {"n": "Omelette", "p": 6000, "d": "Ingredientes frescos 🍳"}
-      ]
-    },
-    {
-      "cat": "Buffets", "ico": "🍽️",
-      "items": [
-        {"n": "Almuerzo/Cena Buffet", "p": 6000, "d": "Proteína + 4 acompañamientos + Jugo natural 🥩"},
-        {"n": "Buffet Desayuno", "p": 6000, "d": "Opciones completas + Bebida natural/Café ☕"}
-      ]
-    },
-    {
-      "cat": "Pastas", "ico": "🍝",
-      "items": [
-        {
-          "n": "Pasta Salsa de Tomate", 
-          "p": 6500, 
-          "d": "Vegetariana: Con hongos, albahaca y queso parmesano. Incluye pan al ajillo 🌿"
-        },
-        {
-          "n": "Pasta Salsa Blanca", 
-          "p": 8000, 
-          "d": "Estilo Alfredo: Con hongos y pollo o jamón. Incluye pan al ajillo 🍗"
-        },
-        {
-          "n": "Pasta con Camarones", 
-          "p": 8000, 
-          "d": "Con salsa blanca y ajo. Incluye pan al ajillo 🍤"
-        },
-        {
-          "n": "Pasta al Ajillo de Pulpo", 
-          "p": 8000, 
-          "d": "Pulpo fresco al ajillo. Incluye pan al ajillo 🐙"
-        },
-        {
-          "n": "Pasta al Ajillo de Camarón", 
-          "p": 8000, 
-          "d": "Camarones al ajillo. Incluye pan al ajillo 🍤"
-        },
-        {
-          "n": "Pasta de Camarón y Pulpo", 
-          "p": 9000, 
-          "d": "Mix de mariscos al ajillo. Incluye pan al ajillo 🐙🍤"
-        }
-      ]
-    },
-    {
-      "cat": "Arroces", "ico": "🍚",
-      "items": [
-        {"n": "Arroz con Camarón", "p": 8000, "d": "Clásico con camarones frescos 🍤"},
-        {"n": "Arroz con Pollo", "p": 6500, "d": "Receta tradicional tica 🥥"},
-        {"n": "Arroz Cantones", "p": 6500, "d": "Estilo oriental con carnes 🍚"},
-        {"n": "Arroz Mixto Mariscos", "p": 9000, "d": "Pulpo, calamar y camarón 🥣"}
-      ]
-    },
-    {
-      "cat": "Mariscos", "ico": "🐟",
-      "items": [
-        { "n": "Ceviche de Pescado (Loro)", "p": 8000, "d": "Cocinada al momento. 🍋", "modal": "ceviche" },
-        { "n": "Ceviche de Camarón", "p": 8000, "d": "Camarones frescos. 🍤", "modal": "ceviche" },
-        { "n": "Ceviche Mixto", "p": 8500, "d": "Pescado y camarón. 🐟🍤", "modal": "ceviche" },
-        { "n": "Ceviche de Pulpo", "p": 9000, "d": "Pulpo tierno. 🐙", "modal": "ceviche" },
-        { "n": "Ceviche Premium", "p": 10000, "d": "Loro, Camarón y Pulpo. 🏆", "modal": "ceviche" },
-        { "n": "Sopa de Mariscos", "p": 8000, "d": "Incluye arroz. 🥣", "modal": "sopa" },
-        { "n": "Camarón al Ajillo", "p": 9000, "d": "🍤", "modal": "acompañamientos" },
-        { "n": "Pescado Entero (Pargo Rojo)", "p": 10000, "d": "Frito. 🐟", "modal": "acompañamientos" },
-        { "n": "Tacos de Pulpo", "p": 8000, "d": "🐙", "modal": "acompañamientos" },
-        { "n": "Pulpo (Parrilla o Ajillo)", "p": 9000, "d": "🐙", "modal": "acompañamientos" },
-        { "n": "Camarones Empanizados", "p": 8000, "d": "🍤", "modal": "acompañamientos" },
-        { "n": "Quesadilla de Camarón", "p": 7500, "d": "🧀🍤" }
-      ]
-    },
-    {
-      "cat": "Snacks", "ico": "🍟",
-      "items": [
-        { "n": "Orden de Papas Fritas", "p": 3000, "d": "Clásicas y crujientes. 🍟" },
-        { "n": "Dedos de Pescado o Pollo", "p": 6500, "d": "Incluye 2 acompañamientos a elegir. 🐟🍗", "modal": "acompañamientos" },
-        { "n": "Víquez Fries", "p": 6500, "d": "Papas con carne o pollo mechado, pico de gallo y queso. 🧀" },
-        { "n": "Nachos", "p": 6500, "d": "Con frijoles molidos, queso fundido y pico de gallo. 🧀" },
-        { "n": "Quesadilla", "p": 6500, "d": "Tortilla de harina con queso derretido. 🧀" },
-        { "n": "Pinchos - Skewers", "p": 9000, "d": "Brochetas de carne y vegetales a la parrilla. 🥩🍢" },
-        { "n": "Taco Tico", "p": 6000, "d": "Frito, relleno de carne. Estilo tradicional. 🇨🇷" },
-        { "n": "Tacos Mexicanos", "p": 8000, "d": "3 Tacos suaves con carne, cebolla y cilantro. 🇲🇽" },
-        { "n": "Tacos de Pescado o Camarón", "p": 9000, "d": "2 tacos con guarnición y aderezo especial. 🐟" },
-        { "n": "2 Chalupas", "p": 7000, "d": "Tortilla frita con frijoles, carne, repollo y salsas. 🌮" },
-        { "n": "Hamburguesa con Papas (Cheese Burger)", "p": 6000, "d": "Carne, queso y papas fritas. 🍔" },
-        { "n": "Hamburguesa Regular", "p": 6000, "d": "Sencilla, con sabor tradicional. 🍔" },
-        { "n": "Hamburguesa de Pollo", "p": 6000, "d": "Con filet de pollo empanizado o a la parrilla. 🍗" },
-        { "n": "Quesadilla de Beef Steak", "p": 7500, "d": "Tortilla de harina con carne asada y queso. 🥩" }
-      ]
-    },
-    {
-      "cat": "Especialidades", "ico": "🥩",
-      "items": [
-        { "n": "Cordon Blue", "p": 8000, "d": "Pollo relleno de jamón y queso empanizado. Incluye 2 acompañamientos. 🍗", "modal": "acompañamientos" },
-        { "n": "Filet de Pollo / Pescado", "p": 8500, "d": "A la plancha o al ajillo. Incluye 2 acompañamientos. 🐟🍗", "modal": "acompañamientos" },
-        { "n": "Carne o Pollo a la Parrilla", "p": 8000, "d": "Corte premium a la brasa. Incluye 2 acompañamientos. 🥩🔥", "modal": "acompañamientos" },
-        { "n": "Bistec Casa", "p": 8000, "d": "Receta tradicional de la casa. Incluye 2 acompañamientos. 🥩", "modal": "acompañamientos" },
-        { "n": "Milanesa de Pollo o Carne", "p": 8000, "d": "Empanizado crujiente. Incluye 2 acompañamientos. 🥩🍗", "modal": "acompañamientos" },
-        { "n": "Carnitas", "p": 8000, "d": "Fajitas de carne salteadas a la parrilla. Incluye 2 acompañamientos. 🥩", "modal": "acompañamientos" },
-        { "n": "Chifrijo", "p": 8000, "d": "Capa de arroz, frijoles tiernos, chicharrón y pico de gallo. (Preguntar disponibilidad) 🥣" }
-      ]
-    },
-    {
-      "cat": "Bebidas", "ico": "🍹",
-      "items": [
-        { "tipo": "header", "n": "REFRESCOS Y CAFÉ ☕" },
-        { "n": "Botella de Agua / Natural", "p": 1500, "d": "Agua purificada o jugo de frutas." },
-        { "n": "Sodas - Gaseosa", "p": 2000, "d": "Variedad de sabores." },
-        { "n": "Batido Mixto", "p": 4000, "d": "Smoothies de frutas naturales." },
-        { "n": "Café Britt Especial", "p": 3500, "d": "Capuccino, Espresso, Latte o Café Frío." },
-
-        { "tipo": "header", "n": "CERVEZAS 🍺" },
-        { "n": "Cerveza Nacional", "p": 2000, "d": "Imperial (Light, Ultra, Silver) o Pilsen." },
-        { "n": "Cerveza Premium / Artesanal", "p": 3500, "d": "Bavaria, Heineken, Corona o Artesanal (IPA/Lager)." },
-
-        { "tipo": "header", "n": "VINOS Y LICORES 🍷" },
-        { "n": "Copa de Vino Seleccionada", "p": 4000, "d": "Merlot, Cabernet, Sauvignon Blanc, Chardonnay." },
-        { "n": "Sangría", "p": 5000, "d": "Receta de la casa." },
-        { "n": "Trago de Licor Premium", "p": 3500, "d": "Ron Flor de Caña, Tequila, Vodka o Seltzer." },
-        { "n": "Whisky Old Parr", "p": 4000, "d": "Servido solo o en las rocas." },
-        { "n": "Cacique", "p": 2500, "d": "Guaro nacional." }
-      ]
-    }
-  ];
-
-  const extrasList = [
-    'Arroz', 'Frijoles', 'Ensalada', 'Pico de Gallo', 'Chips Tortillas de Maíz', 
-    'Tortilla Suave Harina de Maíz', 'Patacones', 'Plátano Maduro', 
-    'Frijoles Molidos', 'Guacamole', 'Papas Fritas', 'Salsa de Nacho', 'Botella de Hot Sauce'
-  ];
+  const isDrinksTab = activeTab === menuData.length - 1;
 
   const handleAddToCartClick = (item: any) => {
-    if (menuData[activeTab].cat !== 'Bebidas') {
+    if (!isDrinksTab || item.modal) {
       setSelectedItemForModal({ ...item, category: menuData[activeTab].cat });
       setModalOptions({ sides: [], extras: [] });
       setIsChefTipOpen(false);
@@ -3069,14 +3744,30 @@ const HorizontalTabsMenu = ({ onAdd }: { onAdd: (item: any) => void }) => {
   };
 
   const confirmAndAdd = () => {
+    if (selectedItemForModal.modal === 'sabor') {
+      const flavorQty = modalOptions.flavorQty || {};
+      const itemPrice = typeof selectedItemForModal.p === 'number' ? selectedItemForModal.p : 0;
+      Object.entries(flavorQty).forEach(([flavor, qty]) => {
+        for (let i = 0; i < (qty as number); i++) {
+          onAdd({ name: `${selectedItemForModal.n} (${flavor})`, price: `₡${itemPrice.toLocaleString()}` });
+        }
+      });
+      setSelectedItemForModal(null);
+      setIsChefTipOpen(false);
+      return;
+    }
+
     let finalName = selectedItemForModal.n;
     const options = [];
-    
+
     if (selectedItemForModal.modal === 'ceviche') {
       if (modalOptions.side) options.push(modalOptions.side);
     } else if (selectedItemForModal.modal === 'sopa') {
       if (modalOptions.base) options.push(modalOptions.base);
     } else if (selectedItemForModal.modal === 'acompañamientos') {
+      if (modalOptions.sides) options.push(...modalOptions.sides);
+    } else if (selectedItemForModal.modal === 'buffet') {
+      if (modalOptions.protein) options.push(modalOptions.protein);
       if (modalOptions.sides) options.push(...modalOptions.sides);
     }
 
@@ -3115,6 +3806,35 @@ const HorizontalTabsMenu = ({ onAdd }: { onAdd: (item: any) => void }) => {
       return prev;
     });
   };
+
+  const toggleBuffetSide = (side: string) => {
+    setModalOptions((prev: any) => {
+      const currentSides = prev.sides || [];
+      if (currentSides.includes(side)) {
+        return { ...prev, sides: currentSides.filter((s: string) => s !== side) };
+      }
+      if (currentSides.length < 4) {
+        return { ...prev, sides: [...currentSides, side] };
+      }
+      return prev;
+    });
+  };
+
+  const isBuffetSelectionIncomplete = selectedItemForModal?.modal === 'buffet' &&
+    (!modalOptions.protein || (modalOptions.sides || []).length === 0);
+
+  const setFlavorQty = (flavor: string, delta: number) => {
+    setModalOptions((prev: any) => {
+      const current = prev.flavorQty || {};
+      const newQty = Math.max(0, (current[flavor] || 0) + delta);
+      const updated = { ...current, [flavor]: newQty };
+      if (newQty === 0) delete updated[flavor];
+      return { ...prev, flavorQty: updated };
+    });
+  };
+
+  const isFlavorSelectionIncomplete = selectedItemForModal?.modal === 'sabor' &&
+    Object.values(modalOptions.flavorQty || {}).reduce((a: number, b: any) => a + b, 0) === 0;
 
   const toggleExtra = (extra: string) => {
     setModalOptions((prev: any) => {
@@ -3178,6 +3898,11 @@ const HorizontalTabsMenu = ({ onAdd }: { onAdd: (item: any) => void }) => {
                   <span className="text-[#FFD700] font-mono font-black text-lg whitespace-nowrap tracking-tighter">
                     {(() => {
                       const basePrice = typeof selectedItemForModal.p === 'number' ? selectedItemForModal.p : 0;
+                      if (selectedItemForModal.modal === 'sabor') {
+                        const totalQty = Object.values(modalOptions.flavorQty || {}).reduce((a: number, b: any) => a + b, 0) as number;
+                        const currentTotal = basePrice * Math.max(1, totalQty);
+                        return `₡${currentTotal.toLocaleString()}`;
+                      }
                       const numExtras = (modalOptions.extras || []).length;
                       const currentTotal = basePrice + numExtras * 2500;
                       return `₡${currentTotal.toLocaleString()}`;
@@ -3193,9 +3918,9 @@ const HorizontalTabsMenu = ({ onAdd }: { onAdd: (item: any) => void }) => {
             >
               {selectedItemForModal.modal === 'ceviche' && (
                 <div className="space-y-3">
-                  <p className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-black">Elige tu acompañamiento:</p>
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-black">{fm.chooseSide}</p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {['Chips de Maíz', 'Patacones con Pico de Gallo'].map((opt) => (
+                    {fm.cevicheSides.map((opt) => (
                       <button
                         key={opt}
                         onClick={() => setModalOptions({ ...modalOptions, side: opt })}
@@ -3217,9 +3942,9 @@ const HorizontalTabsMenu = ({ onAdd }: { onAdd: (item: any) => void }) => {
 
               {selectedItemForModal.modal === 'sopa' && (
                 <div className="space-y-3">
-                  <p className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-black">Elige la base de tu sopa:</p>
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-black">{fm.chooseSoupBase}</p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {['Base en Agua', 'Base en Crema'].map((opt) => (
+                    {fm.soupBases.map((opt) => (
                       <button
                         key={opt}
                         onClick={() => setModalOptions({ ...modalOptions, base: opt })}
@@ -3242,11 +3967,11 @@ const HorizontalTabsMenu = ({ onAdd }: { onAdd: (item: any) => void }) => {
               {selectedItemForModal.modal === 'acompañamientos' && (
                 <div className="space-y-3">
                   <div className="flex justify-between items-end">
-                    <p className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-black">Selecciona exactamente 2 acompañamientos:</p>
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-black">{fm.chooseSides2}</p>
                     <span className="text-[10px] font-black text-[#FFD700] bg-[#FFD700]/10 px-2.5 py-0.5 rounded-full">{(modalOptions.sides || []).length}/2</span>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                    {['Arroz', 'Frijoles', 'Puré', 'Papas Fritas', 'Ensalada', 'Patacones', 'Vegetales'].map((opt) => {
+                    {fm.sideOptions.map((opt) => {
                       const isSelected = (modalOptions.sides || []).includes(opt);
                       return (
                         <button
@@ -3266,11 +3991,105 @@ const HorizontalTabsMenu = ({ onAdd }: { onAdd: (item: any) => void }) => {
                 </div>
               )}
 
+              {selectedItemForModal.modal === 'buffet' && (
+                <>
+                  <div className="space-y-3">
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-black">{fm.chooseProteinLabel}</p>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                      {fm.proteinOptions.map((opt) => {
+                        const isSelected = modalOptions.protein === opt;
+                        return (
+                          <button
+                            key={opt}
+                            onClick={() => setModalOptions({ ...modalOptions, protein: opt })}
+                            className={`p-3 rounded-xl border text-center transition-all text-xs font-bold ${
+                              isSelected
+                                ? 'bg-[#FFD700] border-[#FFD700] text-black shadow-lg shadow-[#FFD700]/15'
+                                : 'bg-white/5 border-white/10 text-white/60 hover:border-white/20'
+                            }`}
+                          >
+                            {opt}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-end">
+                      <p className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-black">{fm.chooseSides4Label}</p>
+                      <span className="text-[10px] font-black text-[#FFD700] bg-[#FFD700]/10 px-2.5 py-0.5 rounded-full">{(modalOptions.sides || []).length}/4</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      {fm.buffetSideOptions.map((opt) => {
+                        const isSelected = (modalOptions.sides || []).includes(opt);
+                        return (
+                          <button
+                            key={opt}
+                            onClick={() => toggleBuffetSide(opt)}
+                            className={`p-2.5 rounded-xl border text-center transition-all text-xs font-semibold leading-tight min-h-[44px] flex items-center justify-center break-words ${
+                              isSelected
+                                ? 'bg-[#FFD700] border-[#FFD700] text-black shadow-lg shadow-[#FFD700]/20'
+                                : 'bg-white/5 border-white/10 text-white/40 hover:border-white/20'
+                            }`}
+                          >
+                            {opt}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {selectedItemForModal.modal === 'sabor' && (
+                <div className="space-y-3">
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-black">{fm.chooseFlavor}</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {(selectedItemForModal.flavors || []).map((flavor: string) => {
+                      const qty = (modalOptions.flavorQty || {})[flavor] || 0;
+                      return (
+                        <div
+                          key={flavor}
+                          className={`flex items-center justify-between gap-2 p-2.5 pl-3 rounded-xl border transition-all ${
+                            qty > 0
+                              ? 'bg-[#FFD700]/10 border-[#FFD700] text-white'
+                              : 'bg-white/5 border-white/10 text-white/60'
+                          }`}
+                        >
+                          <span className="text-xs font-bold truncate">{flavor}</span>
+                          <div className="flex items-center gap-2 shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => setFlavorQty(flavor, -1)}
+                              disabled={qty === 0}
+                              className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                            >
+                              <Minus size={12} />
+                            </button>
+                            <span className="w-4 text-center text-xs font-black">{qty}</span>
+                            <button
+                              type="button"
+                              onClick={() => setFlavorQty(flavor, 1)}
+                              className="w-7 h-7 rounded-lg bg-[#FFD700] hover:bg-[#FFD700]/80 flex items-center justify-center text-black transition-all"
+                            >
+                              <Plus size={12} />
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {selectedItemForModal.modal !== 'sabor' && (
+              <>
               {/* Extras Section */}
               <div className="space-y-3">
                 <div className="flex justify-between items-end">
                   <p className="text-[10px] uppercase tracking-[0.15em] text-white/40 font-black">
-                    Añadir Extras (Opcional) <span className="text-white font-extrabold">— ₡2,500 / $5.00 c/u:</span>
+                    {fm.addExtrasLabel} <span className="text-white font-extrabold">{fm.extrasPriceLabel}</span>
                   </p>
                   <div className="relative">
                     <button
@@ -3280,7 +4099,7 @@ const HorizontalTabsMenu = ({ onAdd }: { onAdd: (item: any) => void }) => {
                       className="flex items-center gap-1.5 px-2.5 py-1 bg-white/5 hover:bg-white/10 active:scale-95 rounded-full border border-white/10 transition-all cursor-pointer select-none"
                     >
                       <Lightbulb size={11} className="text-[#FFD700]" />
-                      <span className="text-[9px] font-black text-[#FFD700] uppercase tracking-tighter">Tip de Chef</span>
+                      <span className="text-[9px] font-black text-[#FFD700] uppercase tracking-tighter">{fm.chefTipButton}</span>
                     </button>
 
                     <AnimatePresence>
@@ -3300,7 +4119,7 @@ const HorizontalTabsMenu = ({ onAdd }: { onAdd: (item: any) => void }) => {
                             <div className="flex items-center justify-between mb-2 pb-2 border-b border-white/5">
                               <div className="flex items-center gap-2">
                                 <span className="text-base">🧑‍🍳</span>
-                                <span className="font-extrabold uppercase tracking-wide text-[10px] text-[#FFD700]">Recomendación del Chef</span>
+                                <span className="font-extrabold uppercase tracking-wide text-[10px] text-[#FFD700]">{fm.chefTipHeader}</span>
                               </div>
                               <button
                                 type="button"
@@ -3339,18 +4158,21 @@ const HorizontalTabsMenu = ({ onAdd }: { onAdd: (item: any) => void }) => {
                   })}
                 </div>
               </div>
+              </>
+              )}
             </div>
 
             {/* Footer Section holding the fixed action button */}
             <div className="pt-4 border-t border-white/5 bg-[#121212]/95 shrink-0 mt-auto mb-6">
               <button
                 onClick={confirmAndAdd}
-                className="w-full bg-[#FFD700] text-black py-4 rounded-xl font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:scale-[1.01] active:scale-[0.99] transition-all shadow-xl shadow-[#FFD700]/10 text-xs sm:text-sm"
+                disabled={isBuffetSelectionIncomplete || isFlavorSelectionIncomplete}
+                className="w-full bg-[#FFD700] text-black py-4 rounded-xl font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:scale-[1.01] active:scale-[0.99] transition-all shadow-xl shadow-[#FFD700]/10 text-xs sm:text-sm disabled:opacity-40 disabled:grayscale disabled:cursor-not-allowed disabled:hover:scale-100"
               >
-                Confirmar y Agregar al Carrito ✅
+                {fm.confirmAddButton}
               </button>
               <p className="text-[8px] text-center text-white/40 uppercase tracking-widest mt-3 font-bold">
-                Puedes ajustar tu pedido luego en el carrito
+                {cartHint}
               </p>
             </div>
           </motion.div>
@@ -3397,6 +4219,8 @@ const HorizontalTabsMenu = ({ onAdd }: { onAdd: (item: any) => void }) => {
               ))}
             </div>
 
+            <PackingFeeNotice text={fm.packingFeeNotice} />
+
             {/* Tab Content */}
             <div className="p-6 md:p-10">
               <AnimatePresence mode="wait">
@@ -3430,14 +4254,14 @@ const HorizontalTabsMenu = ({ onAdd }: { onAdd: (item: any) => void }) => {
                             {item.d}
                           </p>
                         </div>
-                        
+
                         <div className="flex items-center justify-between sm:justify-end gap-5 w-full sm:w-auto pt-4 sm:pt-0 border-t sm:border-0 border-white/5">
                           <div className="bg-[#F27F57]/10 px-4 py-2 rounded-2xl border border-[#F27F57]/20">
                             <span className="text-[#FFD700] font-mono font-black text-base md:text-lg whitespace-nowrap tracking-tighter">
                               {typeof item.p === 'number' ? `₡${item.p.toLocaleString()}` : item.p}
                             </span>
                           </div>
-                          
+
                           <button
                             onClick={() => handleAddToCartClick(item)}
                             className="bg-[#F27F57] text-white p-4 rounded-2xl flex items-center justify-center hover:bg-white hover:text-black hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_10px_20px_-5px_rgba(242,127,87,0.4)] group-hover:shadow-[0_15px_25px_-5px_rgba(242,127,87,0.5)] flex-shrink-0"
@@ -3448,12 +4272,6 @@ const HorizontalTabsMenu = ({ onAdd }: { onAdd: (item: any) => void }) => {
                       </div>
                     )
                   ))}
-                  
-                  <div className="pt-10 text-center">
-                    <p id="tax-notice" className="text-[10px] uppercase tracking-[0.3em] font-black animate-neon-pulse">
-                      ▲ PRECIOS NO INCLUYEN IMPUESTOS
-                    </p>
-                  </div>
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -3656,6 +4474,33 @@ function useLazyVideoSection<T extends HTMLElement>(rootMargin = '400px') {
   return { ref, inView };
 }
 
+// The HTML `autoplay` attribute isn't reliable across browsers (video loads but
+// stays paused on its first frame). Force play() explicitly and retry whenever the
+// video becomes playable or the tab regains visibility, so background videos never
+// get stuck showing a blank/frozen frame. `ready` lets lazily-mounted videos wait
+// until their <video> element actually exists before wiring up listeners.
+function useAutoplayVideo(ready = true) {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    if (!ready) return;
+    const videoEl = ref.current;
+    if (!videoEl) return;
+    const tryPlay = () => {
+      videoEl.play().catch(() => {});
+    };
+    tryPlay();
+    videoEl.addEventListener('loadeddata', tryPlay);
+    videoEl.addEventListener('canplay', tryPlay);
+    document.addEventListener('visibilitychange', tryPlay);
+    return () => {
+      videoEl.removeEventListener('loadeddata', tryPlay);
+      videoEl.removeEventListener('canplay', tryPlay);
+      document.removeEventListener('visibilitychange', tryPlay);
+    };
+  }, [ready]);
+  return ref;
+}
+
 // --- Kitchen Display View (/cocina) ---
 // A focused, tablet-friendly screen for kitchen staff: only food orders, only the
 // buttons needed to move one through Pendiente -> Aceptado -> En Cocina -> Entregado.
@@ -3844,6 +4689,8 @@ export default function App() {
     return (saved as any) || 'es';
   });
 
+  const heroVideoRef = useAutoplayVideo();
+
   const [selectedResService, setSelectedResService] = useState<string>('Restaurante General');
   const [selectedResDate, setSelectedResDate] = useState<string>('');
   const [selectedResTime, setSelectedResTime] = useState<string>('12:00');
@@ -3857,7 +4704,7 @@ export default function App() {
   const [isMobileRes, setIsMobileRes] = useState(false);
 
   const [currentMonth, setCurrentMonth] = useState<Date>(() => {
-    const minD = new Date();
+    const minD = getCostaRicaNow();
     return new Date(minD.getFullYear(), minD.getMonth(), 1);
   });
 
@@ -4830,7 +5677,7 @@ export default function App() {
   };
 
   const getAvailableHoursForDate = (dateStr: string) => {
-    const dNow = new Date();
+    const dNow = getCostaRicaNow();
     const todayISO = `${dNow.getFullYear()}-${(dNow.getMonth() + 1).toString().padStart(2, '0')}-${dNow.getDate().toString().padStart(2, '0')}`;
     
     // 7:00 AM (7) to 9:00 PM (21) -> exactly 15 hours
@@ -4858,7 +5705,7 @@ export default function App() {
   ];
 
   const minDateISO = (() => {
-    const dNow = new Date();
+    const dNow = getCostaRicaNow();
     const currentHour = dNow.getHours();
     
     if (currentHour >= 21) {
@@ -4883,7 +5730,7 @@ export default function App() {
       days.push({ dayNum: null, dateStr: '', enabled: false, isPast: false });
     }
     
-    const dNow = new Date();
+    const dNow = getCostaRicaNow();
     const todayISO = `${dNow.getFullYear()}-${(dNow.getMonth() + 1).toString().padStart(2, '0')}-${dNow.getDate().toString().padStart(2, '0')}`;
 
     for (let d = 1; d <= totalDays; d++) {
@@ -5006,7 +5853,7 @@ export default function App() {
       return;
     }
     
-    const dNow = new Date();
+    const dNow = getCostaRicaNow();
     const currentHour = dNow.getHours();
     let currentMinDateISO = '';
     
@@ -5029,6 +5876,8 @@ export default function App() {
 
   const locationVideo = useLazyVideoSection<HTMLElement>();
   const testimonialsVideo = useLazyVideoSection<HTMLElement>();
+  const locationVideoRef = useAutoplayVideo(locationVideo.inView);
+  const testimonialsVideoRef = useAutoplayVideo(testimonialsVideo.inView);
 
   useEffect(() => {
     if (!t.testimonials.items || t.testimonials.items.length === 0) return;
@@ -5090,8 +5939,9 @@ export default function App() {
       const price = item.finalPrice || parseInt(item.price.replace(/[^0-9]/g, '')) || 0;
       return acc + (price * item.quantity);
     }, 0);
-    const iva = Math.round(subtotal * 0.13);
-    const total = subtotal + iva + deliveryFee;
+    const dishCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+    const packingFee = dishCount * PACKING_FEE_PER_DISH;
+    const total = subtotal + deliveryFee + packingFee;
     
     const transactionId = 'VQX-' + Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
     const paymentMethodLabel = paymentMethod === 'card' ? 'Tarjeta' : paymentMethod === 'cash' ? 'Efectivo' : 'Sinpe Móvil';
@@ -5123,7 +5973,9 @@ export default function App() {
             })),
             email: sanitizedEmail,
             payment_method: paymentMethodLabel,
-            transaction_id: transactionId
+            transaction_id: transactionId,
+            packing_fee: packingFee,
+            dish_count: dishCount
           }),
           total_pago: total,
           estado: 'Pendiente'
@@ -5145,11 +5997,11 @@ export default function App() {
                   `*Teléfono:* ${sanitizedPhone}\n\n` +
                   `*=== RESUMEN DEL PEDIDO ===*\n` +
                   `${itemsList}\n\n` +
-                  `*Subtotal:* ₡${subtotal.toLocaleString()}\n` +
-                  `*IVA (13%):* ₡${iva.toLocaleString()}\n`;
+                  `*Subtotal:* ₡${subtotal.toLocaleString()}\n`;
     if (deliveryFee > 0) {
       message += `*Envío:* ₡${deliveryFee.toLocaleString()}\n`;
     }
+    message += `*Cargo de Empaque (${dishCount}x ₡${PACKING_FEE_PER_DISH.toLocaleString()}):* ₡${packingFee.toLocaleString()}\n`;
     message += `*Total:* ₡${total.toLocaleString()}\n\n` +
                `*=== DIRECCIÓN ESCRITA ===*\n` +
                `${sanitizedAddress || 'No proporcionada'}\n\n`;
@@ -5221,15 +6073,15 @@ export default function App() {
               <td style="padding: 6px 0; color: rgba(255,255,255,0.7);">Subtotal:</td>
               <td style="text-align: right; font-weight: bold;">₡${subtotal.toLocaleString()}</td>
             </tr>
-            <tr>
-              <td style="padding: 6px 0; color: rgba(255,255,255,0.7);">IVA (13%):</td>
-              <td style="text-align: right; font-weight: bold;">₡${iva.toLocaleString()}</td>
-            </tr>
             ${deliveryFee > 0 ? `
             <tr>
               <td style="padding: 6px 0; color: rgba(255,255,255,0.7);">Costo de Envío:</td>
               <td style="text-align: right; font-weight: bold;">₡${deliveryFee.toLocaleString()}</td>
             </tr>` : ''}
+            <tr>
+              <td style="padding: 6px 0; color: rgba(255,255,255,0.7);">Cargo de Empaque (${dishCount}x ₡${PACKING_FEE_PER_DISH.toLocaleString()}):</td>
+              <td style="text-align: right; font-weight: bold;">₡${packingFee.toLocaleString()}</td>
+            </tr>
             <tr style="border-top: 1px solid rgba(255, 255, 255, 0.15);">
               <td style="padding: 12px 0 0; font-weight: 800; color: #ffd700; font-size: 16px;">TOTAL:</td>
               <td style="padding: 12px 0 0; text-align: right; font-weight: 900; color: #ffd700; font-size: 18px;">₡${total.toLocaleString()}</td>
@@ -5505,18 +6357,20 @@ export default function App() {
   return (
     <div className="relative min-h-screen selection:bg-coral selection:text-white">
       <SeaFoam />
-      <Cart 
-        items={cart} 
-        onUpdate={updateCartQuantity} 
-        onRemove={removeFromCart} 
-        onConfirm={confirmOrder} 
+      <Cart
+        items={cart}
+        onUpdate={updateCartQuantity}
+        onRemove={removeFromCart}
+        onConfirm={confirmOrder}
         isOpen={isCartOpen}
         setIsOpen={setIsCartOpen}
+        t={t}
       />
 
-      <ClassModal 
-        isOpen={isClassModalOpen} 
-        onClose={() => setIsClassModalOpen(false)} 
+      <ClassModal
+        isOpen={isClassModalOpen}
+        onClose={() => setIsClassModalOpen(false)}
+        minAdvanceNoticeText={t.reservation.minAdvanceNotice}
       />
 
       <MapModal 
@@ -5698,12 +6552,13 @@ export default function App() {
 
       {/* --- Hero Section --- */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden bg-transparent">
-        <video 
+        <video
+          ref={heroVideoRef}
           src="/animacion.mp4"
-          autoPlay 
-          muted 
-          loop 
-          playsInline 
+          autoPlay
+          muted
+          loop
+          playsInline
           preload="auto"
           className="absolute inset-0 w-full h-full object-cover -z-10"
         />
@@ -5741,11 +6596,10 @@ export default function App() {
               className="w-full md:w-1/2 relative"
             >
               <div className="asymmetric-shape overflow-hidden rounded-2xl shadow-2xl">
-                <img 
-                  src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=1000" 
-                  alt="Restaurant Interior" 
+                <img
+                  src="/historia.png"
+                  alt="Restaurante Víquez"
                   className="w-full h-[500px] object-cover"
-                  referrerPolicy="no-referrer"
                 />
               </div>
               <div className="absolute -bottom-6 -right-6 glass bg-coral/20 p-8 rounded-2xl hidden md:block">
@@ -5855,7 +6709,15 @@ export default function App() {
                 emailSubjectTemplate={t.services.emailSubject}
                 emailBodyTemplate={t.services.emailBody}
                 disclaimerText={t.services.disclaimer}
-                onClassReserve={() => setIsClassModalOpen(true)} 
+                nameLabel={t.services.nameLabel}
+                namePlaceholder={t.services.namePlaceholder}
+                emailLabel={t.services.emailLabel}
+                emailPlaceholder={t.services.emailPlaceholder}
+                datePlaceholder={t.services.datePlaceholder}
+                backLabel={t.services.backLabel}
+                calendarWeekDays={t.calendar.weekDays}
+                calendarMonths={t.calendar.months}
+                onClassReserve={() => setIsClassModalOpen(true)}
                 fechasBloqueadas={savedBloqueos.filter(b => b.servicio_tipo === (item.id === 'clase' ? 'clases_cocina' : item.id) || b.servicio_tipo === 'todos').map(b => b.fecha)}
                 isAdmin={isAdmin}
                 onToggleBlockedDate={(dateStr) => toggleBlockedDate(dateStr, item.id === 'clase' ? 'clases_cocina' : item.id)}
@@ -5889,7 +6751,15 @@ export default function App() {
                       emailSubjectTemplate={t.services.emailSubject}
                       emailBodyTemplate={t.services.emailBody}
                       disclaimerText={t.services.disclaimer}
-                      onClassReserve={() => setIsClassModalOpen(true)} 
+                      nameLabel={t.services.nameLabel}
+                      namePlaceholder={t.services.namePlaceholder}
+                      emailLabel={t.services.emailLabel}
+                      emailPlaceholder={t.services.emailPlaceholder}
+                      datePlaceholder={t.services.datePlaceholder}
+                      backLabel={t.services.backLabel}
+                      calendarWeekDays={t.calendar.weekDays}
+                      calendarMonths={t.calendar.months}
+                      onClassReserve={() => setIsClassModalOpen(true)}
                       fechasBloqueadas={savedBloqueos.filter(b => b.servicio_tipo === (item.id === 'clase' ? 'clases_cocina' : item.id) || b.servicio_tipo === 'todos').map(b => b.fecha)}
                       isAdmin={isAdmin}
                       onToggleBlockedDate={(dateStr) => toggleBlockedDate(dateStr, item.id === 'clase' ? 'clases_cocina' : item.id)}
@@ -5929,7 +6799,10 @@ export default function App() {
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <HorizontalTabsMenu onAdd={addToCart} />
+            <HorizontalTabsMenu
+              onAdd={addToCart}
+              t={t}
+            />
           </div>
         </div>
       </section>
@@ -5971,7 +6844,7 @@ export default function App() {
               <div className="space-y-4">
                 <div className="contact-item-container group flex items-center">
                   <div className="p-2 bg-coral/10 rounded-lg text-coral group-hover:bg-coral group-hover:text-white transition-all shrink-0"><Clock size={18} /></div>
-                  <span className="contact-item-text font-medium text-xs sm:text-[13px] md:text-sm tracking-tight">Lunes a Domingo: 7:00 AM - 9:00 PM</span>
+                  <span className="contact-item-text font-medium text-xs sm:text-[13px] md:text-sm tracking-tight">{t.reservation.hours}</span>
                 </div>
                 <div 
                   className="contact-item-container group flex items-center rounded-xl bg-slate-900/40 border border-slate-800/50 p-3 transition-all duration-300 ease-in-out hover:scale-[1.02] hover:border-orange-500/50 hover:shadow-[0_0_15px_rgba(249,115,22,0.3)] hover:text-orange-400 active:scale-95 text-sand/80 relative"
@@ -6027,13 +6900,14 @@ export default function App() {
             <form onSubmit={handleReservation} className="w-full lg:w-3/5 p-12 space-y-8 relative z-10">
               {/* Informative Table Map */}
               <div className="space-y-4">
-                <label className="text-xs font-bold uppercase tracking-[0.2em] text-[#F9F7F2]/40 ml-1">Distribución del Restaurante</label>
+                <label className="text-xs font-bold uppercase tracking-[0.2em] text-[#F9F7F2]/40 ml-1">{t.reservation.distributionLabel}</label>
                 <div className="p-1 bg-[#0A192F] border border-coral/30 rounded-2xl overflow-hidden shadow-inner">
-                  <TableMap 
+                  <TableMap
                     onOpenModal={() => setIsMapModalOpen(true)}
+                    legendLabel={t.reservation.tableLegend}
                   />
                 </div>
-                <p className="text-[9px] text-[#F9F7F2]/30 uppercase font-black tracking-widest text-center italic">Haz clic en el mapa para ampliar la vista</p>
+                <p className="text-[9px] text-[#F9F7F2]/30 uppercase font-black tracking-widest text-center italic">{t.reservation.clickMapHint}</p>
               </div>
 
               <div className="space-y-6">
@@ -6103,22 +6977,22 @@ export default function App() {
                                 &lt;
                               </button>
                               <span id="calendarTitle" className="text-[10px] font-bold uppercase tracking-widest text-[#F9F7F2]">
-                                {monthNamesEs[currentMonth.getMonth()].toUpperCase()}, {currentMonth.getFullYear()}
+                                {t.calendar.months[currentMonth.getMonth()].toUpperCase()}, {currentMonth.getFullYear()}
                               </span>
-                              <button 
+                              <button
                                 type="button"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   changeMonth(1);
-                                }} 
+                                }}
                                 className="text-[#F27F57] hover:text-[#ff8a50] text-sm font-bold p-1 transition-colors"
                               >
                                 &gt;
                               </button>
                             </div>
-                            
+
                             <div className="grid grid-cols-7 gap-1 text-center text-[8px] font-bold uppercase tracking-wider text-gray-500 mb-2">
-                              <div>Do</div><div>Lu</div><div>Ma</div><div>Mi</div><div>Ju</div><div>Vi</div><div>Sá</div>
+                              {t.calendar.weekDays.map((d: string, i: number) => <div key={i}>{d}</div>)}
                             </div>
                             
                             <div id="calendarDays" className="grid grid-cols-7 gap-1 text-center text-xs">
@@ -6145,7 +7019,7 @@ export default function App() {
                                         setCalendarOpen(false);
                                       }
                                     }}
-                                    title={day.isPast ? "Fecha Pasada" : isBlocked ? "Fecha Reservada / Bloqueada" : ""}
+                                    title={day.isPast ? "Fecha Pasada" : isBlocked ? "Fecha Reservada / Bloqueada" : (!day.enabled && !isAdmin) ? "No disponible: fuera de horario de reservas para hoy" : ""}
                                     className={`relative p-1.5 rounded-lg font-bold text-center text-xs transition-all duration-150 ${
                                       isSelected
                                         ? 'bg-[#F27F57] text-white shadow-[0_0_12px_rgba(242,127,87,0.4)]'
@@ -6155,7 +7029,7 @@ export default function App() {
                                             : `text-red-500 line-through bg-red-950/30 border border-red-900/30 shadow-[0_0_8px_rgba(222,60,60,0.25)] cursor-not-allowed opacity-60`
                                           : day.enabled
                                             ? 'text-[#F27F57] hover:bg-[#F27F57]/20 hover:text-white cursor-pointer'
-                                            : 'text-gray-650 cursor-not-allowed opacity-30 font-light'
+                                            : 'text-gray-500 cursor-not-allowed opacity-30 font-light'
                                     }`}
                                   >
                                     <span>{day.dayNum}</span>
@@ -6172,7 +7046,7 @@ export default function App() {
                       )}
 
                       <p className="text-[9px] text-[#F9F7F2]/30 uppercase font-black tracking-widest mt-2 ml-1">
-                        LAS RESERVAS REQUIEREN UN MÍNIMO DE 72 HORAS DE ANTICIPACIÓN
+                        {t.reservation.minAdvanceNotice}
                       </p>
                     </div>
                   </div>
@@ -6187,7 +7061,8 @@ export default function App() {
                             {selectedResTime ? (() => {
                               const parts = selectedResTime.split(':');
                               const h = parseInt(parts[0]);
-                              return `${selectedResTime} ${h >= 12 ? 'PM' : 'AM'}`;
+                              const h12 = h % 12 === 0 ? 12 : h % 12;
+                              return `${h12}:${parts[1]} ${h >= 12 ? 'PM' : 'AM'}`;
                             })() : 'Selecciona una hora'}
                           </span>
                           <ChevronDown size={20} className="text-coral group-hover:scale-110 transition-transform" />
@@ -6229,7 +7104,7 @@ export default function App() {
                                             : 'bg-[#051122]/80 text-[#F9F7F2]/80 hover:bg-coral/20 hover:text-white border-transparent hover:border-coral/50 cursor-pointer'
                                         }`}
                                       >
-                                        {opt.timeStr} {opt.hour >= 12 ? 'PM' : 'AM'}
+                                        {(opt.hour % 12 === 0 ? 12 : opt.hour % 12)}:00 {opt.hour >= 12 ? 'PM' : 'AM'}
                                       </button>
                                     );
                                   })}
@@ -6243,7 +7118,7 @@ export default function App() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-[0.2em] text-[#F9F7F2]/40 ml-1">Número de Personas</label>
+                  <label className="text-xs font-bold uppercase tracking-[0.2em] text-[#F9F7F2]/40 ml-1">{t.reservation.guestsLabel}</label>
                   <div className="group flex items-center bg-[#0A192F] border border-coral/30 rounded-2xl h-[66px] w-full overflow-hidden shadow-inner focus-within:ring-2 focus-within:ring-coral transition-all">
                     <button 
                       type="button"
@@ -6358,6 +7233,7 @@ export default function App() {
       <section id="location" ref={locationVideo.ref} className="py-24 bg-white relative overflow-hidden">
         {locationVideo.inView && (
           <video
+            ref={locationVideoRef}
             autoPlay
             loop
             muted
@@ -6462,6 +7338,7 @@ export default function App() {
       <section id="testimonials" ref={testimonialsVideo.ref} className="py-24 bg-sand relative overflow-hidden">
         {testimonialsVideo.inView && (
           <video
+            ref={testimonialsVideoRef}
             autoPlay
             loop
             muted
@@ -6736,7 +7613,7 @@ export default function App() {
               ) : (
                 <>
                   {/* Header section with Cyberpunk styling & Tabs */}
-                  <div className="p-6 bg-[#0E1724] border-b border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shrink-0">
+                  <div className="p-6 pr-16 sm:pr-20 bg-[#0E1724] border-b border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shrink-0 relative">
                 <div>
                   <div className="flex items-center gap-3">
                     <span className="w-2.5 h-2.5 rounded-full bg-[#F27F57] animate-ping" />

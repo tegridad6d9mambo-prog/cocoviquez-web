@@ -1,13 +1,57 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Restaurante Víquez - Menú Digital</title>
+    <link rel="icon" type="image/png" href="/logo/logo.png" />
+
+    <title>Restaurante Coco Víquez | Playa Hermosa, Guanacaste - Costa Rica</title>
+    <meta name="description" content="Restaurante Coco Víquez, comida típica costarricense en Playa Hermosa, Guanacaste. Desayunos, almuerzos, cenas tipo buffet, mariscos y más. Reservas y delivery en línea." />
+    <link rel="canonical" href="https://cocoviquez.com/" />
+
+    <meta property="og:type" content="restaurant.restaurant" />
+    <meta property="og:site_name" content="Restaurante Coco Víquez" />
+    <meta property="og:title" content="Restaurante Coco Víquez | Playa Hermosa, Guanacaste - Costa Rica" />
+    <meta property="og:description" content="Comida típica costarricense en Playa Hermosa, Guanacaste. Desayunos, almuerzos, cenas tipo buffet, mariscos y más. Reservas y delivery en línea." />
+    <meta property="og:image" content="https://cocoviquez.com/logo/logo.png" />
+    <meta property="og:url" content="https://cocoviquez.com/" />
+    <meta property="og:locale" content="es_CR" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Restaurante Coco Víquez | Playa Hermosa, Guanacaste - Costa Rica" />
+    <meta name="twitter:description" content="Comida típica costarricense en Playa Hermosa, Guanacaste. Desayunos, almuerzos, cenas tipo buffet, mariscos y más. Reservas y delivery en línea." />
+    <meta name="twitter:image" content="https://cocoviquez.com/logo/logo.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Restaurant",
+        "name": "Restaurante Coco Víquez",
+        "image": "https://cocoviquez.com/logo/logo.png",
+        "url": "https://cocoviquez.com/",
+        "telephone": "+506-8902-0888",
+        "servesCuisine": "Costarricense",
+        "priceRange": "₡₡",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Ruta Nacional 159, frente a Condovac y Villas Sol",
+          "addressLocality": "Playa Hermosa",
+          "addressRegion": "Guanacaste",
+          "addressCountry": "CR"
+        },
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+          ],
+          "opens": "07:00",
+          "closes": "21:00"
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-
