@@ -267,18 +267,23 @@ const translations = {
       title: 'Reserva tu Mesa',
       desc: 'Reserva tu mesa y déjate envolver por la frescura de nuestro entorno natural en Playa Hermosa.',
       name: 'Nombre Completo',
+      email: 'Correo Electrónico',
+      emailPlaceholder: 'tu@correo.com',
       date: 'Fecha',
       time: 'Hora',
       guests: 'Personas',
       guestsHint: '8+ o grupos grandes',
       send: 'Enviar Reserva',
       success: '¡Reserva enviada! (Simulado en consola)',
-      hours: 'Lunes a Domingo: 7:00 AM - 9:00 PM',
+      hours: 'Lunes a Domingo: 7:00 AM - 9:00 PM',
       distributionLabel: 'Distribución del Restaurante',
       tableLegend: 'Distribución de Mesas',
       clickMapHint: 'Haz clic en el mapa para ampliar la vista',
       minAdvanceNotice: 'LAS RESERVAS REQUIEREN UN MÍNIMO DE 72 HORAS DE ANTICIPACIÓN',
-      guestsLabel: 'Número de Personas'
+      guestsLabel: 'Número de Personas',
+      allergiesLabel: 'Alergias o Notas Especiales (Opcional)',
+      allergiesPlaceholder: 'Ej: Alergia a mariscos, vegetariano, celebración de cumpleaños...',
+
     },
     footer: {
       rights: '© 2026 Coco Viquez. Todos los derechos reservados.',
@@ -338,7 +343,22 @@ const translations = {
           cat: 'Desayunos', ico: '☀️',
           items: [
             { n: 'Sándwich (Carne/Pollo/Jamón)', p: 6000, d: 'Con queso y proteína a elegir 🥪', tip: 'sandwich' },
-            { n: 'Desayuno Típico', p: 6000, d: 'Incluye café y jugo natural (ambas bebidas) ☕🥤' },
+            {
+              n: 'Desayuno Típico',
+              p: 6000,
+              d: 'Incluye café y jugo natural. Elige tus acompañamientos:',
+              modal: 'acompanamiento',
+              flavors: [
+                'Pinto',
+                'Huevos',
+                'Tostadas baguette',
+                'Pancake',
+                'Plátano maduro',
+                'Natilla',
+                'Queso fresco',
+                'Salchichón'
+              ]
+            },
             { n: 'Omelette', p: 6000, d: 'Ingredientes frescos 🍳', tip: 'omelette' }
           ]
         },
@@ -346,7 +366,22 @@ const translations = {
           cat: 'Buffets', ico: '🍽️',
           items: [
             { n: 'Almuerzo/Cena Buffet', p: 6000, d: 'Proteína + 4 acompañamientos + Jugo natural 🥩', modal: 'buffet' },
-            { n: 'Buffet Desayuno', p: 6000, d: 'Opciones completas + Bebida natural/Café ☕' }
+            {
+  n: 'Buffet Desayuno',
+  p: 6000,
+  d: 'Opciones completas + Bebida natural o Café. Elige tus acompañamientos:',
+  modal: 'acompanamiento',
+  flavors: [
+    'Pinto',
+    'Huevos',
+    'Tostadas baguette',
+    'Pancake',
+    'Plátano maduro',
+    'Natilla',
+    'Queso fresco',
+    'Salchichón'
+  ]
+ }
           ]
         },
         {
@@ -421,9 +456,10 @@ const translations = {
           cat: 'Bebidas', ico: '🍹',
           items: [
             { tipo: 'header', n: 'REFRESCOS Y CAFÉ ☕' },
-            { n: 'Botella de Agua / Natural', p: 1500, d: 'Agua purificada o jugo de frutas.' },
+            { n: 'Botella de Agua 700ml', p: 2000, d: 'Agua purificada.' },
+            { n: 'Fresco Natural del Día', p: 2000, d: 'Jugo natural preparado al momento.' },
             { n: 'Sodas - Gaseosa', p: 2000, d: 'Variedad de sabores.', modal: 'sabor', flavors: ['Fanta Naranja', 'Fanta Uva', 'Ginger Ale', 'Fanta Kolita', 'Coca-Cola', 'Coca-Cola Zero', 'Sprite', 'Monster', 'Tropical Melocotón', 'Tropical Blanco', 'Pepsi', 'Pepsi Zero', 'Root Beer', 'Gatorade'] },
-            { n: 'Batido Mixto', p: 4000, d: 'Smoothies de frutas naturales.', modal: 'sabor', flavors: ['Mango', 'Fresa', 'Piña', 'Mixto'] },
+            { n: 'Batido Mixto', p: 4000, d: 'Smoothies de frutas naturales.', modal: 'sabor', flavors: ['Mango', 'Fresa', 'Piña', 'Mixto'], bases: ['Agua', 'Leche'], baseLabel: 'Elige la base (obligatorio):' },
             { n: 'Café Britt Especial', p: 3500, d: 'Capuccino, Espresso, Latte o Café Frío.', modal: 'sabor', flavors: ['Capuccino', 'Espresso', 'Latte', 'Café Frío'] },
             { tipo: 'header', n: 'CERVEZAS 🍺' },
             { n: 'Cerveza Nacional', p: 2000, d: 'Imperial (Light, Ultra, Silver) o Pilsen.', modal: 'sabor', flavors: ['Imperial', 'Imperial Light', 'Imperial Ultra', 'Imperial Silver', 'Pilsen'] },
@@ -432,9 +468,10 @@ const translations = {
             { n: 'Copa de Vino Seleccionada', p: 4000, d: 'Merlot, Cabernet, Sauvignon Blanc, Chardonnay.', modal: 'sabor', flavors: ['Merlot', 'Cabernet', 'Sauvignon Blanc', 'Chardonnay'] },
             { n: 'Sangría', p: 5000, d: 'Receta de la casa.' },
             { n: 'Cocktails', p: 5500, d: 'Margarita Picante, Margarita Tradicional o Vodka y Arándanos.', modal: 'sabor', flavors: ['Margarita Picante', 'Margarita Tradicional', 'Vodka y Arándanos'] },
-            { n: 'Seltzer', p: 3500, d: 'Adán y Eva.', modal: 'sabor', flavors: ['Adán y Eva'] },
+            { n: 'Seltzer', p: 3500, d: 'Adán y Eva.', modal: 'sabor', flavors: ['Frutos rojos', 'Maracuyá'] },
             { n: 'Whisky Old Parr', p: 4000, d: 'Servido solo o en las rocas.' },
-            { n: 'Cacique', p: 2500, d: 'Guaro nacional.' }
+            { n: 'Cacique Botella Regular', p: 10000, d: 'Guaro nacional — botella.' },
+            { n: 'Cacique Chiliguarro', p: 15000, d: 'Guaro nacional con receta chiliguarro.' }
           ]
         }
       ],
@@ -447,6 +484,7 @@ const translations = {
         default: "💡 Tip del Chef: ¡Dale un toque especial a tu elección agregando 'Pico de Gallo' fresco o 'Plátano Maduro' para un balance dulce-salado perfecto!"
       },
       chooseFlavor: 'Elige tus sabores y cantidades:',
+      chooseQtyLabel: '¿Cuántas unidades quieres?',
       chooseSide: 'Elige tu acompañamiento:',
       cevicheSides: ['Chips de Maíz', 'Patacones con Pico de Gallo'],
       chooseSoupBase: 'Elige la base de tu sopa:',
@@ -456,6 +494,9 @@ const translations = {
       chooseProteinLabel: 'Elige tu proteína (obligatorio):',
       proteinOptions: ['Cerdo', 'Pollo', 'Res', 'Pescado'],
       chooseSides4Label: 'Elige tus acompañamientos (hasta 4):',
+      chooseSidesBreakfastLabel: 'Elige tus acompañamientos (obligatorio):',
+      chooseEggStyleLabel: '¿Cómo quieres el huevo? (obligatorio)',
+      eggStyles: ['Frito', 'Revuelto'],
       buffetSideOptions: ['Arroz', 'Frijoles', 'Tortillas Tostadas', 'Puré / Yuca / Vegetales'],
       addExtrasLabel: 'Añadir Extras (Opcional)',
       extrasPriceLabel: '— ₡2,500 / $5.00 c/u:',
@@ -670,18 +711,22 @@ const translations = {
       title: 'Book Your Table',
       desc: 'Book your table and let yourself be enveloped by the freshness of our natural environment in Playa Hermosa.',
       name: 'Full Name',
+      email: 'Email',
+      emailPlaceholder: 'you@email.com',
       date: 'Date',
       time: 'Time',
       guests: 'Guests',
       guestsHint: '8+ or large groups',
       send: 'Send Reservation',
       success: 'Reservation sent! (Simulated in console)',
-      hours: 'Monday to Sunday: 7:00 AM - 9:00 PM',
+      hours: 'Monday to Sunday: 7:00 AM - 9:00 PM',
       distributionLabel: 'Restaurant Layout',
       tableLegend: 'Table Layout',
       clickMapHint: 'Click the map to enlarge the view',
       minAdvanceNotice: 'RESERVATIONS REQUIRE A MINIMUM OF 72 HOURS NOTICE',
-      guestsLabel: 'Number of Guests'
+      guestsLabel: 'Number of Guests',
+      allergiesLabel: 'Allergies or Special Notes (Optional)',
+      allergiesPlaceholder: 'e.g., Shellfish allergy, vegetarian, birthday celebration...'
     },
     footer: {
       rights: '© 2026 Coco Viquez. All rights reserved.',
@@ -741,7 +786,22 @@ const translations = {
           cat: 'Breakfast', ico: '☀️',
           items: [
             { n: 'Sandwich (Beef/Chicken/Ham)', p: 6000, d: 'With cheese and protein of your choice 🥪', tip: 'sandwich' },
-            { n: 'Traditional Breakfast', p: 6000, d: 'Includes coffee and fresh juice (both drinks) ☕🥤' },
+            {
+              n: 'Traditional Breakfast',
+              p: 6000,
+              d: 'Includes coffee and fresh juice. Choose your sides:',
+              modal: 'acompanamiento',
+              flavors: [
+                'Gallo Pinto',
+                'Eggs',
+                'Baguette Toast',
+                'Pancake',
+                'Sweet Plantain',
+                'Sour Cream',
+                'Fresh Cheese',
+                'Sausage'
+              ]
+            },
             { n: 'Omelette', p: 6000, d: 'Fresh ingredients 🍳', tip: 'omelette' }
           ]
         },
@@ -749,7 +809,22 @@ const translations = {
           cat: 'Buffets', ico: '🍽️',
           items: [
             { n: 'Lunch/Dinner Buffet', p: 6000, d: 'Protein + 4 side dishes + Fresh juice 🥩', modal: 'buffet' },
-            { n: 'Breakfast Buffet', p: 6000, d: 'Full options + Fresh drink/Coffee ☕' }
+            {
+              n: 'Breakfast Buffet',
+              p: 6000,
+              d: 'Full options + Fresh drink or Coffee. Choose your sides:',
+              modal: 'acompanamiento',
+              flavors: [
+                'Gallo Pinto',
+                'Eggs',
+                'Baguette Toast',
+                'Pancake',
+                'Sweet Plantain',
+                'Sour Cream',
+                'Fresh Cheese',
+                'Sausage'
+              ]
+            }
           ]
         },
         {
@@ -824,9 +899,10 @@ const translations = {
           cat: 'Drinks', ico: '🍹',
           items: [
             { tipo: 'header', n: 'SODAS & COFFEE ☕' },
-            { n: 'Bottled Water / Fresh Juice', p: 1500, d: 'Purified water or fruit juice.' },
+            { n: '700ml Bottled Water', p: 2000, d: 'Purified water.' },
+            { n: 'Fresh Juice of the Day', p: 2000, d: 'Natural juice made to order.' },
             { n: 'Sodas - Soft Drinks', p: 2000, d: 'Variety of flavors.', modal: 'sabor', flavors: ['Fanta Orange', 'Fanta Grape', 'Ginger Ale', 'Fanta Kolita', 'Coca-Cola', 'Coca-Cola Zero', 'Sprite', 'Monster', 'Tropical Peach', 'Tropical White', 'Pepsi', 'Pepsi Zero', 'Root Beer', 'Gatorade'] },
-            { n: 'Mixed Smoothie', p: 4000, d: 'Natural fruit smoothies.', modal: 'sabor', flavors: ['Mango', 'Strawberry', 'Pineapple', 'Mixed'] },
+            { n: 'Mixed Smoothie', p: 4000, d: 'Natural fruit smoothies.', modal: 'sabor', flavors: ['Mango', 'Strawberry', 'Pineapple', 'Mixed'], bases: ['Water', 'Milk'], baseLabel: 'Choose base (required):' },
             { n: 'Special Britt Coffee', p: 3500, d: 'Cappuccino, Espresso, Latte or Iced Coffee.', modal: 'sabor', flavors: ['Cappuccino', 'Espresso', 'Latte', 'Iced Coffee'] },
             { tipo: 'header', n: 'BEERS 🍺' },
             { n: 'National Beer', p: 2000, d: 'Imperial (Light, Ultra, Silver) or Pilsen.', modal: 'sabor', flavors: ['Imperial', 'Imperial Light', 'Imperial Ultra', 'Imperial Silver', 'Pilsen'] },
@@ -837,7 +913,8 @@ const translations = {
             { n: 'Cocktails', p: 5500, d: 'Spicy Margarita, Traditional Margarita or Vodka and Cranberry.', modal: 'sabor', flavors: ['Spicy Margarita', 'Traditional Margarita', 'Vodka and Cranberry'] },
             { n: 'Seltzer', p: 3500, d: 'Adán y Eva.', modal: 'sabor', flavors: ['Adán y Eva'] },
             { n: 'Old Parr Whisky', p: 4000, d: 'Served neat or on the rocks.' },
-            { n: 'Cacique', p: 2500, d: 'National guaro (sugarcane liquor).' }
+            { n: 'Cacique Regular Bottle', p: 10000, d: 'National guaro — full bottle.' },
+            { n: 'Cacique Chiliguarro', p: 15000, d: 'National guaro with chiliguarro recipe.' }
           ]
         }
       ],
@@ -850,6 +927,7 @@ const translations = {
         default: "💡 Chef's Tip: Give your choice a special touch by adding fresh 'Pico de Gallo' or 'Sweet Plantain' for a perfect sweet-savory balance!"
       },
       chooseFlavor: 'Choose your flavors and quantities:',
+      chooseQtyLabel: 'How many units would you like?',
       chooseSide: 'Choose your side:',
       cevicheSides: ['Corn Chips', 'Patacones with Pico de Gallo'],
       chooseSoupBase: 'Choose your soup base:',
@@ -859,6 +937,9 @@ const translations = {
       chooseProteinLabel: 'Choose your protein (required):',
       proteinOptions: ['Pork', 'Chicken', 'Beef', 'Fish'],
       chooseSides4Label: 'Choose your side dishes (up to 4):',
+      chooseSidesBreakfastLabel: 'Choose your sides (required):',
+      chooseEggStyleLabel: 'How would you like your eggs? (required)',
+      eggStyles: ['Fried', 'Scrambled'],
       buffetSideOptions: ['Rice', 'Beans', 'Toasted Tortillas', 'Mashed Potatoes / Yuca / Vegetables'],
       addExtrasLabel: 'Add Extras (Optional)',
       extrasPriceLabel: '— ₡2,500 / $5.00 each:',
@@ -1073,6 +1154,8 @@ const translations = {
       title: 'Réservez votre Table',
       desc: 'Réservez votre table et laissez-vous envelopper par la fraîcheur de notre environnement naturel à Playa Hermosa.',
       name: 'Nom Complet',
+      email: 'E-mail',
+      emailPlaceholder: 'vous@email.com',
       date: 'Date',
       time: 'Heure',
       guests: 'Personnes',
@@ -1084,7 +1167,9 @@ const translations = {
       tableLegend: 'Plan des Tables',
       clickMapHint: 'Cliquez sur la carte pour agrandir la vue',
       minAdvanceNotice: 'LES RÉSERVATIONS NÉCESSITENT UN PRÉAVIS MINIMUM DE 72 HEURES',
-      guestsLabel: 'Nombre de Personnes'
+      guestsLabel: 'Nombre de Personnes',
+      allergiesLabel: 'Allergies ou Notes Spéciales (Optionnel)',
+      allergiesPlaceholder: 'Ex : Allergie aux fruits de mer, végétarien, célébration d\'anniversaire...'
     },
     footer: {
       rights: '© 2026 Coco Viquez. Tous droits réservés.',
@@ -1144,7 +1229,22 @@ const translations = {
           cat: 'Petits-déjeuners', ico: '☀️',
           items: [
             { n: 'Sandwich (Bœuf/Poulet/Jambon)', p: 6000, d: 'Avec fromage et protéine au choix 🥪', tip: 'sandwich' },
-            { n: 'Petit-déjeuner Typique', p: 6000, d: 'Inclut café et jus naturel (les deux boissons) ☕🥤' },
+            {
+              n: 'Petit-déjeuner Typique',
+              p: 6000,
+              d: 'Inclut café et jus naturel. Choisissez vos accompagnements :',
+              modal: 'acompanamiento',
+              flavors: [
+                'Gallo Pinto',
+                'Œufs',
+                'Toast Baguette',
+                'Pancake',
+                'Banane Plantain Sucrée',
+                'Crème Aigre',
+                'Fromage Frais',
+                'Saucisse'
+              ]
+            },
             { n: 'Omelette', p: 6000, d: 'Ingrédients frais 🍳', tip: 'omelette' }
           ]
         },
@@ -1152,7 +1252,22 @@ const translations = {
           cat: 'Buffets', ico: '🍽️',
           items: [
             { n: 'Buffet Déjeuner/Dîner', p: 6000, d: 'Protéine + 4 accompagnements + Jus naturel 🥩', modal: 'buffet' },
-            { n: 'Buffet Petit-déjeuner', p: 6000, d: 'Options complètes + Boisson naturelle/Café ☕' }
+            {
+              n: 'Buffet Petit-déjeuner',
+              p: 6000,
+              d: 'Options complètes + Boisson naturelle ou Café. Choisissez vos accompagnements :',
+              modal: 'acompanamiento',
+              flavors: [
+                'Gallo Pinto',
+                'Œufs',
+                'Toast Baguette',
+                'Pancake',
+                'Banane Plantain Sucrée',
+                'Crème Aigre',
+                'Fromage Frais',
+                'Saucisse'
+              ]
+            }
           ]
         },
         {
@@ -1227,9 +1342,10 @@ const translations = {
           cat: 'Boissons', ico: '🍹',
           items: [
             { tipo: 'header', n: 'BOISSONS ET CAFÉ ☕' },
-            { n: "Bouteille d'Eau / Jus Naturel", p: 1500, d: 'Eau purifiée ou jus de fruits.' },
+            { n: "Bouteille d'Eau 700ml", p: 2000, d: 'Eau purifiée.' },
+            { n: 'Jus Frais du Jour', p: 2000, d: 'Jus naturel préparé à la commande.' },
             { n: 'Sodas - Boissons Gazeuses', p: 2000, d: 'Variété de saveurs.', modal: 'sabor', flavors: ['Fanta Orange', 'Fanta Raisin', 'Ginger Ale', 'Fanta Kolita', 'Coca-Cola', 'Coca-Cola Zero', 'Sprite', 'Monster', 'Tropical Pêche', 'Tropical Blanc', 'Pepsi', 'Pepsi Zero', 'Root Beer', 'Gatorade'] },
-            { n: 'Smoothie Mixte', p: 4000, d: 'Smoothies aux fruits naturels.', modal: 'sabor', flavors: ['Mangue', 'Fraise', 'Ananas', 'Mixte'] },
+            { n: 'Smoothie Mixte', p: 4000, d: 'Smoothies aux fruits naturels.', modal: 'sabor', flavors: ['Mangue', 'Fraise', 'Ananas', 'Mixte'], bases: ['Eau', 'Lait'], baseLabel: 'Choisissez la base (obligatoire) :' },
             { n: 'Café Britt Spécial', p: 3500, d: 'Cappuccino, Espresso, Latte ou Café Glacé.', modal: 'sabor', flavors: ['Cappuccino', 'Espresso', 'Latte', 'Café Glacé'] },
             { tipo: 'header', n: 'BIÈRES 🍺' },
             { n: 'Bière Nationale', p: 2000, d: 'Imperial (Light, Ultra, Silver) ou Pilsen.', modal: 'sabor', flavors: ['Imperial', 'Imperial Light', 'Imperial Ultra', 'Imperial Silver', 'Pilsen'] },
@@ -1240,7 +1356,8 @@ const translations = {
             { n: 'Cocktails', p: 5500, d: 'Margarita Épicée, Margarita Traditionnelle ou Vodka et Canneberge.', modal: 'sabor', flavors: ['Margarita Épicée', 'Margarita Traditionnelle', 'Vodka et Canneberge'] },
             { n: 'Seltzer', p: 3500, d: 'Adán y Eva.', modal: 'sabor', flavors: ['Adán y Eva'] },
             { n: 'Whisky Old Parr', p: 4000, d: 'Servi sec ou avec glaçons.' },
-            { n: 'Cacique', p: 2500, d: 'Guaro national (alcool de canne à sucre).' }
+            { n: 'Cacique Bouteille Régulière', p: 10000, d: 'Guaro national — bouteille.' },
+            { n: 'Cacique Chiliguarro', p: 15000, d: 'Guaro national avec recette chiliguarro.' }
           ]
         }
       ],
@@ -1253,6 +1370,7 @@ const translations = {
         default: "💡 Astuce du Chef : Donnez une touche spéciale à votre choix en ajoutant du 'Pico de Gallo' frais ou de la 'Banane Plantain Sucrée' pour un équilibre sucré-salé parfait !"
       },
       chooseFlavor: 'Choisissez vos saveurs et quantités :',
+      chooseQtyLabel: 'Combien d\'unités voulez-vous ?',
       chooseSide: 'Choisissez votre accompagnement :',
       cevicheSides: ['Chips de Maïs', 'Patacones avec Pico de Gallo'],
       chooseSoupBase: 'Choisissez la base de votre soupe :',
@@ -1262,6 +1380,9 @@ const translations = {
       chooseProteinLabel: 'Choisissez votre protéine (obligatoire) :',
       proteinOptions: ['Porc', 'Poulet', 'Bœuf', 'Poisson'],
       chooseSides4Label: 'Choisissez vos accompagnements (jusqu\'à 4) :',
+      chooseSidesBreakfastLabel: 'Choisissez vos accompagnements (obligatoire) :',
+      chooseEggStyleLabel: 'Comment voulez-vous les œufs ? (obligatoire)',
+      eggStyles: ['Frits', 'Brouillés'],
       buffetSideOptions: ['Riz', 'Haricots', 'Tortillas Grillées', 'Purée / Yuca / Légumes'],
       addExtrasLabel: 'Ajouter des Extras (Optionnel)',
       extrasPriceLabel: '— ₡2 500 / 5,00 $ chacun :',
@@ -1417,6 +1538,8 @@ const translations = {
       title: 'Reservieren Sie Ihren Tisch',
       desc: 'Reservieren Sie Ihren Tisch und lassen Sie sich von der Frische unserer natürlichen Umgebung in Playa Hermosa einhüllen.',
       name: 'Vollständiger Name',
+      email: 'E-Mail',
+      emailPlaceholder: 'du@email.com',
       date: 'Datum',
       time: 'Uhrzeit',
       guests: 'Personen',
@@ -1428,7 +1551,9 @@ const translations = {
       tableLegend: 'Tischaufteilung',
       clickMapHint: 'Klicken Sie auf die Karte, um die Ansicht zu vergrößern',
       minAdvanceNotice: 'RESERVIERUNGEN ERFORDERN MINDESTENS 72 STUNDEN VORLAUFZEIT',
-      guestsLabel: 'Anzahl der Personen'
+      guestsLabel: 'Anzahl der Personen',
+      allergiesLabel: 'Allergien oder besondere Hinweise (Optional)',
+      allergiesPlaceholder: 'z.B. Meeresfrüchte-Allergie, vegetarisch, Geburtstagsfeier...'
     },
     footer: {
       rights: '© 2026 Coco Viquez. Alle Rechte vorbehalten.',
@@ -1488,7 +1613,22 @@ const translations = {
           cat: 'Frühstück', ico: '☀️',
           items: [
             { n: 'Sandwich (Rind/Hähnchen/Schinken)', p: 6000, d: 'Mit Käse und Protein nach Wahl 🥪', tip: 'sandwich' },
-            { n: 'Typisches Frühstück', p: 6000, d: 'Inklusive Kaffee und frischer Saft (beide Getränke) ☕🥤' },
+            {
+              n: 'Typisches Frühstück',
+              p: 6000,
+              d: 'Inklusive Kaffee und frischer Saft. Wähle deine Beilagen:',
+              modal: 'acompanamiento',
+              flavors: [
+                'Gallo Pinto',
+                'Eier',
+                'Baguette-Toast',
+                'Pancake',
+                'Süße Kochbanane',
+                'Sauerrahm',
+                'Frischkäse',
+                'Wurst'
+              ]
+            },
             { n: 'Omelett', p: 6000, d: 'Frische Zutaten 🍳', tip: 'omelette' }
           ]
         },
@@ -1496,7 +1636,22 @@ const translations = {
           cat: 'Buffets', ico: '🍽️',
           items: [
             { n: 'Mittag-/Abendbuffet', p: 6000, d: 'Protein + 4 Beilagen + Frischer Saft 🥩', modal: 'buffet' },
-            { n: 'Frühstücksbuffet', p: 6000, d: 'Alle Optionen + Frisches Getränk/Kaffee ☕' }
+            {
+              n: 'Frühstücksbuffet',
+              p: 6000,
+              d: 'Volle Auswahl + Frisches Getränk oder Kaffee. Wähle deine Beilagen:',
+              modal: 'acompanamiento',
+              flavors: [
+                'Gallo Pinto',
+                'Eier',
+                'Baguette-Toast',
+                'Pancake',
+                'Süße Kochbanane',
+                'Sauerrahm',
+                'Frischkäse',
+                'Wurst'
+              ]
+            }
           ]
         },
         {
@@ -1571,9 +1726,10 @@ const translations = {
           cat: 'Getränke', ico: '🍹',
           items: [
             { tipo: 'header', n: 'GETRÄNKE & KAFFEE ☕' },
-            { n: 'Flasche Wasser / Frischer Saft', p: 1500, d: 'Gereinigtes Wasser oder Fruchtsaft.' },
+            { n: '700ml Wasserflasche', p: 2000, d: 'Gereinigtes Wasser.' },
+            { n: 'Frischer Saft des Tages', p: 2000, d: 'Frisch zubereiteter Naturfruchtsaft.' },
             { n: 'Limonaden - Erfrischungsgetränke', p: 2000, d: 'Verschiedene Geschmacksrichtungen.', modal: 'sabor', flavors: ['Fanta Orange', 'Fanta Traube', 'Ginger Ale', 'Fanta Kolita', 'Coca-Cola', 'Coca-Cola Zero', 'Sprite', 'Monster', 'Tropical Pfirsich', 'Tropical Weiß', 'Pepsi', 'Pepsi Zero', 'Root Beer', 'Gatorade'] },
-            { n: 'Gemischter Smoothie', p: 4000, d: 'Natürliche Frucht-Smoothies.', modal: 'sabor', flavors: ['Mango', 'Erdbeere', 'Ananas', 'Gemischt'] },
+            { n: 'Gemischter Smoothie', p: 4000, d: 'Natürliche Frucht-Smoothies.', modal: 'sabor', flavors: ['Mango', 'Erdbeere', 'Ananas', 'Gemischt'], bases: ['Wasser', 'Milch'], baseLabel: 'Wähle die Basis (erforderlich):' },
             { n: 'Britt-Spezialkaffee', p: 3500, d: 'Cappuccino, Espresso, Latte oder Eiskaffee.', modal: 'sabor', flavors: ['Cappuccino', 'Espresso', 'Latte', 'Eiskaffee'] },
             { tipo: 'header', n: 'BIERE 🍺' },
             { n: 'Einheimisches Bier', p: 2000, d: 'Imperial (Light, Ultra, Silver) oder Pilsen.', modal: 'sabor', flavors: ['Imperial', 'Imperial Light', 'Imperial Ultra', 'Imperial Silver', 'Pilsen'] },
@@ -1584,7 +1740,8 @@ const translations = {
             { n: 'Cocktails', p: 5500, d: 'Scharfe Margarita, Traditionelle Margarita oder Wodka mit Cranberry.', modal: 'sabor', flavors: ['Scharfe Margarita', 'Traditionelle Margarita', 'Wodka mit Cranberry'] },
             { n: 'Seltzer', p: 3500, d: 'Adán y Eva.', modal: 'sabor', flavors: ['Adán y Eva'] },
             { n: 'Old Parr Whisky', p: 4000, d: 'Pur oder auf Eis serviert.' },
-            { n: 'Cacique', p: 2500, d: 'Einheimischer Guaro (Zuckerrohrschnaps).' }
+            { n: 'Cacique Reguläre Flasche', p: 10000, d: 'Einheimischer Guaro — Flasche.' },
+            { n: 'Cacique Chiliguarro', p: 15000, d: 'Einheimischer Guaro nach Chiliguarro-Rezept.' }
           ]
         }
       ],
@@ -1597,6 +1754,7 @@ const translations = {
         default: "💡 Tipp des Chefs: Verleih deiner Wahl eine besondere Note mit frischem 'Pico de Gallo' oder 'Süßer Kochbanane' für die perfekte süß-herzhafte Balance!"
       },
       chooseFlavor: 'Wähle deine Geschmacksrichtungen und Mengen:',
+      chooseQtyLabel: 'Wie viele Einheiten möchtest du?',
       chooseSide: 'Wähle deine Beilage:',
       cevicheSides: ['Maischips', 'Patacones mit Pico de Gallo'],
       chooseSoupBase: 'Wähle die Basis deiner Suppe:',
@@ -1606,6 +1764,9 @@ const translations = {
       chooseProteinLabel: 'Wähle dein Protein (erforderlich):',
       proteinOptions: ['Schwein', 'Hähnchen', 'Rind', 'Fisch'],
       chooseSides4Label: 'Wähle deine Beilagen (bis zu 4):',
+      chooseSidesBreakfastLabel: 'Wähle deine Beilagen (erforderlich):',
+      chooseEggStyleLabel: 'Wie möchtest du die Eier? (erforderlich)',
+      eggStyles: ['Gebraten', 'Rührei'],
       buffetSideOptions: ['Reis', 'Bohnen', 'Geröstete Tortillas', 'Kartoffelpüree / Yuca / Gemüse'],
       addExtrasLabel: 'Extras Hinzufügen (Optional)',
       extrasPriceLabel: '— ₡2.500 / 5,00 $ pro Stück:',
@@ -1926,6 +2087,21 @@ export const sendServiceEmailQuote = ({ nombre, servicio, fecha, personas, email
   }
 };
 
+// Fires an immediate "we received your request" confirmation email to the customer
+// (in whichever language they were browsing in) the moment they request a service
+// quote — independent of the mailto:/WhatsApp channel they used to reach us, and
+// independent of any admin action, since service requests aren't tracked as DB rows
+// the way orders/reservations are. Best-effort: never blocks the WhatsApp/email flow.
+const notifyServiceRequestReceived = ({ nombre, servicio, fecha, personas, emailCliente, lang }: ServiceEmailParams & { lang: string }) => {
+  if (!emailCliente) return;
+  const formattedDate = fecha && fecha.includes('-') ? fecha.split('-').reverse().join('/') : fecha;
+  fetch('/api/send-service-confirmation', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: nombre, email: emailCliente, service: servicio, date: formattedDate, people: personas, lang }),
+  }).catch((err) => console.warn('Service confirmation email failed to send:', err));
+};
+
 // Devuelve la fecha/hora ACTUAL de Costa Rica (America/Costa_Rica, UTC-6, sin horario de
 // verano) sin importar la zona horaria del dispositivo del visitante. Formateamos el
 // instante actual como hora de Costa Rica y lo reinterpretamos como si fuera hora local,
@@ -1957,6 +2133,7 @@ const ServiceCard: React.FC<{
   backLabel: string;
   calendarWeekDays: string[];
   calendarMonths: string[];
+  lang: string;
   onClassReserve?: () => void;
   fechasBloqueadas?: string[];
   isAdmin?: boolean;
@@ -1983,6 +2160,7 @@ const ServiceCard: React.FC<{
   backLabel,
   calendarWeekDays,
   calendarMonths,
+  lang,
   onClassReserve,
   fechasBloqueadas = [],
   isAdmin = false,
@@ -2192,6 +2370,15 @@ const ServiceCard: React.FC<{
     const formattedDate = selectedDate.split('-').reverse().join('/');
     const message = `¡Hola! Mi nombre es ${sanitizedName}.\nQuiero consultar disponibilidad para: ${item.name}\nFecha: ${formattedDate}\nPersonas: ${selectedPeople}`;
     window.open(`https://wa.me/50626720029?text=${encodeURIComponent(message)}`, '_blank');
+
+    notifyServiceRequestReceived({
+      nombre: sanitizedName,
+      servicio: item.name,
+      fecha: selectedDate,
+      personas: selectedPeople,
+      emailCliente: emailCliente,
+      lang
+    });
   };
 
   const sendEmail = (e: React.MouseEvent) => {
@@ -2218,6 +2405,15 @@ const ServiceCard: React.FC<{
       fecha: selectedDate,
       personas: selectedPeople,
       emailCliente: emailCliente
+    });
+
+    notifyServiceRequestReceived({
+      nombre: sanitizedName,
+      servicio: item.name,
+      fecha: selectedDate,
+      personas: selectedPeople,
+      emailCliente: emailCliente,
+      lang
     });
   };
 
@@ -3734,22 +3930,34 @@ const HorizontalTabsMenu = ({ onAdd, t }: {
   const isDrinksTab = activeTab === menuData.length - 1;
 
   const handleAddToCartClick = (item: any) => {
-    if (!isDrinksTab || item.modal) {
-      setSelectedItemForModal({ ...item, category: menuData[activeTab].cat });
-      setModalOptions({ sides: [], extras: [] });
-      setIsChefTipOpen(false);
-    } else {
-      onAdd({ name: item.n, price: `₡${item.p.toLocaleString()}` });
-    }
+    // Todos los items ahora abren un modal:
+    // - si el item ya tiene modal (ceviche, sopa, buffet, sabor, etc.), se usa ese
+    // - si NO tiene modal, se usa 'cantidad' — un mini modal solo con contador +/-
+    const modalToUse = item.modal || 'cantidad';
+    // isDrink: se propaga para que la sección de extras (guacamole, papas, etc.)
+    // NO aparezca en items de bebidas — no tiene sentido ofrecer extras a una botella
+    // de agua, whisky, cacique o fresco natural.
+    setSelectedItemForModal({ ...item, category: menuData[activeTab].cat, modal: modalToUse, isDrink: isDrinksTab });
+    setModalOptions({ sides: [], extras: [], qty: 1 });
+    setIsChefTipOpen(false);
+
+    // scroll suave al inicio del contenedor del menú
+    setTimeout(() => {
+      const menuSection = document.getElementById('menu');
+      if (menuSection) {
+        menuSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 50);
   };
 
   const confirmAndAdd = () => {
     if (selectedItemForModal.modal === 'sabor') {
       const flavorQty = modalOptions.flavorQty || {};
       const itemPrice = typeof selectedItemForModal.p === 'number' ? selectedItemForModal.p : 0;
+      const baseSuffix = modalOptions.base ? ` - ${modalOptions.base}` : '';
       Object.entries(flavorQty).forEach(([flavor, qty]) => {
         for (let i = 0; i < (qty as number); i++) {
-          onAdd({ name: `${selectedItemForModal.n} (${flavor})`, price: `₡${itemPrice.toLocaleString()}` });
+          onAdd({ name: `${selectedItemForModal.n} (${flavor}${baseSuffix})`, price: `₡${itemPrice.toLocaleString()}` });
         }
       });
       setSelectedItemForModal(null);
@@ -3769,7 +3977,23 @@ const HorizontalTabsMenu = ({ onAdd, t }: {
     } else if (selectedItemForModal.modal === 'buffet') {
       if (modalOptions.protein) options.push(modalOptions.protein);
       if (modalOptions.sides) options.push(...modalOptions.sides);
+    } else if (selectedItemForModal.modal === 'acompanamiento') {
+      // Buffet Desayuno / Desayuno Típico: los acompañamientos elegidos son informativos,
+      // no cambian el precio. Si eligió "Huevos", se agrega el estilo entre paréntesis.
+      if (modalOptions.sides) {
+        const eggOption = (selectedItemForModal.flavors || []).find((opt: string) =>
+          /^(huevos|eggs|œufs|oeufs|eier)$/i.test(opt.trim())
+        );
+        modalOptions.sides.forEach((side: string) => {
+          if (side === eggOption && modalOptions.eggStyle) {
+            options.push(`${side} (${modalOptions.eggStyle})`);
+          } else {
+            options.push(side);
+          }
+        });
+      }
     }
+    // 'cantidad' — sin personalización propia, solo extras (que se procesan abajo).
 
     if (modalOptions.extras && modalOptions.extras.length > 0) {
       options.push(...modalOptions.extras.map((e: string) => `Extra: ${e}`));
@@ -3783,13 +4007,21 @@ const HorizontalTabsMenu = ({ onAdd, t }: {
     const numExtras = (modalOptions.extras || []).length;
     const itemTotalPrice = itemBasePrice + numExtras * 2500;
 
-    onAdd({ 
-      name: finalName, 
-      price: `₡${itemTotalPrice.toLocaleString()}`,
-      baseName: selectedItemForModal.n,
-      extras: modalOptions.extras || [],
-      finalPrice: itemTotalPrice
-    });
+    // Cantidad seleccionada en el modal (aplica a ceviche, sopa, acompañamientos, acompanamiento, cantidad).
+    // Buffet queda excluido para evitar pedidos idénticos accidentales (cada persona
+    // suele querer proteína distinta).
+    const supportsQty = ['ceviche', 'sopa', 'acompañamientos', 'acompanamiento', 'cantidad'].includes(selectedItemForModal.modal);
+    const qty = supportsQty ? Math.max(1, parseInt(modalOptions.qty, 10) || 1) : 1;
+
+    for (let i = 0; i < qty; i++) {
+      onAdd({
+        name: finalName,
+        price: `₡${itemTotalPrice.toLocaleString()}`,
+        baseName: selectedItemForModal.n,
+        extras: modalOptions.extras || [],
+        finalPrice: itemTotalPrice
+      });
+    }
     setSelectedItemForModal(null);
     setIsChefTipOpen(false);
   };
@@ -3833,16 +4065,53 @@ const HorizontalTabsMenu = ({ onAdd, t }: {
     });
   };
 
-  const isFlavorSelectionIncomplete = selectedItemForModal?.modal === 'sabor' &&
-    Object.values(modalOptions.flavorQty || {}).reduce((a: number, b: any) => a + b, 0) === 0;
+  const isFlavorSelectionIncomplete = selectedItemForModal?.modal === 'sabor' && (
+    Object.values(modalOptions.flavorQty || {}).reduce((a: number, b: any) => a + b, 0) === 0 ||
+    (Array.isArray(selectedItemForModal?.bases) && selectedItemForModal.bases.length > 0 && !modalOptions.base)
+  );
 
-  const toggleExtra = (extra: string) => {
+  // Buffet Desayuno / Desayuno Típico: al menos un acompañamiento debe estar marcado,
+  // y SI eligió "Huevos" también debe elegir cómo los quiere (frito o revuelto).
+  const isAcompanamientoSelectionIncomplete = (() => {
+    if (selectedItemForModal?.modal !== 'acompanamiento') return false;
+    if ((modalOptions.sides || []).length === 0) return true;
+    const eggOption = (selectedItemForModal.flavors || []).find((opt: string) =>
+      /^(huevos|eggs|œufs|oeufs|eier)$/i.test(opt.trim())
+    );
+    const isEggSelected = eggOption && (modalOptions.sides || []).includes(eggOption);
+    if (isEggSelected && !modalOptions.eggStyle) return true;
+    return false;
+  })();
+
+  // Toggle simple (marcar/desmarcar) para acompañamientos del buffet desayuno — sin límite.
+  const toggleAcompanamiento = (side: string) => {
+    setModalOptions((prev: any) => {
+      const currentSides = prev.sides || [];
+      if (currentSides.includes(side)) {
+        return { ...prev, sides: currentSides.filter((s: string) => s !== side) };
+      }
+      return { ...prev, sides: [...currentSides, side] };
+    });
+  };
+
+  // Cada extra puede repetirse N veces en el array — así se soportan múltiples unidades
+  // del mismo extra (ej: 2 guacamoles = ['Guacamole', 'Guacamole']). El precio total se
+  // sigue calculando como `.length * 2500`, así que no hay que tocar el resto del cálculo.
+  const incrementExtra = (extra: string) => {
     setModalOptions((prev: any) => {
       const currentExtras = prev.extras || [];
-      if (currentExtras.includes(extra)) {
-        return { ...prev, extras: currentExtras.filter((e: string) => e !== extra) };
-      }
       return { ...prev, extras: [...currentExtras, extra] };
+    });
+  };
+
+  const decrementExtra = (extra: string) => {
+    setModalOptions((prev: any) => {
+      const currentExtras = prev.extras || [];
+      const idx = currentExtras.indexOf(extra);
+      if (idx === -1) return prev;
+      const next = [...currentExtras];
+      next.splice(idx, 1);
+      return { ...prev, extras: next };
     });
   };
 
@@ -3899,13 +4168,18 @@ const HorizontalTabsMenu = ({ onAdd, t }: {
                     {(() => {
                       const basePrice = typeof selectedItemForModal.p === 'number' ? selectedItemForModal.p : 0;
                       if (selectedItemForModal.modal === 'sabor') {
+                        // Cada sabor tiene su propio contador — sumamos todos
                         const totalQty = Object.values(modalOptions.flavorQty || {}).reduce((a: number, b: any) => a + b, 0) as number;
                         const currentTotal = basePrice * Math.max(1, totalQty);
                         return `₡${currentTotal.toLocaleString()}`;
                       }
+                      // Modales con cantidad al final (ceviche, sopa, acompañamientos, cantidad):
+                      // precio por unidad = base + extras, y luego × cantidad total
                       const numExtras = (modalOptions.extras || []).length;
-                      const currentTotal = basePrice + numExtras * 2500;
-                      return `₡${currentTotal.toLocaleString()}`;
+                      const perUnit = basePrice + numExtras * 2500;
+                      const supportsQty = ['ceviche', 'sopa', 'acompañamientos', 'acompanamiento', 'cantidad'].includes(selectedItemForModal.modal);
+                      const qty = supportsQty ? Math.max(1, parseInt(modalOptions.qty, 10) || 1) : 1;
+                      return `₡${(perUnit * qty).toLocaleString()}`;
                     })()}
                   </span>
                 </div>
@@ -3913,7 +4187,7 @@ const HorizontalTabsMenu = ({ onAdd, t }: {
             </div>
 
             {/* Scrollable Customization Container */}
-            <div 
+            <div
               className="space-y-5 overflow-y-auto overflow-x-hidden pr-2 custom-scrollbar tu-contenedor-de-extras flex-grow min-h-0 py-2 pb-6"
             >
               {selectedItemForModal.modal === 'ceviche' && (
@@ -4042,8 +4316,72 @@ const HorizontalTabsMenu = ({ onAdd, t }: {
                 </>
               )}
 
-              {selectedItemForModal.modal === 'sabor' && (
+              {/* Buffet Desayuno: lista de acompañamientos marcables (múltiples, sin límite).
+                  Precio fijo del buffet, los sides son solo informativos para cocina. */}
+              {selectedItemForModal.modal === 'acompanamiento' && (
                 <div className="space-y-3">
+                  <div className="flex justify-between items-end">
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-black">{fm.chooseSidesBreakfastLabel || 'Elige tus acompañamientos:'}</p>
+                    <span className="text-[10px] font-black text-[#FFD700] bg-[#FFD700]/10 px-2.5 py-0.5 rounded-full">{(modalOptions.sides || []).length}</span>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {(selectedItemForModal.flavors || []).map((opt: string) => {
+                      const isSelected = (modalOptions.sides || []).includes(opt);
+                      return (
+                        <button
+                          key={opt}
+                          type="button"
+                          onClick={() => toggleAcompanamiento(opt)}
+                          className={`p-2.5 rounded-xl border text-center transition-all text-xs font-semibold leading-tight min-h-[44px] flex items-center justify-center break-words ${
+                            isSelected
+                              ? 'bg-[#FFD700] border-[#FFD700] text-black shadow-lg shadow-[#FFD700]/20'
+                              : 'bg-white/5 border-white/10 text-white/40 hover:border-white/20'
+                          }`}
+                        >
+                          {opt}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Sub-selección: estilo del huevo — obligatorio si "Huevos" está marcado.
+                      Detecta cualquier item de la lista que sea "Huevos" en su idioma. */}
+                  {(() => {
+                    const eggOption = (selectedItemForModal.flavors || []).find((opt: string) =>
+                      /^(huevos|eggs|œufs|oeufs|eier)$/i.test(opt.trim())
+                    );
+                    const isEggSelected = eggOption && (modalOptions.sides || []).includes(eggOption);
+                    if (!isEggSelected) return null;
+                    return (
+                      <div className="space-y-2 pt-3 mt-1 border-t border-white/10">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-black">{fm.chooseEggStyleLabel || '¿Cómo quieres el huevo? (obligatorio)'}</p>
+                        <div className="grid grid-cols-2 gap-2.5">
+                          {(fm.eggStyles || ['Frito', 'Revuelto']).map((style: string) => {
+                            const isSelected = modalOptions.eggStyle === style;
+                            return (
+                              <button
+                                key={style}
+                                type="button"
+                                onClick={() => setModalOptions({ ...modalOptions, eggStyle: style })}
+                                className={`p-3 rounded-xl border text-center transition-all text-xs font-bold ${
+                                  isSelected
+                                    ? 'bg-[#FFD700] border-[#FFD700] text-black shadow-lg shadow-[#FFD700]/15'
+                                    : 'bg-white/5 border-white/10 text-white/60 hover:border-white/20'
+                                }`}
+                              >
+                                {style}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })()}
+                </div>
+              )}
+
+              {selectedItemForModal.modal === 'sabor' && (
+                <div className="space-y-3 min-h-[280px]">
                   <p className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-black">{fm.chooseFlavor}</p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     {(selectedItemForModal.flavors || []).map((flavor: string) => {
@@ -4080,10 +4418,34 @@ const HorizontalTabsMenu = ({ onAdd, t }: {
                       );
                     })}
                   </div>
+                  {Array.isArray(selectedItemForModal.bases) && selectedItemForModal.bases.length > 0 && (
+                    <div className="space-y-3 pt-2">
+                      <p className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-black">{selectedItemForModal.baseLabel || 'Elige la base (obligatorio):'}</p>
+                      <div className="grid grid-cols-2 gap-2.5">
+                        {selectedItemForModal.bases.map((base: string) => {
+                          const isSelected = modalOptions.base === base;
+                          return (
+                            <button
+                              key={base}
+                              type="button"
+                              onClick={() => setModalOptions({ ...modalOptions, base })}
+                              className={`p-3 rounded-xl border text-center transition-all text-xs font-bold ${
+                                isSelected
+                                  ? 'bg-[#FFD700] border-[#FFD700] text-black shadow-lg shadow-[#FFD700]/15'
+                                  : 'bg-white/5 border-white/10 text-white/60 hover:border-white/20'
+                              }`}
+                            >
+                              {base}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 
-              {selectedItemForModal.modal !== 'sabor' && (
+              {selectedItemForModal.modal !== 'sabor' && !selectedItemForModal.isDrink && (
               <>
               {/* Extras Section */}
               <div className="space-y-3">
@@ -4139,26 +4501,77 @@ const HorizontalTabsMenu = ({ onAdd, t }: {
                     </AnimatePresence>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 animate-fadeIn">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 animate-fadeIn">
                   {extrasList.map((extra) => {
-                    const isSelected = (modalOptions.extras || []).includes(extra);
+                    const qty = (modalOptions.extras || []).filter((e: string) => e === extra).length;
+                    const isSelected = qty > 0;
                     return (
-                      <button
+                      <div
                         key={extra}
-                        onClick={() => toggleExtra(extra)}
-                        className={`p-2.5 rounded-xl border text-center transition-all text-[11px] font-semibold leading-tight min-h-[44px] flex items-center justify-center whitespace-normal break-words ${
-                          isSelected 
-                            ? 'bg-[#FFD700]/10 border-[#FFD700] text-[#FFD700] shadow-[0_0_12px_rgba(255,215,0,0.15)] font-bold' 
-                            : 'bg-white/5 border-white/10 text-white/40 hover:border-white/20'
+                        className={`flex items-center justify-between gap-2 p-2 pl-3 rounded-xl border transition-all ${
+                          isSelected
+                            ? 'bg-[#FFD700]/10 border-[#FFD700] text-white shadow-[0_0_12px_rgba(255,215,0,0.15)]'
+                            : 'bg-white/5 border-white/10 text-white/50'
                         }`}
                       >
-                        {extra}
-                      </button>
+                        <span className="text-[11px] font-semibold leading-tight truncate">{extra}</span>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => decrementExtra(extra)}
+                            disabled={qty === 0}
+                            aria-label={`Quitar ${extra}`}
+                            className="w-6 h-6 rounded-md bg-white/10 hover:bg-white/20 flex items-center justify-center text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                          >
+                            <Minus size={10} />
+                          </button>
+                          <span className={`w-4 text-center text-[11px] font-black ${isSelected ? 'text-[#FFD700]' : 'text-white/40'}`}>{qty}</span>
+                          <button
+                            type="button"
+                            onClick={() => incrementExtra(extra)}
+                            aria-label={`Agregar ${extra}`}
+                            className="w-6 h-6 rounded-md bg-[#FFD700] hover:bg-[#FFD700]/80 flex items-center justify-center text-black transition-all"
+                          >
+                            <Plus size={10} />
+                          </button>
+                        </div>
+                      </div>
                     );
                   })}
                 </div>
               </div>
               </>
+              )}
+
+              {/* Contador de cantidad reutilizable para todos los modales excepto 'sabor' y 'buffet':
+                  - 'cantidad' (ítems simples): permite pedir varios idénticos
+                  - 'ceviche', 'sopa', 'acompañamientos': después de personalizar, indica cuántos idénticos quiere
+                  - 'sabor' se excluye porque cada sabor ya tiene su propio contador
+                  - 'buffet' se excluye porque cada persona suele querer proteína distinta */}
+              {['ceviche', 'sopa', 'acompañamientos', 'acompanamiento', 'cantidad'].includes(selectedItemForModal.modal) && (
+                <div className="space-y-3 pt-2 border-t border-white/5">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-black">{fm.chooseQtyLabel || 'Cantidad:'}</p>
+                    <div className="flex items-center gap-3 p-1.5 bg-white/5 border border-white/10 rounded-2xl">
+                      <button
+                        type="button"
+                        onClick={() => setModalOptions({ ...modalOptions, qty: Math.max(1, (parseInt(modalOptions.qty, 10) || 1) - 1) })}
+                        disabled={(parseInt(modalOptions.qty, 10) || 1) <= 1}
+                        className="w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                      >
+                        <Minus size={14} />
+                      </button>
+                      <span className="w-6 text-center text-base font-black text-white">{parseInt(modalOptions.qty, 10) || 1}</span>
+                      <button
+                        type="button"
+                        onClick={() => setModalOptions({ ...modalOptions, qty: Math.min(99, (parseInt(modalOptions.qty, 10) || 1) + 1) })}
+                        className="w-9 h-9 rounded-lg bg-[#FFD700] hover:bg-[#FFD700]/80 flex items-center justify-center text-black transition-all"
+                      >
+                        <Plus size={14} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
               )}
             </div>
 
@@ -4166,7 +4579,7 @@ const HorizontalTabsMenu = ({ onAdd, t }: {
             <div className="pt-4 border-t border-white/5 bg-[#121212]/95 shrink-0 mt-auto mb-6">
               <button
                 onClick={confirmAndAdd}
-                disabled={isBuffetSelectionIncomplete || isFlavorSelectionIncomplete}
+                disabled={isBuffetSelectionIncomplete || isFlavorSelectionIncomplete || isAcompanamientoSelectionIncomplete}
                 className="w-full bg-[#FFD700] text-black py-4 rounded-xl font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:scale-[1.01] active:scale-[0.99] transition-all shadow-xl shadow-[#FFD700]/10 text-xs sm:text-sm disabled:opacity-40 disabled:grayscale disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 {fm.confirmAddButton}
@@ -4795,7 +5208,7 @@ export default function App() {
     try {
       const { data, error } = await supabase
         .from('reservas')
-        .select('*')
+        .select('id,cliente,email,idioma,fecha,fecha_hora,lugares,servicio_cotizado,estado')
         .order('fecha', { ascending: true });
       if (error) {
         console.warn('Error fetching reservas from Supabase:', error.message);
@@ -4981,7 +5394,7 @@ export default function App() {
   const updateReservaEstado = async (id: number | string, nuevoEstado: string) => {
     // If it's a fallback record
     if (typeof id === 'number' && id >= 100) {
-      setLocalReservasFallback(prev => 
+      setLocalReservasFallback(prev =>
         prev.map(r => r.id === id ? { ...r, estado: nuevoEstado } : r)
       );
       return;
@@ -5002,6 +5415,42 @@ export default function App() {
         setDashboardError("No se pudo actualizar la reserva: la base de datos rechazó el cambio silenciosamente (0 filas afectadas). Revisa la política RLS de UPDATE en la tabla 'reservas' para el rol 'authenticated'.");
       } else {
         await fetchReservas();
+
+        if (updatedRows[0]?.email) {
+          const reserva = updatedRows[0];
+          try {
+            if (nuevoEstado === 'confirmado') {
+              await fetch('/api/send-reservation-confirmation', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  name: reserva.cliente,
+                  email: reserva.email,
+                  date: reserva.fecha,
+                  time: reserva.fecha_hora?.split('T')[1]?.slice(0, 5) || '',
+                  guests: reserva.lugares,
+                  alergias: reserva.alergias || '',
+                  lang: reserva.idioma || 'es'
+                })
+              });
+            } else if (nuevoEstado === 'cancelado') {
+              await fetch('/api/send-reservation-cancellation', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  name: reserva.cliente,
+                  email: reserva.email,
+                  date: reserva.fecha,
+                  time: reserva.fecha_hora?.split('T')[1]?.slice(0, 5) || '',
+                  guests: reserva.lugares,
+                  lang: reserva.idioma || 'es'
+                })
+              });
+            }
+          } catch (emailErr: any) {
+            console.error('Error sending email:', emailErr);
+          }
+        }
       }
     } catch (err: any) {
       console.error(err);
@@ -6001,7 +6450,8 @@ export default function App() {
             payment_method: paymentMethodLabel,
             transaction_id: transactionId,
             packing_fee: packingFee,
-            dish_count: dishCount
+            dish_count: dishCount,
+            idioma: lang
           }),
           total_pago: total,
           estado: 'Pendiente'
@@ -6170,23 +6620,35 @@ export default function App() {
       return;
     }
 
+    const emailVal = sanitizeInput((data.email as string) || '').trim();
+    if (!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+      setFormError('Por favor, ingresa un correo electrónico válido');
+      return;
+    }
+
     const nameVal = data.name as string;
     const dateVal = selectedResDate;
     const timeVal = selectedResTime || '12:00';
     const guestsVal = parseInt(numPeople) || 1;
     const serviceVal = selectedResService || 'General';
+    const alergiasVal = sanitizeInput((data.alergias as string) || '').trim();
 
     if (!dateVal) {
       setFormError('Por favor, selecciona una fecha antes de continuar');
       return;
     }
-    
+
     setFormError('');
     // Column names match the real 'reservas' table schema (verified against the live
-    // Supabase project): cliente, fecha, fecha_hora, lugares, servicio_cotizado, estado.
+    // Supabase project): cliente, fecha, fecha_hora, lugares, servicio_cotizado, estado, alergias.
     // There is no separate 'hora' column — time lives inside 'fecha_hora'.
-    const reservationInfo = {
+    // 'alergias' is optional (nullable text column added for allergy/special notes).
+    // 'email' and 'idioma' let the confirmation email (sent when admin marks the
+    // reservation 'confirmado') reach the customer in the language they browsed in.
+    const reservationInfo: Record<string, any> = {
       cliente: nameVal,
+      email: emailVal,
+      idioma: lang,
       fecha: dateVal,
       fecha_hora: `${dateVal}T${timeVal}:00`,
       lugares: guestsVal,
@@ -6212,26 +6674,27 @@ export default function App() {
     }
 
     try {
-      const { error } = await supabase
-        .from('reservas')
-        .insert([reservationInfo]);
-        
+      let payload: Record<string, any> = { ...reservationInfo };
+      const result = await supabase.from('reservas').insert([payload]);
+      const error = result.error;
+
       if (error) {
         console.error('Error inserting reservation into Supabase:', error.message);
         setFormError('Error al crear la reserva en la base de datos: ' + error.message);
-      } else {
-        await fetchReservas();
-        setReservationSuccess(true);
-        // The reservation is already saved above — sendWhatsApp/sendEmail only need
-        // this snapshot to open a notification channel, they must NOT insert again.
-        setReservationData({ name: nameVal, date: dateVal, time: timeVal, guests: guestsVal });
-        setShowChannels(true);
-        setTimeout(() => setReservationSuccess(false), 5000);
-        form.reset();
-        setSelectedResDate('');
-        setSelectedResTime('');
-        setNumPeople('1');
+        return;
       }
+
+      await fetchReservas();
+      setReservationSuccess(true);
+      // The reservation is already saved above — sendWhatsApp/sendEmail only need
+      // this snapshot to open a notification channel, they must NOT insert again.
+      setReservationData({ name: nameVal, date: dateVal, time: timeVal, guests: guestsVal, alergias: alergiasVal });
+      setShowChannels(true);
+      setTimeout(() => setReservationSuccess(false), 5000);
+      form.reset();
+      setSelectedResDate('');
+      setSelectedResTime('');
+      setNumPeople('1');
     } catch (err: any) {
       console.error('Exception during Supabase insert:', err);
       setFormError('Error de red al procesar la reserva. Intente de nuevo.');
@@ -6245,9 +6708,12 @@ export default function App() {
       setFormError('Por favor, ingresa tu nombre para continuar');
       return;
     }
-    const { name, date, time, guests } = reservationData;
+    const { name, date, time, guests, alergias } = reservationData;
 
-    const message = `¡Hola! Quiero reservar para el ${date} a las ${time}. Mi nombre es ${name}. (Personas: ${guests})`;
+    let message = `¡Hola! Quiero reservar para el ${date} a las ${time}. Mi nombre es ${name}. (Personas: ${guests})`;
+    if (alergias && alergias.trim()) {
+      message += `\n\n⚠️ Notas / Alergias: ${alergias.trim()}`;
+    }
     window.open(`https://wa.me/50689020888?text=${encodeURIComponent(message)}`, '_blank');
 
     setShowChannels(false);
@@ -6259,10 +6725,13 @@ export default function App() {
       setFormError('Por favor, ingresa tu nombre para continuar');
       return;
     }
-    const { name, date, time, guests } = reservationData;
+    const { name, date, time, guests, alergias } = reservationData;
 
     const subject = `Nueva Reserva - Coco Víquez`;
-    const body = `¡Hola! Quiero reservar para el ${date} a las ${time}. Mi nombre es ${name}. (Personas: ${guests})`;
+    let body = `¡Hola! Quiero reservar para el ${date} a las ${time}. Mi nombre es ${name}. (Personas: ${guests})`;
+    if (alergias && alergias.trim()) {
+      body += `\n\n⚠️ Notas / Alergias: ${alergias.trim()}`;
+    }
     window.location.href = `mailto:restaurantecocoviquezph@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
     setShowChannels(false);
@@ -6743,6 +7212,7 @@ export default function App() {
                 backLabel={t.services.backLabel}
                 calendarWeekDays={t.calendar.weekDays}
                 calendarMonths={t.calendar.months}
+                lang={lang}
                 onClassReserve={() => setIsClassModalOpen(true)}
                 fechasBloqueadas={savedBloqueos.filter(b => b.servicio_tipo === (item.id === 'clase' ? 'clases_cocina' : item.id) || b.servicio_tipo === 'todos').map(b => b.fecha)}
                 isAdmin={isAdmin}
@@ -6785,6 +7255,7 @@ export default function App() {
                       backLabel={t.services.backLabel}
                       calendarWeekDays={t.calendar.weekDays}
                       calendarMonths={t.calendar.months}
+                      lang={lang}
                       onClassReserve={() => setIsClassModalOpen(true)}
                       fechasBloqueadas={savedBloqueos.filter(b => b.servicio_tipo === (item.id === 'clase' ? 'clases_cocina' : item.id) || b.servicio_tipo === 'todos').map(b => b.fecha)}
                       isAdmin={isAdmin}
@@ -6868,9 +7339,9 @@ export default function App() {
               </div>
 
               <div className="space-y-4">
-                <div className="contact-item-container group flex items-center">
+                <div className="contact-item-container group flex items-center gap-2 min-w-0">
                   <div className="p-2 bg-coral/10 rounded-lg text-coral group-hover:bg-coral group-hover:text-white transition-all shrink-0"><Clock size={18} /></div>
-                  <span className="contact-item-text font-medium text-xs sm:text-[13px] md:text-sm tracking-tight">{t.reservation.hours}</span>
+                  <span className="contact-item-text font-medium text-[11px] sm:text-[13px] md:text-sm tracking-tight break-words min-w-0">{t.reservation.hours}</span>
                 </div>
                 <div 
                   className="contact-item-container group flex items-center rounded-xl bg-slate-900/40 border border-slate-800/50 p-3 transition-all duration-300 ease-in-out hover:scale-[1.02] hover:border-orange-500/50 hover:shadow-[0_0_15px_rgba(249,115,22,0.3)] hover:text-orange-400 active:scale-95 text-sand/80 relative"
@@ -6939,12 +7410,23 @@ export default function App() {
               <div className="space-y-6">
                 <div className="space-y-2">
                   <label className="text-xs font-bold uppercase tracking-[0.2em] text-[#F9F7F2]/40 ml-1">{t.reservation.name}</label>
-                  <input 
-                    required 
-                    type="text" 
-                    name="name" 
-                    className="w-full bg-[#0A192F] border border-coral/30 hover:border-coral/60 rounded-2xl p-5 focus:ring-2 focus:ring-coral focus:border-coral transition-all outline-none text-white font-medium shadow-inner" 
-                    placeholder="Ej. Alexander" 
+                  <input
+                    required
+                    type="text"
+                    name="name"
+                    className="w-full bg-[#0A192F] border border-coral/30 hover:border-coral/60 rounded-2xl p-5 focus:ring-2 focus:ring-coral focus:border-coral transition-all outline-none text-white font-medium shadow-inner"
+                    placeholder="Ej. Alexander"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-[0.2em] text-[#F9F7F2]/40 ml-1">{t.reservation.email}</label>
+                  <input
+                    required
+                    type="email"
+                    name="email"
+                    className="w-full bg-[#0A192F] border border-coral/30 hover:border-coral/60 rounded-2xl p-5 focus:ring-2 focus:ring-coral focus:border-coral transition-all outline-none text-white font-medium shadow-inner"
+                    placeholder={t.reservation.emailPlaceholder}
                   />
                 </div>
 
@@ -7185,9 +7667,20 @@ export default function App() {
                   </div>
                 </div>
 
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-[0.2em] text-[#F9F7F2]/40 ml-1">{t.reservation.allergiesLabel}</label>
+                  <textarea
+                    name="alergias"
+                    rows={3}
+                    maxLength={300}
+                    placeholder={t.reservation.allergiesPlaceholder}
+                    className="w-full bg-[#0A192F] border border-coral/30 hover:border-coral/60 rounded-2xl p-5 focus:ring-2 focus:ring-coral focus:border-coral transition-all outline-none text-white text-sm font-medium shadow-inner resize-none placeholder:text-[#F9F7F2]/25"
+                  />
+                </div>
+
                 <div className="space-y-4 pt-4">
                   {!showChannels ? (
-                    <button 
+                    <button
                       type="submit"
                       disabled={resDateError || !numPeople || parseInt(numPeople) < 1}
                       className="w-full bg-coral text-white py-6 rounded-2xl font-black uppercase tracking-[0.2em] shadow-2xl shadow-coral/20 hover:brightness-110 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed border-t border-white/10"
@@ -7803,7 +8296,7 @@ export default function App() {
                               
                               {/* Filter Pills */}
                               <div className="flex flex-wrap gap-1.5 bg-[#070D14] p-1 rounded-xl border border-white/5">
-                                {['todos', 'pendiente', 'confirmado', 'finalizado'].map(statusOption => (
+                                {['todos', 'pendiente', 'confirmado', 'cancelado', 'finalizado'].map(statusOption => (
                                   <button
                                     key={statusOption}
                                     onClick={() => setStatusFilter(statusOption)}
@@ -7889,6 +8382,15 @@ export default function App() {
                                                 title="Finalizar Reserva/Visita"
                                               >
                                                 Finalizar
+                                              </button>
+                                            )}
+                                            {(r.estado === 'pendiente' || r.estado === 'confirmado') && (
+                                              <button
+                                                onClick={() => updateReservaEstado(r.id, 'cancelado')}
+                                                className="bg-orange-500 hover:bg-orange-400 text-[#09101A] font-black text-[9px] uppercase px-2.5 py-1.5 rounded-lg tracking-wider transition-all shadow-[0_0_8px_rgba(234,88,12,0.3)]"
+                                                title="Cancelar Reserva"
+                                              >
+                                                Cancelar
                                               </button>
                                             )}
                                             <button
