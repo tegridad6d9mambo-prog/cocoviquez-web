@@ -5418,9 +5418,10 @@ export default function App() {
 
         if (updatedRows[0]?.email) {
           const reserva = updatedRows[0];
+          console.log('Sending email for reservation:', reserva.cliente, reserva.email, nuevoEstado);
           try {
             if (nuevoEstado === 'confirmado') {
-              await fetch('/api/send-reservation-confirmation', {
+              const response = await fetch('/api/send-reservation-confirmation', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -5433,8 +5434,9 @@ export default function App() {
                   lang: reserva.idioma || 'es'
                 })
               });
+              console.log('Email response:', response.status, response.statusText);
             } else if (nuevoEstado === 'cancelado') {
-              await fetch('/api/send-reservation-cancellation', {
+              const response = await fetch('/api/send-reservation-cancellation', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -5446,10 +5448,13 @@ export default function App() {
                   lang: reserva.idioma || 'es'
                 })
               });
+              console.log('Cancellation email response:', response.status, response.statusText);
             }
           } catch (emailErr: any) {
             console.error('Error sending email:', emailErr);
           }
+        } else {
+          console.log('No email found for reservation:', updatedRows[0]?.cliente);
         }
       }
     } catch (err: any) {
@@ -8318,6 +8323,7 @@ export default function App() {
                                 <thead className="bg-[#09101A] text-white/50 font-black tracking-widest uppercase border-b border-white/5">
                                   <tr>
                                     <th className="p-4 text-[10px]">Cliente</th>
+                                    <th className="p-4 text-[10px]">Email</th>
                                     <th className="p-4 text-[10px]">Servicio Cotizado</th>
                                     <th className="p-4 text-[10px]">Fecha / Hora</th>
                                     <th className="p-4 text-[10px] text-center">Lugares</th>
@@ -8342,6 +8348,9 @@ export default function App() {
                                       <tr key={r.id} className="hover:bg-white/5 transition-colors">
                                         <td className="p-4 font-bold text-white">
                                           {r.cliente}
+                                        </td>
+                                        <td className="p-4 text-white/70 text-[11px] break-all">
+                                          {r.email || '-'}
                                         </td>
                                         <td className="p-4 text-white/70">
                                           <span className="bg-[#070D14] px-2.5 py-1 rounded-lg border border-white/5 text-[11px] font-black uppercase text-[#F27F57] tracking-wider">

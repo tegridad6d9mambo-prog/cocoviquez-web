@@ -11,12 +11,16 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
   if (!resend) {
+    console.error('RESEND API KEY NOT CONFIGURED');
     return res.status(500).json({ error: 'Server not configured (missing Resend API key)' });
   }
 
   const { name, email, date, time, guests, alergias, lang } = req.body || {};
 
+  console.log('Sending confirmation email:', { name, email, date, time, guests });
+
   if (!email || typeof email !== 'string' || !EMAIL_RE.test(email)) {
+    console.error('Invalid email format:', email);
     return res.status(400).json({ error: 'Invalid email' });
   }
 
@@ -33,7 +37,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: ORDER_EMAIL_FROM,
       to: email,
       subject: 'Reserva Confirmada - Coco Víquez',
@@ -45,9 +49,15 @@ export default async function handler(req, res) {
         accentColor: '#F27F57',
       }),
     });
-    return res.status(200).json({ sent: true });
+    console.log('Email sent successfully:', result);
+    return res.status(200).json({ sent: true, result });
   } catch (err) {
-    console.error('Error sending reservation confirmation email:', err?.message || err);
-    return res.status(500).json({ error: 'Failed to send email' });
+    console.error('Error sending reservation confirmation email:', {
+      message: err?.message,
+      error: err,
+      email,
+      from: ORDER_EMAIL_FROM
+    });
+    return res.status(500).json({ error: 'Failed to send email', details: err?.message });
   }
 }
