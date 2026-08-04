@@ -6708,17 +6708,41 @@ export default function App() {
 
   // Called only after handleReservation already saved the reservation to Supabase —
   // these just open a notification channel with the same data, they must NOT insert again.
-  const sendWhatsApp = () => {
+  const sendWhatsApp = async () => {
     if (!reservationData || !reservationData.name) {
       setFormError('Por favor, ingresa tu nombre para continuar');
       return;
     }
-    const { name, date, time, guests, alergias } = reservationData;
+    const { name, email, date, time, guests, alergias } = reservationData;
 
     let message = `¡Hola! Quiero reservar para el ${date} a las ${time}. Mi nombre es ${name}. (Personas: ${guests})`;
     if (alergias && alergias.trim()) {
       message += `\n\n⚠️ Notas / Alergias: ${alergias.trim()}`;
     }
+
+    // Send confirmation email in the background (non-blocking)
+    if (email) {
+      try {
+        console.log('Sending background email confirmation...');
+        fetch('/api/send-reservation-email-manual', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name,
+            email,
+            date,
+            time,
+            guests,
+            alergias,
+            lang
+          })
+        }).then(r => r.json()).then(d => console.log('Background email sent:', d)).catch(e => console.warn('Background email failed:', e));
+      } catch (err) {
+        console.warn('Could not send background email:', err);
+      }
+    }
+
+    // Open WhatsApp in new tab
     window.open(`https://wa.me/50689020888?text=${encodeURIComponent(message)}`, '_blank');
 
     setShowChannels(false);
