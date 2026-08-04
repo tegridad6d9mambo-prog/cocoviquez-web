@@ -6693,7 +6693,7 @@ export default function App() {
       setReservationSuccess(true);
       // The reservation is already saved above — sendWhatsApp/sendEmail only need
       // this snapshot to open a notification channel, they must NOT insert again.
-      setReservationData({ name: nameVal, date: dateVal, time: timeVal, guests: guestsVal, alergias: alergiasVal });
+      setReservationData({ name: nameVal, email: emailVal, date: dateVal, time: timeVal, guests: guestsVal, alergias: alergiasVal });
       setShowChannels(true);
       setTimeout(() => setReservationSuccess(false), 5000);
       form.reset();
@@ -6725,22 +6725,50 @@ export default function App() {
     setReservationData(null);
   };
 
-  const sendEmail = () => {
+  const sendEmail = async () => {
     if (!reservationData || !reservationData.name) {
       setFormError('Por favor, ingresa tu nombre para continuar');
       return;
     }
-    const { name, date, time, guests, alergias } = reservationData;
+    const { name, email, date, time, guests, alergias } = reservationData;
 
-    const subject = `Nueva Reserva - Coco Víquez`;
-    let body = `¡Hola! Quiero reservar para el ${date} a las ${time}. Mi nombre es ${name}. (Personas: ${guests})`;
-    if (alergias && alergias.trim()) {
-      body += `\n\n⚠️ Notas / Alergias: ${alergias.trim()}`;
+    if (!email) {
+      setFormError('Email no disponible. Por favor, intenta de nuevo.');
+      return;
     }
-    window.location.href = `mailto:restaurantecocoviquezph@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-    setShowChannels(false);
-    setReservationData(null);
+    try {
+      console.log('Sending reservation email via Resend to:', email);
+      const response = await fetch('/api/send-reservation-email-manual', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          date,
+          time,
+          guests,
+          alergias,
+          lang
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error sending email:', errorData);
+        setFormError('Error al enviar el email. Intenta de nuevo.');
+        return;
+      }
+
+      const result = await response.json();
+      console.log('Email sent successfully:', result);
+      setFormError('');
+      setShowChannels(false);
+      setReservationData(null);
+    } catch (err) {
+      console.error('Exception sending email:', err);
+      setFormError('Error al enviar el email. Intenta de nuevo.');
+    }
   };
 
   if (currentPath.includes('cocina')) {
