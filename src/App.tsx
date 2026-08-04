@@ -5418,43 +5418,61 @@ export default function App() {
 
         if (updatedRows[0]?.email) {
           const reserva = updatedRows[0];
-          console.log('Sending email for reservation:', reserva.cliente, reserva.email, nuevoEstado);
+          console.log('DEBUG: Enviando email para reserva:', {
+            cliente: reserva.cliente,
+            email: reserva.email,
+            estado: nuevoEstado,
+            fecha: reserva.fecha,
+            hora: reserva.fecha_hora?.split('T')[1]?.slice(0, 5),
+            lugares: reserva.lugares,
+            idioma: reserva.idioma
+          });
           try {
             if (nuevoEstado === 'confirmado') {
+              const payload = {
+                name: reserva.cliente,
+                email: reserva.email,
+                date: reserva.fecha,
+                time: reserva.fecha_hora?.split('T')[1]?.slice(0, 5) || '',
+                guests: reserva.lugares,
+                alergias: reserva.alergias || '',
+                lang: reserva.idioma || 'es'
+              };
+              console.log('DEBUG: Payload para confirmación:', payload);
               const response = await fetch('/api/send-reservation-confirmation', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  name: reserva.cliente,
-                  email: reserva.email,
-                  date: reserva.fecha,
-                  time: reserva.fecha_hora?.split('T')[1]?.slice(0, 5) || '',
-                  guests: reserva.lugares,
-                  alergias: reserva.alergias || '',
-                  lang: reserva.idioma || 'es'
-                })
+                body: JSON.stringify(payload)
               });
-              console.log('Email response:', response.status, response.statusText);
+              const responseData = await response.json();
+              console.log('DEBUG: Email response:', { status: response.status, statusText: response.statusText, data: responseData });
             } else if (nuevoEstado === 'cancelado') {
+              const payload = {
+                name: reserva.cliente,
+                email: reserva.email,
+                date: reserva.fecha,
+                time: reserva.fecha_hora?.split('T')[1]?.slice(0, 5) || '',
+                guests: reserva.lugares,
+                lang: reserva.idioma || 'es'
+              };
+              console.log('DEBUG: Payload para cancelación:', payload);
               const response = await fetch('/api/send-reservation-cancellation', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  name: reserva.cliente,
-                  email: reserva.email,
-                  date: reserva.fecha,
-                  time: reserva.fecha_hora?.split('T')[1]?.slice(0, 5) || '',
-                  guests: reserva.lugares,
-                  lang: reserva.idioma || 'es'
-                })
+                body: JSON.stringify(payload)
               });
-              console.log('Cancellation email response:', response.status, response.statusText);
+              const responseData = await response.json();
+              console.log('DEBUG: Cancellation email response:', { status: response.status, statusText: response.statusText, data: responseData });
             }
           } catch (emailErr: any) {
-            console.error('Error sending email:', emailErr);
+            console.error('DEBUG: Error sending email:', emailErr);
           }
         } else {
-          console.log('No email found for reservation:', updatedRows[0]?.cliente);
+          console.log('DEBUG: No email found for reservation:', {
+            cliente: updatedRows[0]?.cliente,
+            email: updatedRows[0]?.email,
+            todasLasPropsDisponibles: Object.keys(updatedRows[0] || {})
+          });
         }
       }
     } catch (err: any) {
@@ -6650,6 +6668,13 @@ export default function App() {
     // 'alergias' is optional (nullable text column added for allergy/special notes).
     // 'email' and 'idioma' let the confirmation email (sent when admin marks the
     // reservation 'confirmado') reach the customer in the language they browsed in.
+    console.log('DEBUG: Creando reserva con datos:', {
+      nombre: nameVal,
+      email: emailVal,
+      fecha: dateVal,
+      hora: timeVal,
+      personas: guestsVal
+    });
     const reservationInfo: Record<string, any> = {
       cliente: nameVal,
       email: emailVal,
@@ -6680,8 +6705,12 @@ export default function App() {
 
     try {
       let payload: Record<string, any> = { ...reservationInfo };
+      console.log('DEBUG: Payload a insertar:', payload);
       const result = await supabase.from('reservas').insert([payload]);
       const error = result.error;
+      const data = result.data;
+
+      console.log('DEBUG: Respuesta de INSERT:', { error: error?.message, data, status: result.status });
 
       if (error) {
         console.error('Error inserting reservation into Supabase:', error.message);
@@ -6689,6 +6718,7 @@ export default function App() {
         return;
       }
 
+      console.log('DEBUG: Inserción exitosa, refrescando lista...');
       await fetchReservas();
       setReservationSuccess(true);
       // The reservation is already saved above — sendWhatsApp/sendEmail only need
