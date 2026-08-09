@@ -5445,7 +5445,11 @@ export default function App() {
                 body: JSON.stringify(payload)
               });
               const responseData = await response.json();
-              console.log('DEBUG: Email response:', { status: response.status, statusText: response.statusText, data: responseData });
+              console.log('DEBUG: Email response:', { status: response.status, statusText: response.statusText, ok: response.ok, data: responseData });
+              if (!response.ok) {
+                console.error('ERROR: Email endpoint returned:', response.status, responseData);
+                setDashboardError(`Error enviando email: ${responseData?.error || 'Unknown error'}`);
+              }
             } else if (nuevoEstado === 'cancelado') {
               const payload = {
                 name: reserva.cliente,
@@ -5462,7 +5466,11 @@ export default function App() {
                 body: JSON.stringify(payload)
               });
               const responseData = await response.json();
-              console.log('DEBUG: Cancellation email response:', { status: response.status, statusText: response.statusText, data: responseData });
+              console.log('DEBUG: Cancellation email response:', { status: response.status, statusText: response.statusText, ok: response.ok, data: responseData });
+              if (!response.ok) {
+                console.error('ERROR: Cancellation email endpoint returned:', response.status, responseData);
+                setDashboardError(`Error enviando email de cancelación: ${responseData?.error || 'Unknown error'}`);
+              }
             }
           } catch (emailErr: any) {
             console.error('DEBUG: Error sending email:', emailErr);
@@ -6762,16 +6770,18 @@ export default function App() {
       });
 
       const emailData = await emailResponse.json();
-      console.log('Email sent to restaurant:', emailData);
+      console.log('WhatsApp flow - Email response:', { status: emailResponse.status, ok: emailResponse.ok, data: emailData });
 
       if (!emailResponse.ok) {
-        console.error('Error sending email:', emailData);
-        setFormError('Error al enviar solicitud. Intenta de nuevo.');
+        console.error('ERROR: Failed to send email to restaurant:', emailData);
+        setFormError(`Error: ${emailData?.error || 'No se pudo enviar la solicitud'}`);
         return;
       }
+
+      console.log('✅ Email enviado exitosamente al restaurante');
     } catch (err) {
-      console.error('Exception sending email:', err);
-      setFormError('Error al enviar solicitud. Intenta de nuevo.');
+      console.error('EXCEPTION: Error sending email:', err);
+      setFormError('Error de conexión. Intenta de nuevo.');
       return;
     }
 
@@ -6781,14 +6791,14 @@ export default function App() {
       message += `\n\n⚠️ Notas / Alergias: ${alergias.trim()}`;
     }
 
+    console.log('Opening WhatsApp...');
     window.open(`https://wa.me/50689020888?text=${encodeURIComponent(message)}`, '_blank');
 
     // Success message
     setFormError('');
     setShowChannels(false);
     setReservationData(null);
-    // Show brief success message
-    alert('✅ Tu solicitud ha sido enviada al restaurante. Te contactaremos pronto.');
+    console.log('✅ WhatsApp flow completed successfully');
   };
 
   const sendEmail = async () => {
@@ -6804,7 +6814,7 @@ export default function App() {
     }
 
     try {
-      console.log('Sending reservation request to restaurant via email...');
+      console.log('Email flow - Sending reservation request to restaurant...');
       const response = await fetch('/api/send-reservation-request-to-restaurant', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -6818,24 +6828,25 @@ export default function App() {
         })
       });
 
+      const result = await response.json();
+      console.log('Email flow - Response:', { status: response.status, ok: response.ok, data: result });
+
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Error sending email to restaurant:', errorData);
-        setFormError('Error al enviar solicitud. Intenta de nuevo.');
+        console.error('ERROR: Email flow failed:', result);
+        setFormError(`Error: ${result?.error || 'No se pudo enviar la solicitud'}`);
         return;
       }
 
-      const result = await response.json();
-      console.log('Email sent to restaurant successfully:', result);
+      console.log('✅ Email enviado exitosamente al restaurante');
 
       // Success - show confirmation
       setFormError('');
       setShowChannels(false);
       setReservationData(null);
-      alert('✅ Tu solicitud ha sido enviada al restaurante por correo. Te contactaremos pronto.');
+      console.log('✅ Email flow completed successfully');
     } catch (err) {
-      console.error('Exception sending email:', err);
-      setFormError('Error al enviar solicitud. Intenta de nuevo.');
+      console.error('EXCEPTION: Error sending email:', err);
+      setFormError('Error de conexión. Intenta de nuevo.');
     }
   };
 
