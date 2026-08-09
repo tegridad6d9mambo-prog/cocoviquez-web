@@ -6737,7 +6737,7 @@ export default function App() {
   };
 
   // Called only after handleReservation already saved the reservation to Supabase —
-  // these just open a notification channel with the same data, they must NOT insert again.
+  // these send the reservation request to the restaurant via their preferred channel
   const sendWhatsApp = async () => {
     if (!reservationData || !reservationData.name) {
       setFormError('Por favor, ingresa tu nombre para continuar');
@@ -6745,38 +6745,50 @@ export default function App() {
     }
     const { name, email, date, time, guests, alergias } = reservationData;
 
+    // First, send email to restaurant
+    try {
+      console.log('Sending reservation request to restaurant via email...');
+      const emailResponse = await fetch('/api/send-reservation-request-to-restaurant', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          date,
+          time,
+          guests,
+          alergias
+        })
+      });
+
+      const emailData = await emailResponse.json();
+      console.log('Email sent to restaurant:', emailData);
+
+      if (!emailResponse.ok) {
+        console.error('Error sending email:', emailData);
+        setFormError('Error al enviar solicitud. Intenta de nuevo.');
+        return;
+      }
+    } catch (err) {
+      console.error('Exception sending email:', err);
+      setFormError('Error al enviar solicitud. Intenta de nuevo.');
+      return;
+    }
+
+    // Then, open WhatsApp in new tab
     let message = `¡Hola! Quiero reservar para el ${date} a las ${time}. Mi nombre es ${name}. (Personas: ${guests})`;
     if (alergias && alergias.trim()) {
       message += `\n\n⚠️ Notas / Alergias: ${alergias.trim()}`;
     }
 
-    // Send confirmation email in the background (non-blocking)
-    if (email) {
-      try {
-        console.log('Sending background email confirmation...');
-        fetch('/api/send-reservation-email-manual', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name,
-            email,
-            date,
-            time,
-            guests,
-            alergias,
-            lang
-          })
-        }).then(r => r.json()).then(d => console.log('Background email sent:', d)).catch(e => console.warn('Background email failed:', e));
-      } catch (err) {
-        console.warn('Could not send background email:', err);
-      }
-    }
-
-    // Open WhatsApp in new tab
     window.open(`https://wa.me/50689020888?text=${encodeURIComponent(message)}`, '_blank');
 
+    // Success message
+    setFormError('');
     setShowChannels(false);
     setReservationData(null);
+    // Show brief success message
+    alert('✅ Tu solicitud ha sido enviada al restaurante. Te contactaremos pronto.');
   };
 
   const sendEmail = async () => {
@@ -6792,8 +6804,8 @@ export default function App() {
     }
 
     try {
-      console.log('Sending reservation email via Resend to:', email);
-      const response = await fetch('/api/send-reservation-email-manual', {
+      console.log('Sending reservation request to restaurant via email...');
+      const response = await fetch('/api/send-reservation-request-to-restaurant', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -6802,26 +6814,28 @@ export default function App() {
           date,
           time,
           guests,
-          alergias,
-          lang
+          alergias
         })
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Error sending email:', errorData);
-        setFormError('Error al enviar el email. Intenta de nuevo.');
+        console.error('Error sending email to restaurant:', errorData);
+        setFormError('Error al enviar solicitud. Intenta de nuevo.');
         return;
       }
 
       const result = await response.json();
-      console.log('Email sent successfully:', result);
+      console.log('Email sent to restaurant successfully:', result);
+
+      // Success - show confirmation
       setFormError('');
       setShowChannels(false);
       setReservationData(null);
+      alert('✅ Tu solicitud ha sido enviada al restaurante por correo. Te contactaremos pronto.');
     } catch (err) {
       console.error('Exception sending email:', err);
-      setFormError('Error al enviar el email. Intenta de nuevo.');
+      setFormError('Error al enviar solicitud. Intenta de nuevo.');
     }
   };
 
@@ -8402,13 +8416,15 @@ export default function App() {
                             {/* Scrollable container for tables */}
                             <div className="overflow-x-auto rounded-2xl border border-white/5 max-h-[480px]">
                               <table className="w-full text-left text-xs min-w-[600px]">
-                                <thead className="bg-[#09101A] text-white/50 font-black tracking-widest uppercase border-b border-white/5">
+                                <thead className="bg-[#09101A] text-white/50 font-black tracking-widest uppercase border-b border-white/5 sticky top-0">
                                   <tr>
                                     <th className="p-4 text-[10px]">Cliente</th>
                                     <th className="p-4 text-[10px]">Email</th>
                                     <th className="p-4 text-[10px]">Servicio Cotizado</th>
-                                    <th className="p-4 text-[10px]">Fecha / Hora</th>
-                                    <th className="p-4 text-[10px] text-center">Lugares</th>
+                                    <th className="p-4 text-[10px]">Fecha</th>
+                                    <th className="p-4 text-[10px]">Hora</th>
+                                    <th className="p-4 text-[10px] text-center">Personas</th>
+                                    <th className="p-4 text-[10px]">Notas / Alergias</th>
                                     <th className="p-4 text-[10px] text-center">Estado</th>
                                     <th className="p-4 text-[10px] text-center">Acciones rápidas</th>
                                   </tr>
@@ -8420,7 +8436,7 @@ export default function App() {
                                     if (filtered.length === 0) {
                                       return (
                                         <tr>
-                                          <td colSpan={6} className="p-8 text-center text-white/20 uppercase font-black tracking-wider">
+                                          <td colSpan={9} className="p-8 text-center text-white/20 uppercase font-black tracking-wider">
                                             No se encontraron registros de este tipo
                                           </td>
                                         </tr>
@@ -8428,7 +8444,7 @@ export default function App() {
                                     }
                                     return filtered.map(r => (
                                       <tr key={r.id} className="hover:bg-white/5 transition-colors">
-                                        <td className="p-4 font-bold text-white">
+                                        <td className="p-4 font-bold text-white text-sm">
                                           {r.cliente}
                                         </td>
                                         <td className="p-4 text-white/70 text-[11px] break-all">
@@ -8439,12 +8455,17 @@ export default function App() {
                                             {r.servicio_cotizado || 'Restaurante / General'}
                                           </span>
                                         </td>
-                                        <td className="p-4 text-white/80 font-mono">
-                                          <span className="block font-bold">{toDateOnly(r.fecha).split('-').reverse().join('/')}</span>
-                                          <span className="block text-[10px] text-white/40">{r.fecha_hora?.slice(11, 16)}</span>
+                                        <td className="p-4 text-white/80 font-mono font-bold">
+                                          {toDateOnly(r.fecha).split('-').reverse().join('/')}
+                                        </td>
+                                        <td className="p-4 text-white/80 font-mono font-bold">
+                                          {r.fecha_hora?.slice(11, 16) || '-'}
                                         </td>
                                         <td className="p-4 text-center font-bold text-cyan-400 font-mono text-sm">
                                           {r.lugares}
+                                        </td>
+                                        <td className="p-4 text-white/60 text-[10px] max-w-[150px] truncate">
+                                          {r.alergias || '-'}
                                         </td>
                                         <td className="p-4 text-center">
                                           <span className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider ${
