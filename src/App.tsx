@@ -6560,12 +6560,37 @@ export default function App() {
       console.warn("Error enviando correo en segundo plano:", e);
     }
 
+    // Send acknowledgment email to client
+    try {
+      console.log('Sending order acknowledgment email to client...');
+      const ackResponse = await fetch('/api/send-order-acknowledgment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: sanitizedName,
+          email: sanitizedEmail,
+          total: total.toString(),
+          itemCount: dishCount,
+          lang: lang
+        })
+      });
+
+      const ackData = await ackResponse.json();
+      if (ackResponse.ok) {
+        console.log('✅ Order acknowledgment email sent to client');
+      } else {
+        console.warn('Warning: Could not send acknowledgment email to client:', ackData);
+      }
+    } catch (err) {
+      console.error('Warning: Error sending acknowledgment email:', err);
+    }
+
     // Set up states to trigger premium success modal with WhatsApp retry option
     setLastWhatsAppUrl(`https://wa.me/50689020888?text=${encodeURIComponent(message)}`);
-    
+
     // 1. Close the cart/checkout modal completely first so it disappears smoothly
     setIsCartOpen(false);
-    
+
     // 2. Open the clean '¡PEDIDO ENVIADO!' success modal directly
     setOrderSuccessModalOpen(true);
 

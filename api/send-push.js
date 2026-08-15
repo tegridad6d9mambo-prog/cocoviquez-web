@@ -84,12 +84,12 @@ async function sendCustomerOrderEmail(body) {
 
   let subject, heading, intro, accentColor;
 
-  if (newEstado === 'aceptado') {
+  if (newEstado === 'aceptado' || newEstado === 'procesando') {
     subject = '✅ Tu pedido fue aceptado - Coco Viquez';
     heading = '¡Tu pedido fue aceptado!';
     intro = 'Estamos preparando tu pedido. Te avisaremos cuando esté listo.';
     accentColor = '#22c55e';
-  } else if (newEstado === 'listo para entrega') {
+  } else if (newEstado === 'listo para entrega' || newEstado === 'listo') {
     subject = '🚗 Tu pedido está listo para entrega - Coco Viquez';
     heading = '¡Tu pedido está listo!';
     intro = 'Tu pedido ya está preparado y listo para ser entregado. ¡En camino a tu puerta!';
@@ -103,6 +103,18 @@ async function sendCustomerOrderEmail(body) {
     return;
   }
 
+  let footerContent = '';
+  if (newEstado === 'entregado') {
+    const reviewUrl = 'https://www.google.com/maps/place/Coco+Viquez/@10.5775653,-85.6713914,768m/data=!3m1!1e3!4m18!1m9!3m8!1s0x8f9e2a1a6340a9a9:0xdb69f46dde6010cf!2sCoco+Viquez!8m2!3d10.5775653!4d-85.6713914!9m1!1b1!16s%2Fg%2F11c5bh6xbj!3m7!1s0x8f9e2a1a6340a9a9:0xdb69f46dde6010cf!8m2!3d10.5775653!4d-85.6713914!9m1!1b1!16s%2Fg%2F11c5bh6xbj?hl=es-419';
+    footerContent = `
+      <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
+        <p style="margin: 0 0 15px 0; font-size: 14px; color: rgba(255,255,255,0.8); font-weight: 600;">¿Te gustó tu comida? ⭐</p>
+        <a href="${reviewUrl}" target="_blank" style="display: inline-block; background-color: #FFD700; color: #000000; font-weight: 800; text-transform: uppercase; font-size: 12px; letter-spacing: 1.5px; padding: 12px 24px; border-radius: 8px; text-decoration: none; border: 1px solid #FFD700; box-shadow: 0 4px 12px rgba(255,215,0,0.3); font-family: sans-serif;">⭐ DÉJANOS UNA RESEÑA EN GOOGLE</a>
+        <p style="margin: 15px 0 0 0; font-size: 12px; color: rgba(255,255,255,0.5);">Tu opinión nos ayuda a mejorar</p>
+      </div>
+    `;
+  }
+
   const htmlBody = renderEmailHtml({
     lang: detalle.idioma,
     heading,
@@ -110,7 +122,7 @@ async function sendCustomerOrderEmail(body) {
     cliente: escapeHtml(record.cliente || ''),
     footerLine: t.orderNumber(record.id),
     accentColor,
-  });
+  }) + footerContent;
 
   // Try Resend first if configured, otherwise use Formspree fallback
   if (resend) {
