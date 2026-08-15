@@ -19,11 +19,14 @@ export const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xyzkvovp';
 
 const RESEND_ENDPOINT = 'https://api.resend.com/emails';
 
-// Must be an address on a domain verified in Resend. Verifying the subdomain
-// send.cocoviquez.com is preferred over the root domain: the root already has a
-// GoDaddy SPF record ending in -all, and a subdomain gets its own SPF/DKIM
-// without editing (or breaking) that one.
-const MAIL_FROM = process.env.MAIL_FROM || 'Coco Víquez <reservas@send.cocoviquez.com>';
+// Must be an address on a domain verified in Resend, or Resend rejects the send.
+// ORDER_EMAIL_FROM is read as a fallback because the project already had it
+// configured for the earlier Resend integration - honouring it means the sender
+// keeps working without having to duplicate the value under a new name.
+const MAIL_FROM =
+  process.env.MAIL_FROM ||
+  process.env.ORDER_EMAIL_FROM ||
+  'Coco Víquez <reservas@send.cocoviquez.com>';
 
 export function resendConfigured() {
   return Boolean(process.env.RESEND_API_KEY);
