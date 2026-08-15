@@ -21,11 +21,16 @@ const RESEND_ENDPOINT = 'https://api.resend.com/emails';
 
 // Must be an address on a domain verified in Resend, or Resend rejects the send.
 //
+// Defaults to cocoviquez.com because that is the domain actually registered in
+// this project's Resend account. Note Resend still places its MX/SPF records on
+// the send.* subdomain even when the root domain is the one being verified, so
+// the root's existing GoDaddy SPF record is left untouched.
+//
 // Deliberately does NOT fall back to the project's existing ORDER_EMAIL_FROM:
 // that variable holds a @gmail.com address, and Resend can only send from a
 // domain you have verified via DNS - never from a free mail provider. Falling
 // back to it would fail every send with a 403.
-const MAIL_FROM = process.env.MAIL_FROM || 'Coco Víquez <reservas@send.cocoviquez.com>';
+const MAIL_FROM = process.env.MAIL_FROM || 'Coco Víquez <reservas@cocoviquez.com>';
 
 export function resendConfigured() {
   return Boolean(process.env.RESEND_API_KEY);
