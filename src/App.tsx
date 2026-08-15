@@ -9413,53 +9413,71 @@ export default function App() {
       {/* Modal de Detalles de Reserva - VERSIÓN SIMPLE */}
       {showReservaModal && selectedReserva && (
         <div className="fixed inset-0 z-[300] bg-black/80 flex items-center justify-center p-4">
-          <div className="bg-[#0D1721] rounded-2xl border-2 border-[#F27F57] p-8 max-w-md w-full max-h-96 overflow-y-auto">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-black text-white">Detalles</h2>
-              <button onClick={() => setShowReservaModal(false)} className="text-white/50 hover:text-white text-2xl">✕</button>
+          <div className="bg-[#0D1721] rounded-2xl border-2 border-[#F27F57] w-full max-w-md max-h-[85vh] flex flex-col overflow-hidden">
+            <div className="flex justify-between items-start gap-4 p-6 pb-4 border-b border-white/10">
+              <div className="min-w-0">
+                <p className="text-[#F27F57] font-bold text-[10px] uppercase tracking-widest">Reserva</p>
+                <h2 className="text-xl font-black text-white truncate">{selectedReserva.cliente}</h2>
+              </div>
+              <button onClick={() => setShowReservaModal(false)} className="text-white/40 hover:text-white text-2xl leading-none shrink-0">✕</button>
             </div>
 
-            <div className="space-y-4 text-white">
-              <div>
-                <p className="text-[#F27F57] font-bold text-xs uppercase">Nombre</p>
-                <p className="text-lg">{selectedReserva.cliente}</p>
-              </div>
-
-              <div>
-                <p className="text-[#F27F57] font-bold text-xs uppercase">Email</p>
-                <p className="text-sm">{selectedReserva.email || '-'}</p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-[#F27F57] font-bold text-xs uppercase">Fecha</p>
-                  <p>{selectedReserva.fecha ? selectedReserva.fecha.split('-').reverse().join('/') : '-'}</p>
+            <div className="p-6 space-y-5 text-white overflow-y-auto">
+              {/* Date/time/party size read as one unit, so they share a row. */}
+              <div className="grid grid-cols-3 gap-3">
+                <div className="min-w-0">
+                  <p className="text-[#F27F57] font-bold text-[10px] uppercase tracking-wider">Fecha</p>
+                  {/* toDateOnly first: 'fecha' arrives as a full timestamp, and splitting
+                      it raw produced '25T00:00:00+00:00/08/2026'. */}
+                  <p className="font-mono font-bold text-sm">{toDateOnly(selectedReserva.fecha).split('-').reverse().join('/') || '-'}</p>
                 </div>
-                <div>
-                  <p className="text-[#F27F57] font-bold text-xs uppercase">Hora</p>
-                  <p>{selectedReserva.fecha_hora?.slice(11, 16) || '-'}</p>
+                <div className="min-w-0">
+                  <p className="text-[#F27F57] font-bold text-[10px] uppercase tracking-wider">Hora</p>
+                  <p className="font-mono font-bold text-sm">{selectedReserva.fecha_hora?.slice(11, 16) || '-'}</p>
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[#F27F57] font-bold text-[10px] uppercase tracking-wider">Personas</p>
+                  <p className="font-mono font-bold text-sm text-cyan-400">{selectedReserva.lugares ?? '-'}</p>
                 </div>
               </div>
 
               <div>
-                <p className="text-[#F27F57] font-bold text-xs uppercase">Personas</p>
-                <p className="text-lg">{selectedReserva.lugares}</p>
+                <p className="text-[#F27F57] font-bold text-[10px] uppercase tracking-wider">Email</p>
+                {selectedReserva.email ? (
+                  <a href={`mailto:${selectedReserva.email}`} className="text-sm text-white hover:text-[#F27F57] underline decoration-white/20 break-all transition-colors">
+                    {selectedReserva.email}
+                  </a>
+                ) : (
+                  <p className="text-sm text-white/40">Sin correo registrado</p>
+                )}
+              </div>
+
+              <div>
+                <p className="text-[#F27F57] font-bold text-[10px] uppercase tracking-wider">Servicio</p>
+                <p className="text-sm">{selectedReserva.servicio_cotizado || 'Restaurante / General'}</p>
               </div>
 
               {selectedReserva.alergias && (
-                <div>
-                  <p className="text-amber-400 font-bold text-xs uppercase">Notas</p>
-                  <p className="text-sm">{selectedReserva.alergias}</p>
+                <div className="bg-amber-400/10 border border-amber-400/30 rounded-lg p-3">
+                  <p className="text-amber-400 font-bold text-[10px] uppercase tracking-wider">⚠️ Notas / Alergias</p>
+                  <p className="text-sm mt-1">{selectedReserva.alergias}</p>
                 </div>
               )}
 
               <div>
-                <p className="text-[#F27F57] font-bold text-xs uppercase">Estado</p>
-                <p className="text-cyan-400 font-bold">{selectedReserva.estado?.toUpperCase()}</p>
+                <p className="text-[#F27F57] font-bold text-[10px] uppercase tracking-wider mb-1">Estado</p>
+                <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                  selectedReserva.estado === 'confirmado' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40' :
+                  selectedReserva.estado === 'cancelado' ? 'bg-red-500/20 text-red-300 border border-red-500/40' :
+                  selectedReserva.estado === 'finalizado' ? 'bg-white/10 text-white/50 border border-white/20' :
+                  'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                }`}>
+                  {selectedReserva.estado?.toUpperCase()}
+                </span>
               </div>
             </div>
 
-            <div className="mt-6 flex gap-2">
+            <div className="flex gap-2 p-6 pt-4 border-t border-white/10">
               <button onClick={() => setShowReservaModal(false)} className="flex-1 py-2 bg-white/10 hover:bg-white/20 rounded text-white font-bold">
                 Cerrar
               </button>
