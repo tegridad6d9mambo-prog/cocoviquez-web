@@ -6714,6 +6714,33 @@ export default function App() {
       }
 
       console.log('✅ Email enviado exitosamente al restaurante');
+
+      // Now send acknowledgment email to client
+      try {
+        console.log('Sending acknowledgment email to client...');
+        const ackResponse = await fetch('/api/send-reservation-acknowledgment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name,
+            email,
+            date,
+            time,
+            guests,
+            alergias,
+            lang: idioma || 'es'
+          })
+        });
+
+        const ackData = await ackResponse.json();
+        if (ackResponse.ok) {
+          console.log('✅ Acknowledgment email sent to client');
+        } else {
+          console.warn('Warning: Could not send acknowledgment email to client:', ackData);
+        }
+      } catch (err) {
+        console.error('Warning: Error sending acknowledgment email:', err);
+      }
     } catch (err) {
       console.error('EXCEPTION: Error sending email:', err);
       setFormError('Error de conexión. Intenta de nuevo.');
@@ -6773,6 +6800,33 @@ export default function App() {
       }
 
       console.log('✅ Email enviado exitosamente al restaurante');
+
+      // Now send acknowledgment email to client
+      try {
+        console.log('Sending acknowledgment email to client...');
+        const ackResponse = await fetch('/api/send-reservation-acknowledgment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name,
+            email,
+            date,
+            time,
+            guests,
+            alergias,
+            lang: idioma || 'es'
+          })
+        });
+
+        const ackData = await ackResponse.json();
+        if (ackResponse.ok) {
+          console.log('✅ Acknowledgment email sent to client');
+        } else {
+          console.warn('Warning: Could not send acknowledgment email to client:', ackData);
+        }
+      } catch (err) {
+        console.error('Warning: Error sending acknowledgment email:', err);
+      }
 
       // Success - show confirmation
       setFormError('');
