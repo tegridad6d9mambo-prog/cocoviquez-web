@@ -5416,72 +5416,7 @@ export default function App() {
       } else {
         await fetchReservas();
 
-        if (updatedRows[0]?.email) {
-          const reserva = updatedRows[0];
-          console.log('DEBUG: Enviando email para reserva:', {
-            cliente: reserva.cliente,
-            email: reserva.email,
-            estado: nuevoEstado,
-            fecha: reserva.fecha,
-            hora: reserva.fecha_hora?.split('T')[1]?.slice(0, 5),
-            lugares: reserva.lugares,
-            idioma: reserva.idioma
-          });
-          try {
-            if (nuevoEstado === 'confirmado') {
-              const payload = {
-                name: reserva.cliente,
-                email: reserva.email,
-                date: reserva.fecha,
-                time: reserva.fecha_hora?.split('T')[1]?.slice(0, 5) || '',
-                guests: reserva.lugares,
-                alergias: reserva.alergias || '',
-                lang: reserva.idioma || 'es'
-              };
-              console.log('DEBUG: Payload para confirmación:', payload);
-              const response = await fetch('/api/send-reservation-confirmation', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-              });
-              const responseData = await response.json();
-              console.log('DEBUG: Email response:', { status: response.status, statusText: response.statusText, ok: response.ok, data: responseData });
-              if (!response.ok) {
-                console.error('ERROR: Email endpoint returned:', response.status, responseData);
-                setDashboardError(`Error enviando email: ${responseData?.error || 'Unknown error'}`);
-              }
-            } else if (nuevoEstado === 'cancelado') {
-              const payload = {
-                name: reserva.cliente,
-                email: reserva.email,
-                date: reserva.fecha,
-                time: reserva.fecha_hora?.split('T')[1]?.slice(0, 5) || '',
-                guests: reserva.lugares,
-                lang: reserva.idioma || 'es'
-              };
-              console.log('DEBUG: Payload para cancelación:', payload);
-              const response = await fetch('/api/send-reservation-cancellation', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-              });
-              const responseData = await response.json();
-              console.log('DEBUG: Cancellation email response:', { status: response.status, statusText: response.statusText, ok: response.ok, data: responseData });
-              if (!response.ok) {
-                console.error('ERROR: Cancellation email endpoint returned:', response.status, responseData);
-                setDashboardError(`Error enviando email de cancelación: ${responseData?.error || 'Unknown error'}`);
-              }
-            }
-          } catch (emailErr: any) {
-            console.error('DEBUG: Error sending email:', emailErr);
-          }
-        } else {
-          console.log('DEBUG: No email found for reservation:', {
-            cliente: updatedRows[0]?.cliente,
-            email: updatedRows[0]?.email,
-            todasLasPropsDisponibles: Object.keys(updatedRows[0] || {})
-          });
-        }
+        console.log('Reserva estado actualizado. Email será enviado automáticamente por el webhook de Supabase.');
       }
     } catch (err: any) {
       console.error(err);

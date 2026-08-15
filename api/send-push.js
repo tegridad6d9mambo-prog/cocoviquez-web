@@ -121,7 +121,7 @@ async function sendCustomerOrderEmail(body) {
         subject,
         html: htmlBody,
       });
-      console.log(`Order email sent via Resend to ${email} (status: ${newEstado})`);
+      console.log(`Order email sent via Resend (status: ${newEstado})`);
       return;
     } catch (err) {
       console.warn('Resend failed, falling back to Formspree:', err?.message);
@@ -142,7 +142,7 @@ async function sendCustomerOrderEmail(body) {
         html_content: htmlBody,
       })
     });
-    console.log(`Order email sent via Formspree to ${email} (status: ${newEstado})`);
+    console.log(`Order email sent via Formspree (status: ${newEstado})`);
   } catch (err) {
     console.error('Error sending customer order email (both methods failed):', err?.message || err);
   }
@@ -199,7 +199,7 @@ async function sendReservationConfirmationEmail(body) {
         subject,
         html: htmlBody,
       });
-      console.log(`Reservation email sent via Resend to ${email} (status: ${newEstado})`);
+      console.log(`Reservation email sent via Resend (status: ${newEstado})`);
       return;
     } catch (err) {
       console.warn('Resend failed, falling back to Formspree:', err?.message);
@@ -220,7 +220,7 @@ async function sendReservationConfirmationEmail(body) {
         html_content: htmlBody,
       })
     });
-    console.log(`Reservation email sent via Formspree to ${email} (status: ${newEstado})`);
+    console.log(`Reservation email sent via Formspree (status: ${newEstado})`);
   } catch (err) {
     console.error('Error sending reservation email (both methods failed):', err?.message || err);
   }
