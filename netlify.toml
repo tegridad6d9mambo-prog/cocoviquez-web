@@ -1,0 +1,4 @@
+[build]
+  base = "coco-víquez----restaurant"
+  command = "npm ci && npm run build"
+  publish = "dist"
