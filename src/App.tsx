@@ -6754,8 +6754,7 @@ export default function App() {
             date,
             time,
             guests,
-            alergias,
-            lang: idioma || 'es'
+            alergias
           })
         });
 
@@ -6840,8 +6839,7 @@ export default function App() {
             date,
             time,
             guests,
-            alergias,
-            lang: idioma || 'es'
+            alergias
           })
         });
 
