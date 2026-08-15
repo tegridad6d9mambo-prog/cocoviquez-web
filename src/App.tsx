@@ -1,3 +1,4 @@
+// BUILD_VERSION: 2026-08-15-v2 (Force Vercel rebuild without cache)
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
