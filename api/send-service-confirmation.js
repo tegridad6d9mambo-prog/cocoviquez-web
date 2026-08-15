@@ -11,20 +11,16 @@
 // the same class of exposure as any public "contact us" form), but it must
 // never be extended to accept free-form HTML/content from the client.
 
-import { Resend } from 'resend';
 import { getEmailStrings, renderEmailHtml, escapeHtml } from './_lib/email-i18n.js';
 
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-const ORDER_EMAIL_FROM = process.env.ORDER_EMAIL_FROM || 'Coco Víquez <pedidos@cocoviquez.com>';
+const RESTAURANT_EMAIL = 'restaurantecocoviquezph@gmail.com';
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xyzkvovp';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
-  }
-  if (!resend) {
-    return res.status(500).json({ error: 'Server not configured (missing Resend API key)' });
   }
 
   const { name, email, service, date, people, lang } = req.body || {};
@@ -42,19 +38,35 @@ export default async function handler(req, res) {
   const safeDate = date ? escapeHtml(String(date).slice(0, 40)) : '';
   const safePeople = people ? escapeHtml(String(people).slice(0, 10)) : '';
 
+  const subject = t.serviceReceived.subject(safeService);
+  const htmlContent = renderEmailHtml({
+    lang,
+    heading: t.serviceReceived.heading,
+    intro: t.serviceReceived.intro({ service: safeService, date: safeDate, people: safePeople }),
+    cliente: safeName,
+    accentColor: '#F27F57',
+  });
+
   try {
-    await resend.emails.send({
-      from: ORDER_EMAIL_FROM,
-      to: email,
-      subject: t.serviceReceived.subject(safeService),
-      html: renderEmailHtml({
-        lang,
-        heading: t.serviceReceived.heading,
-        intro: t.serviceReceived.intro({ service: safeService, date: safeDate, people: safePeople }),
-        cliente: safeName,
-        accentColor: '#F27F57',
+    const response = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        email: escapeHtml(String(email).slice(0, 100)),
+        _replyto: RESTAURANT_EMAIL,
+        _subject: subject,
+        name: safeName,
+        message: `Solicitud de servicio: ${safeService}\nCliente: ${safeName}\nFecha: ${safeDate}\nPersonas: ${safePeople}`,
+        html_content: htmlContent,
       }),
     });
+
+    if (!response.ok) {
+      const detail = await response.text();
+      console.error('Formspree rejected service confirmation:', response.status, detail.slice(0, 300));
+      return res.status(502).json({ error: 'Email provider rejected the request' });
+    }
+
     return res.status(200).json({ sent: true });
   } catch (err) {
     console.error('Error sending service confirmation email:', err?.message || err);

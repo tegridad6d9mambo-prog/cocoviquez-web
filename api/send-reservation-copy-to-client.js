@@ -74,9 +74,9 @@ export default async function handler(req, res) {
   `;
 
   try {
-    await fetch(FORMSPREE_ENDPOINT, {
+    const response = await fetch(FORMSPREE_ENDPOINT, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({
         email: email,
         _replyto: 'restaurantecocoviquezph@gmail.com',
@@ -86,6 +86,12 @@ export default async function handler(req, res) {
         html_content: htmlBody
       })
     });
+
+    if (!response.ok) {
+      const detail = await response.text();
+      console.error('Formspree rejected reservation copy:', response.status, detail.slice(0, 300));
+      return res.status(502).json({ error: 'Email provider rejected the request' });
+    }
 
     return res.status(200).json({ sent: true });
   } catch (err) {

@@ -65,10 +65,12 @@ export default async function handler(req, res) {
   `;
 
   try {
-    // Send to restaurant
-    await fetch(FORMSPREE_ENDPOINT, {
+    // Send to restaurant. Formspree returns a non-2xx on rejection (bad form id,
+    // quota exceeded, spam block) - surface that instead of reporting success,
+    // otherwise the UI shows "enviado" while no email was ever delivered.
+    const restaurantRes = await fetch(FORMSPREE_ENDPOINT, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({
         email: RESTAURANT_EMAIL,
         _replyto: email,
@@ -79,10 +81,16 @@ export default async function handler(req, res) {
       })
     });
 
+    if (!restaurantRes.ok) {
+      const detail = await restaurantRes.text();
+      console.error('Formspree rejected restaurant notification:', restaurantRes.status, detail.slice(0, 300));
+      return res.status(502).json({ error: 'Email provider rejected the request' });
+    }
+
     // Send copy to client
-    await fetch(FORMSPREE_ENDPOINT, {
+    const clientRes = await fetch(FORMSPREE_ENDPOINT, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({
         email: email,
         _replyto: RESTAURANT_EMAIL,
@@ -106,7 +114,14 @@ export default async function handler(req, res) {
       })
     });
 
-    return res.status(200).json({ sent: true });
+    // The restaurant copy is the one that matters for the booking to be actioned;
+    // a failed customer copy is logged but does not fail the whole request.
+    if (!clientRes.ok) {
+      const detail = await clientRes.text();
+      console.error('Formspree rejected client copy:', clientRes.status, detail.slice(0, 300));
+    }
+
+    return res.status(200).json({ sent: true, clientCopy: clientRes.ok });
   } catch (err) {
     console.error('Error sending emails:', err?.message);
     return res.status(500).json({ error: 'Failed to send emails' });
