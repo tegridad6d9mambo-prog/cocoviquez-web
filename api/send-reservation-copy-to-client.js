@@ -1,8 +1,4 @@
-import { Resend } from 'resend';
-
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-const ORDER_EMAIL_FROM = process.env.ORDER_EMAIL_FROM || 'Coco Víquez <pedidos@cocoviquez.com>';
-
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xyzkvovp';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function escapeHtml(str) {
@@ -22,11 +18,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  if (!resend) {
-    return res.status(500).json({ error: 'Server not configured' });
-  }
-
-  const { name, email, date, time, guests, alergias, items, total } = req.body || {};
+  const { name, email, date, time, guests, alergias } = req.body || {};
 
   if (!email || !EMAIL_RE.test(email)) {
     return res.status(400).json({ error: 'Invalid email' });
@@ -37,10 +29,6 @@ export default async function handler(req, res) {
   const safeTime = escapeHtml(String(time || '').slice(0, 20));
   const safeGuests = escapeHtml(String(guests || '1').slice(0, 10));
   const safeAlergias = escapeHtml(String(alergias || '').slice(0, 300));
-
-  const itemsList = items && items.length > 0
-    ? items.map((item, i) => `${i + 1}. ${escapeHtml(item)}`).join('\n')
-    : 'No especificado';
 
   const htmlBody = `
     <div style="background-color: #0d1b2a; color: #ffffff; font-family: 'Helvetica Neue', Arial, sans-serif; padding: 30px; border-radius: 16px; max-width: 600px; margin: 0 auto; border: 1px solid rgba(242, 127, 87, 0.3);">
@@ -86,11 +74,17 @@ export default async function handler(req, res) {
   `;
 
   try {
-    await resend.emails.send({
-      from: ORDER_EMAIL_FROM,
-      to: email,
-      subject: '📋 Copia de tu solicitud de reserva - Coco Víquez',
-      html: htmlBody,
+    await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email,
+        _replyto: 'restaurantecocoviquezph@gmail.com',
+        _subject: '📋 Copia de tu solicitud de reserva - Coco Víquez',
+        name: safeName,
+        message: `Copia de tu reserva\nFecha: ${safeDate}\nHora: ${safeTime}\nPersonas: ${safeGuests}`,
+        html_content: htmlBody
+      })
     });
 
     return res.status(200).json({ sent: true });

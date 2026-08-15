@@ -9433,133 +9433,73 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Modal de Detalles de Reserva */}
-      <AnimatePresence>
-        {showReservaModal && selectedReserva && (
-          <div className="fixed inset-0 z-[300] flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowReservaModal(false)}
-              className="absolute inset-0 bg-black/95 backdrop-blur-xl"
-            />
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="relative bg-[#0D1721] w-full max-w-2xl rounded-[2.5rem] border-2 border-[#F27F57]/30 shadow-[0_0_40px_rgba(242,127,87,0.25)] overflow-hidden text-white"
-            >
-              {/* Header */}
-              <div className="bg-[#0E1724] border-b border-white/10 p-6 flex justify-between items-center">
+      {/* Modal de Detalles de Reserva - VERSIÓN SIMPLE */}
+      {showReservaModal && selectedReserva && (
+        <div className="fixed inset-0 z-[300] bg-black/80 flex items-center justify-center p-4">
+          <div className="bg-[#0D1721] rounded-2xl border-2 border-[#F27F57] p-8 max-w-md w-full max-h-96 overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-black text-white">Detalles</h2>
+              <button onClick={() => setShowReservaModal(false)} className="text-white/50 hover:text-white text-2xl">✕</button>
+            </div>
+
+            <div className="space-y-4 text-white">
+              <div>
+                <p className="text-[#F27F57] font-bold text-xs uppercase">Nombre</p>
+                <p className="text-lg">{selectedReserva.cliente}</p>
+              </div>
+
+              <div>
+                <p className="text-[#F27F57] font-bold text-xs uppercase">Email</p>
+                <p className="text-sm">{selectedReserva.email || '-'}</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h2 className="text-2xl font-black uppercase tracking-tight text-white">Detalles de Reserva</h2>
-                  <p className="text-[#F27F57] text-xs font-black uppercase tracking-widest mt-1">ID: #{selectedReserva.id}</p>
+                  <p className="text-[#F27F57] font-bold text-xs uppercase">Fecha</p>
+                  <p>{selectedReserva.fecha ? selectedReserva.fecha.split('-').reverse().join('/') : '-'}</p>
                 </div>
-                <button
-                  onClick={() => setShowReservaModal(false)}
-                  className="text-white/50 hover:text-white transition-colors p-2 rounded-full hover:bg-white/5"
-                >
-                  <X size={24} />
-                </button>
-              </div>
-
-              {/* Content */}
-              <div className="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
-                {/* Cliente Info */}
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-                  <h3 className="text-sm font-black uppercase tracking-widest text-[#F27F57] mb-4">👤 Información del Cliente</h3>
-                  <div className="space-y-3">
-                    <div>
-                      <p className="text-xs text-white/50 uppercase font-bold tracking-wider">Nombre</p>
-                      <p className="text-lg font-bold text-white">{selectedReserva.cliente}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-white/50 uppercase font-bold tracking-wider">Email</p>
-                      <p className="text-white/80 break-all">{selectedReserva.email || 'No disponible'}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Reservation Details */}
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-                  <h3 className="text-sm font-black uppercase tracking-widest text-cyan-400 mb-4">📅 Detalles de la Reserva</h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-xs text-white/50 uppercase font-bold tracking-wider">Fecha</p>
-                      <p className="text-white font-bold">{selectedReserva.fecha ? selectedReserva.fecha.split('-').reverse().join('/') : '-'}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-white/50 uppercase font-bold tracking-wider">Hora</p>
-                      <p className="text-white font-bold">{selectedReserva.fecha_hora?.slice(11, 16) || '-'}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-white/50 uppercase font-bold tracking-wider">Cantidad de Personas</p>
-                      <p className="text-xl font-black text-cyan-400">{selectedReserva.lugares}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-white/50 uppercase font-bold tracking-wider">Servicio</p>
-                      <p className="text-white font-bold text-sm">{selectedReserva.servicio_cotizado || 'General'}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Special Notes */}
-                {selectedReserva.alergias && (
-                  <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-5">
-                    <h3 className="text-sm font-black uppercase tracking-widest text-amber-400 mb-3">⚠️ Notas Especiales</h3>
-                    <p className="text-white/80 text-sm leading-relaxed">{selectedReserva.alergias}</p>
-                  </div>
-                )}
-
-                {/* Estado */}
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-                  <h3 className="text-sm font-black uppercase tracking-widest text-white mb-4">📊 Estado</h3>
-                  <span className={`inline-block px-4 py-2 rounded-full text-xs font-black uppercase tracking-wider border ${
-                    selectedReserva.estado === 'pendiente' ? 'bg-amber-500/15 text-amber-400 border-amber-500/25' :
-                    selectedReserva.estado === 'confirmado' ? 'bg-cyan-500/15 text-cyan-400 border-cyan-500/25' :
-                    'bg-emerald-500/15 text-emerald-400 border-emerald-500/25'
-                  }`}>
-                    {selectedReserva.estado?.toUpperCase()}
-                  </span>
+                <div>
+                  <p className="text-[#F27F57] font-bold text-xs uppercase">Hora</p>
+                  <p>{selectedReserva.fecha_hora?.slice(11, 16) || '-'}</p>
                 </div>
               </div>
 
-              {/* Footer with Action Buttons */}
-              <div className="bg-[#0E1724] border-t border-white/10 p-6 flex gap-3 justify-end">
-                <button
-                  onClick={() => setShowReservaModal(false)}
-                  className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold uppercase tracking-wider transition-all text-sm"
-                >
-                  Cerrar
-                </button>
-                {selectedReserva.estado === 'pendiente' && (
-                  <>
-                    <button
-                      onClick={() => {
-                        updateReservaEstado(selectedReserva.id, 'confirmado');
-                        setShowReservaModal(false);
-                      }}
-                      className="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-[#09101A] rounded-xl font-bold uppercase tracking-wider transition-all text-sm shadow-[0_0_15px_rgba(6,182,212,0.3)]"
-                    >
-                      ✅ Confirmar
-                    </button>
-                    <button
-                      onClick={() => {
-                        updateReservaEstado(selectedReserva.id, 'cancelado');
-                        setShowReservaModal(false);
-                      }}
-                      className="px-6 py-3 bg-red-500 hover:bg-red-400 text-white rounded-xl font-bold uppercase tracking-wider transition-all text-sm shadow-[0_0_15px_rgba(239,68,68,0.3)]"
-                    >
-                      ❌ Rechazar
-                    </button>
-                  </>
-                )}
+              <div>
+                <p className="text-[#F27F57] font-bold text-xs uppercase">Personas</p>
+                <p className="text-lg">{selectedReserva.lugares}</p>
               </div>
-            </motion.div>
+
+              {selectedReserva.alergias && (
+                <div>
+                  <p className="text-amber-400 font-bold text-xs uppercase">Notas</p>
+                  <p className="text-sm">{selectedReserva.alergias}</p>
+                </div>
+              )}
+
+              <div>
+                <p className="text-[#F27F57] font-bold text-xs uppercase">Estado</p>
+                <p className="text-cyan-400 font-bold">{selectedReserva.estado?.toUpperCase()}</p>
+              </div>
+            </div>
+
+            <div className="mt-6 flex gap-2">
+              <button onClick={() => setShowReservaModal(false)} className="flex-1 py-2 bg-white/10 hover:bg-white/20 rounded text-white font-bold">
+                Cerrar
+              </button>
+              {selectedReserva.estado === 'pendiente' && (
+                <>
+                  <button onClick={() => { updateReservaEstado(selectedReserva.id, 'confirmado'); setShowReservaModal(false); }} className="flex-1 py-2 bg-cyan-500 hover:bg-cyan-600 rounded text-white font-bold">
+                    Confirmar
+                  </button>
+                  <button onClick={() => { updateReservaEstado(selectedReserva.id, 'cancelado'); setShowReservaModal(false); }} className="flex-1 py-2 bg-red-500 hover:bg-red-600 rounded text-white font-bold">
+                    Rechazar
+                  </button>
+                </>
+              )}
+            </div>
           </div>
-        )}
-      </AnimatePresence>
+        </div>
+      )}
       {/* Botón de Regresar al Inicio */}
       <button
         id="backToTop"
