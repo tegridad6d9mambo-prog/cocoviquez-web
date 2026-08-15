@@ -8477,8 +8477,15 @@ export default function App() {
                                         <td className="p-4 font-bold text-white text-sm cursor-pointer hover:text-[#F27F57] transition-colors" onClick={() => { setSelectedReserva(r); setShowReservaModal(true); }}>
                                           {r.cliente}
                                         </td>
-                                        <td className="p-4 text-white/70 text-[11px] break-all">
-                                          {r.email || '-'}
+                                        {/* Truncated to one line instead of break-all: wrapping a long
+                                            address over three lines made every row that tall and broke
+                                            the scannability of the list. The full address is in the
+                                            detail modal, as a mailto link. title= keeps it available on
+                                            hover without a click. */}
+                                        <td className="p-4 text-white/70 text-[11px] max-w-[160px]">
+                                          <span className="block truncate" title={r.email || undefined}>
+                                            {r.email || '-'}
+                                          </span>
                                         </td>
                                         <td className="p-4 text-white/70">
                                           <span className="bg-[#070D14] px-2.5 py-1 rounded-lg border border-white/5 text-[11px] font-black uppercase text-[#F27F57] tracking-wider">
