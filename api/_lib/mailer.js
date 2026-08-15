@@ -20,13 +20,12 @@ export const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xyzkvovp';
 const RESEND_ENDPOINT = 'https://api.resend.com/emails';
 
 // Must be an address on a domain verified in Resend, or Resend rejects the send.
-// ORDER_EMAIL_FROM is read as a fallback because the project already had it
-// configured for the earlier Resend integration - honouring it means the sender
-// keeps working without having to duplicate the value under a new name.
-const MAIL_FROM =
-  process.env.MAIL_FROM ||
-  process.env.ORDER_EMAIL_FROM ||
-  'Coco Víquez <reservas@send.cocoviquez.com>';
+//
+// Deliberately does NOT fall back to the project's existing ORDER_EMAIL_FROM:
+// that variable holds a @gmail.com address, and Resend can only send from a
+// domain you have verified via DNS - never from a free mail provider. Falling
+// back to it would fail every send with a 403.
+const MAIL_FROM = process.env.MAIL_FROM || 'Coco Víquez <reservas@send.cocoviquez.com>';
 
 export function resendConfigured() {
   return Boolean(process.env.RESEND_API_KEY);
