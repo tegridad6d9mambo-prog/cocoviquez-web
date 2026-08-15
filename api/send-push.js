@@ -17,8 +17,8 @@
 
 import webpush from 'web-push';
 import { createClient } from '@supabase/supabase-js';
-import { Resend } from 'resend';
 import { getEmailStrings, renderEmailHtml, escapeHtml } from './_lib/email-i18n.js';
+import { sendViaResend, sendViaFormspree } from './_lib/mailer.js';
 
 const vapidPublicKey = process.env.VITE_VAPID_PUBLIC_KEY;
 const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
@@ -31,8 +31,9 @@ const supabaseAdmin = (process.env.VITE_SUPABASE_URL && process.env.SUPABASE_SER
   ? createClient(process.env.VITE_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
   : null;
 
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-const ORDER_EMAIL_FROM = process.env.ORDER_EMAIL_FROM || 'Coco Víquez <pedidos@cocoviquez.com>';
+// Sending goes through _lib/mailer.js, which owns the provider choice and the
+// verified sender address - see the comments there on why ORDER_EMAIL_FROM is
+// not used.
 
 function buildNotification(body) {
   const { type, table, record, old_record } = body;
@@ -124,39 +125,32 @@ async function sendCustomerOrderEmail(body) {
     accentColor,
   }) + footerContent;
 
-  // Try Resend first if configured, otherwise use Formspree fallback
-  if (resend) {
-    try {
-      await resend.emails.send({
-        from: ORDER_EMAIL_FROM,
-        to: email,
-        subject,
-        html: htmlBody,
-      });
-      console.log(`Order email sent via Resend (status: ${newEstado})`);
-      return;
-    } catch (err) {
-      console.warn('Resend failed, falling back to Formspree:', err?.message);
-    }
+  // Resend is the only provider that can reach the customer. Goes through the
+  // shared mailer so the sender comes from MAIL_FROM (a verified domain) rather
+  // than ORDER_EMAIL_FROM, which holds a @gmail.com address Resend always
+  // rejects - and so a non-2xx is actually detected: resend.emails.send()
+  // resolves with {error} instead of throwing, so the previous try/catch logged
+  // success and skipped the fallback even when nothing was delivered.
+  const toCustomer = await sendViaResend({ to: email, subject, html: htmlBody });
+
+  if (toCustomer.ok) {
+    console.log(`Order email delivered to the customer (status: ${newEstado})`);
+  } else {
+    console.error(`Order email NOT delivered to the customer (status: ${newEstado}):`, toCustomer.error);
   }
 
-  // Formspree fallback
-  try {
-    await fetch('https://formspree.io/f/xyzkvovp', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: 'restaurantecocoviquezph@gmail.com',
-        _replyto: email,
-        _subject: subject,
-        name: record.cliente || 'Cliente',
-        message: `Pedido #${record.id} - ${newEstado}\n\nCliente: ${record.cliente}\nEmail: ${email}`,
-        html_content: htmlBody,
-      })
-    });
-    console.log(`Order email sent via Formspree (status: ${newEstado})`);
-  } catch (err) {
-    console.error('Error sending customer order email (both methods failed):', err?.message || err);
+  // Always notify the restaurant, whatever happened with the customer copy:
+  // Formspree can only reach the restaurant's own inbox anyway.
+  const toRestaurant = await sendViaFormspree({
+    subject,
+    name: record.cliente || 'Cliente',
+    message: `Pedido #${record.id} - ${newEstado}\n\nCliente: ${record.cliente}\nEmail: ${email}`,
+    html: htmlBody,
+    replyTo: email,
+  });
+
+  if (!toRestaurant.ok) {
+    console.error('Order notification to the restaurant failed:', toRestaurant.error);
   }
 }
 
@@ -202,39 +196,27 @@ async function sendReservationConfirmationEmail(body) {
     accentColor,
   });
 
-  // Try Resend first if configured, otherwise use Formspree fallback
-  if (resend) {
-    try {
-      await resend.emails.send({
-        from: ORDER_EMAIL_FROM,
-        to: email,
-        subject,
-        html: htmlBody,
-      });
-      console.log(`Reservation email sent via Resend (status: ${newEstado})`);
-      return;
-    } catch (err) {
-      console.warn('Resend failed, falling back to Formspree:', err?.message);
-    }
+  // This is the "email automático al confirmar/cancelar" the admin panel relies
+  // on. Same two fixes as the order email above: a verified sender via the shared
+  // mailer, and an error that is actually detected instead of silently swallowed.
+  const toCustomer = await sendViaResend({ to: email, subject, html: htmlBody });
+
+  if (toCustomer.ok) {
+    console.log(`Reservation email delivered to the customer (status: ${newEstado})`);
+  } else {
+    console.error(`Reservation email NOT delivered to the customer (status: ${newEstado}):`, toCustomer.error);
   }
 
-  // Formspree fallback
-  try {
-    await fetch('https://formspree.io/f/xyzkvovp', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: 'restaurantecocoviquezph@gmail.com',
-        _replyto: email,
-        _subject: subject,
-        name: record.cliente || 'Cliente',
-        message: `Reserva #${record.id} - ${newEstado}\n\nCliente: ${record.cliente}\nEmail: ${email}\nFecha: ${fecha}\nHora: ${hora}\nPersonas: ${record.lugares}`,
-        html_content: htmlBody,
-      })
-    });
-    console.log(`Reservation email sent via Formspree (status: ${newEstado})`);
-  } catch (err) {
-    console.error('Error sending reservation email (both methods failed):', err?.message || err);
+  const toRestaurant = await sendViaFormspree({
+    subject,
+    name: record.cliente || 'Cliente',
+    message: `Reserva #${record.id} - ${newEstado}\n\nCliente: ${record.cliente}\nEmail: ${email}\nFecha: ${fecha}\nHora: ${hora}\nPersonas: ${record.lugares}`,
+    html: htmlBody,
+    replyTo: email,
+  });
+
+  if (!toRestaurant.ok) {
+    console.error('Reservation notification to the restaurant failed:', toRestaurant.error);
   }
 }
 
@@ -247,16 +229,22 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  if (!supabaseAdmin) {
-    return res.status(500).json({ error: 'Server not configured (missing Supabase service role key)' });
-  }
-  if (!vapidPublicKey || !vapidPrivateKey) {
-    return res.status(500).json({ error: 'Server not configured (missing VAPID keys)' });
-  }
-
-  // Customer emails are best-effort and independent of the admin push notification below.
+  // Emails run before the push-configuration guards on purpose. They are
+  // genuinely independent of Web Push, and previously a missing VAPID or Supabase
+  // service-role key returned 500 here and the customer's confirmation email was
+  // never sent - a push misconfiguration silently took the reservation emails
+  // down with it.
   await sendCustomerOrderEmail(req.body || {});
   await sendReservationConfirmationEmail(req.body || {});
+
+  // Push unavailable is reported as 200, not 500: this endpoint is called by a
+  // Supabase Database Webhook, which retries on 5xx, and a retry would re-send
+  // the emails above. The condition is logged instead.
+  if (!supabaseAdmin || !vapidPublicKey || !vapidPrivateKey) {
+    const missing = !supabaseAdmin ? 'SUPABASE_SERVICE_ROLE_KEY/VITE_SUPABASE_URL' : 'VAPID keys';
+    console.error(`Web Push skipped, missing config: ${missing}. Emails were still processed.`);
+    return res.status(200).json({ emailsProcessed: true, pushSkipped: missing });
+  }
 
   const notification = buildNotification(req.body || {});
   if (!notification) {
