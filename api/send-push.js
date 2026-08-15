@@ -70,7 +70,7 @@ function getOrderDetalle(record) {
 
 async function sendCustomerOrderEmail(body) {
   const { type, table, record, old_record } = body;
-  if (table !== 'pedidos_delivery' || type !== 'UPDATE' || !resend) return;
+  if (table !== 'pedidos_delivery' || type !== 'UPDATE') return;
 
   const prevEstado = (old_record?.estado || '').toLowerCase();
   const newEstado = (record?.estado || '').toLowerCase();
@@ -82,33 +82,69 @@ async function sendCustomerOrderEmail(body) {
 
   const t = getEmailStrings(detalle.idioma);
 
-  let strings, accentColor;
+  let subject, heading, intro, accentColor;
+
   if (newEstado === 'aceptado') {
-    strings = t.orderAccepted;
+    subject = '✅ Tu pedido fue aceptado - Coco Viquez';
+    heading = '¡Tu pedido fue aceptado!';
+    intro = 'Estamos preparando tu pedido. Te avisaremos cuando esté listo.';
     accentColor = '#22c55e';
-  } else if (newEstado === 'listo para recoger') {
-    strings = t.orderOnTheWay;
+  } else if (newEstado === 'listo para entrega') {
+    subject = '🚗 Tu pedido está listo para entrega - Coco Viquez';
+    heading = '¡Tu pedido está listo!';
+    intro = 'Tu pedido ya está preparado y listo para ser entregado. ¡En camino a tu puerta!';
     accentColor = '#F27F57';
+  } else if (newEstado === 'entregado') {
+    subject = '📦 Tu pedido fue entregado - Coco Viquez';
+    heading = '¡Pedido entregado!';
+    intro = 'Tu pedido ha sido entregado. Esperamos que disfrutes tu comida. ¡Gracias por tu compra!';
+    accentColor = '#22c55e';
   } else {
     return;
   }
 
+  const htmlBody = renderEmailHtml({
+    lang: detalle.idioma,
+    heading,
+    intro,
+    cliente: escapeHtml(record.cliente || ''),
+    footerLine: t.orderNumber(record.id),
+    accentColor,
+  });
+
+  // Try Resend first if configured, otherwise use Formspree fallback
+  if (resend) {
+    try {
+      await resend.emails.send({
+        from: ORDER_EMAIL_FROM,
+        to: email,
+        subject,
+        html: htmlBody,
+      });
+      console.log(`Order email sent via Resend to ${email} (status: ${newEstado})`);
+      return;
+    } catch (err) {
+      console.warn('Resend failed, falling back to Formspree:', err?.message);
+    }
+  }
+
+  // Formspree fallback
   try {
-    await resend.emails.send({
-      from: ORDER_EMAIL_FROM,
-      to: email,
-      subject: strings.subject,
-      html: renderEmailHtml({
-        lang: detalle.idioma,
-        heading: strings.heading,
-        intro: strings.intro,
-        cliente: escapeHtml(record.cliente || ''),
-        footerLine: t.orderNumber(record.id),
-        accentColor,
-      }),
+    await fetch('https://formspree.io/f/xyzkvovp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: 'restaurantecocoviquezph@gmail.com',
+        _replyto: email,
+        _subject: subject,
+        name: record.cliente || 'Cliente',
+        message: `Pedido #${record.id} - ${newEstado}\n\nCliente: ${record.cliente}\nEmail: ${email}`,
+        html_content: htmlBody,
+      })
     });
+    console.log(`Order email sent via Formspree to ${email} (status: ${newEstado})`);
   } catch (err) {
-    console.error('Error sending customer order email:', err?.message || err);
+    console.error('Error sending customer order email (both methods failed):', err?.message || err);
   }
 }
 
@@ -116,11 +152,11 @@ async function sendCustomerOrderEmail(body) {
 // the table originally had no way to reach the customer back).
 async function sendReservationConfirmationEmail(body) {
   const { type, table, record, old_record } = body;
-  if (table !== 'reservas' || type !== 'UPDATE' || !resend) return;
+  if (table !== 'reservas' || type !== 'UPDATE') return;
 
   const prevEstado = (old_record?.estado || '').toLowerCase();
   const newEstado = (record?.estado || '').toLowerCase();
-  if (prevEstado === newEstado || newEstado !== 'confirmado') return;
+  if (prevEstado === newEstado) return;
 
   const email = record.email;
   if (!email) return;
@@ -129,21 +165,64 @@ async function sendReservationConfirmationEmail(body) {
   const fecha = record.fecha ? record.fecha.slice(0, 10).split('-').reverse().join('/') : '';
   const hora = record.fecha_hora ? record.fecha_hora.slice(11, 16) : '';
 
+  let subject, heading, intro, accentColor;
+
+  if (newEstado === 'confirmado') {
+    subject = '✅ Tu reserva fue confirmada - Coco Viquez';
+    heading = '¡Tu reserva fue confirmada!';
+    intro = `Tu reserva para ${record.lugares} persona(s) el ${fecha} a las ${hora} ha sido confirmada. Te esperamos.`;
+    accentColor = '#22c55e';
+  } else if (newEstado === 'cancelado') {
+    subject = '❌ Tu reserva fue cancelada - Coco Viquez';
+    heading = 'Reserva cancelada';
+    intro = 'Lamentablemente, tu reserva ha sido cancelada. Si tienes preguntas, contáctanos.';
+    accentColor = '#ef4444';
+  } else {
+    return;
+  }
+
+  const htmlBody = renderEmailHtml({
+    lang: record.idioma,
+    heading,
+    intro,
+    cliente: escapeHtml(record.cliente || ''),
+    footerLine: `Reserva #${record.id} - ${fecha} ${hora}`,
+    accentColor,
+  });
+
+  // Try Resend first if configured, otherwise use Formspree fallback
+  if (resend) {
+    try {
+      await resend.emails.send({
+        from: ORDER_EMAIL_FROM,
+        to: email,
+        subject,
+        html: htmlBody,
+      });
+      console.log(`Reservation email sent via Resend to ${email} (status: ${newEstado})`);
+      return;
+    } catch (err) {
+      console.warn('Resend failed, falling back to Formspree:', err?.message);
+    }
+  }
+
+  // Formspree fallback
   try {
-    await resend.emails.send({
-      from: ORDER_EMAIL_FROM,
-      to: email,
-      subject: t.reservationConfirmed.subject,
-      html: renderEmailHtml({
-        lang: record.idioma,
-        heading: t.reservationConfirmed.heading,
-        intro: t.reservationConfirmed.intro({ lugares: record.lugares, fecha, hora }),
-        cliente: escapeHtml(record.cliente || ''),
-        accentColor: '#22c55e',
-      }),
+    await fetch('https://formspree.io/f/xyzkvovp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: 'restaurantecocoviquezph@gmail.com',
+        _replyto: email,
+        _subject: subject,
+        name: record.cliente || 'Cliente',
+        message: `Reserva #${record.id} - ${newEstado}\n\nCliente: ${record.cliente}\nEmail: ${email}\nFecha: ${fecha}\nHora: ${hora}\nPersonas: ${record.lugares}`,
+        html_content: htmlBody,
+      })
     });
+    console.log(`Reservation email sent via Formspree to ${email} (status: ${newEstado})`);
   } catch (err) {
-    console.error('Error sending reservation confirmation email:', err?.message || err);
+    console.error('Error sending reservation email (both methods failed):', err?.message || err);
   }
 }
 
