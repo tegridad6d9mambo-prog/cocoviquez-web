@@ -12,9 +12,7 @@
 // never be extended to accept free-form HTML/content from the client.
 
 import { getEmailStrings, renderEmailHtml, escapeHtml } from './_lib/email-i18n.js';
-
-const RESTAURANT_EMAIL = 'restaurantecocoviquezph@gmail.com';
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xyzkvovp';
+import { sendViaResend, resendConfigured, RESTAURANT_EMAIL } from './_lib/mailer.js';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -32,6 +30,12 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing service' });
   }
 
+  if (!resendConfigured()) {
+    return res.status(503).json({
+      error: 'RESEND_API_KEY no está configurada en Vercel: no se puede enviar correo al cliente',
+    });
+  }
+
   const t = getEmailStrings(lang);
   const safeName = escapeHtml(String(name || '').slice(0, 100));
   const safeService = escapeHtml(String(service).slice(0, 100));
@@ -47,29 +51,16 @@ export default async function handler(req, res) {
     accentColor: '#F27F57',
   });
 
-  try {
-    const response = await fetch(FORMSPREE_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({
-        email: escapeHtml(String(email).slice(0, 100)),
-        _replyto: RESTAURANT_EMAIL,
-        _subject: subject,
-        name: safeName,
-        message: `Solicitud de servicio: ${safeService}\nCliente: ${safeName}\nFecha: ${safeDate}\nPersonas: ${safePeople}`,
-        html_content: htmlContent,
-      }),
-    });
+  const result = await sendViaResend({
+    to: email,
+    subject,
+    html: htmlContent,
+    replyTo: RESTAURANT_EMAIL,
+  });
 
-    if (!response.ok) {
-      const detail = await response.text();
-      console.error('Formspree rejected service confirmation:', response.status, detail.slice(0, 300));
-      return res.status(502).json({ error: 'Email provider rejected the request' });
-    }
-
-    return res.status(200).json({ sent: true });
-  } catch (err) {
-    console.error('Error sending service confirmation email:', err?.message || err);
-    return res.status(500).json({ error: 'Failed to send email' });
+  if (!result.ok) {
+    return res.status(502).json({ error: result.error || 'No se pudo enviar el correo al cliente' });
   }
+
+  return res.status(200).json({ sent: true, provider: result.provider });
 }

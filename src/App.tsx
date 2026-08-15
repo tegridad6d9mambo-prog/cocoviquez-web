@@ -6854,31 +6854,9 @@ export default function App() {
         console.error('Warning: Error sending acknowledgment email:', err);
       }
 
-      // Now send copy of reservation request to client
-      try {
-        console.log('Sending copy of reservation request to client...');
-        const copyResponse = await fetch('/api/send-reservation-copy-to-client', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name,
-            email,
-            date,
-            time,
-            guests,
-            alergias
-          })
-        });
-
-        const copyData = await copyResponse.json();
-        if (copyResponse.ok) {
-          console.log('✅ Copy of reservation sent to client');
-        } else {
-          console.warn('Warning: Could not send copy to client:', copyData);
-        }
-      } catch (err) {
-        console.error('Warning: Error sending copy to client:', err);
-      }
+      // No separate "copy to client" call: send-reservation-acknowledgment above
+      // already emails the customer their copy of the request. Calling both put
+      // two near-identical emails in their inbox.
 
       // Success - show confirmation
       setFormError('');

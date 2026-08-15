@@ -1,19 +1,13 @@
-const RESTAURANT_EMAIL = 'restaurantecocoviquezph@gmail.com';
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xyzkvovp';
+// Notifies the restaurant of a new reservation request.
+//
+// This endpoint deliberately does NOT email the customer: the frontend calls
+// send-reservation-acknowledgment right after this one, and that endpoint owns
+// the single customer-facing email (which doubles as their copy of the request).
+// Sending from both would put two near-identical emails in the customer's inbox.
+
+import { notifyRestaurant, escapeHtml } from './_lib/mailer.js';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-function escapeHtml(str) {
-  if (!str) return '';
-  const map = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#039;'
-  };
-  return String(str).replace(/[&<>"']/g, m => map[m]);
-}
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -65,65 +59,21 @@ export default async function handler(req, res) {
   `;
 
   try {
-    // Send to restaurant. Formspree returns a non-2xx on rejection (bad form id,
-    // quota exceeded, spam block) - surface that instead of reporting success,
-    // otherwise the UI shows "enviado" while no email was ever delivered.
-    const restaurantRes = await fetch(FORMSPREE_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({
-        email: RESTAURANT_EMAIL,
-        _replyto: email,
-        _subject: subject,
-        name: safeName,
-        message: `Reserva de ${safeName}\nFecha: ${safeDate}\nHora: ${safeTime}\nPersonas: ${safeGuests}`,
-        html_content: htmlContent
-      })
+    const result = await notifyRestaurant({
+      subject,
+      name: safeName,
+      message: `Reserva de ${safeName}\nEmail: ${safeEmail}\nFecha: ${safeDate}\nHora: ${safeTime}\nPersonas: ${safeGuests}`,
+      html: htmlContent,
+      replyTo: email,
     });
 
-    if (!restaurantRes.ok) {
-      const detail = await restaurantRes.text();
-      console.error('Formspree rejected restaurant notification:', restaurantRes.status, detail.slice(0, 300));
-      return res.status(502).json({ error: 'Email provider rejected the request' });
+    if (!result.ok) {
+      return res.status(502).json({ error: result.error || 'No se pudo notificar al restaurante' });
     }
 
-    // Send copy to client
-    const clientRes = await fetch(FORMSPREE_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({
-        email: email,
-        _replyto: RESTAURANT_EMAIL,
-        _subject: '📋 Copia de tu solicitud de reserva - Coco Víquez',
-        name: safeName,
-        message: `Copia de tu reserva\nFecha: ${safeDate}\nHora: ${safeTime}\nPersonas: ${safeGuests}`,
-        html_content: `
-          <div style="background-color: #0d1b2a; color: #ffffff; font-family: 'Helvetica Neue', Arial, sans-serif; padding: 30px; border-radius: 16px; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #F27F57; text-align: center;">📋 COPIA DE TU SOLICITUD</h2>
-            <p style="color: rgba(255,255,255,0.8);">Hola ${safeName},</p>
-            <p style="color: rgba(255,255,255,0.8);">Esta es una copia de la solicitud de reserva que enviaste a Coco Víquez.</p>
-            <div style="background-color: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin: 20px 0;">
-              <p><strong>Fecha:</strong> ${safeDate}</p>
-              <p><strong>Hora:</strong> ${safeTime}</p>
-              <p><strong>Cantidad de personas:</strong> ${safeGuests}</p>
-              ${safeAlergias ? `<p><strong>Notas especiales:</strong> ${safeAlergias}</p>` : ''}
-            </div>
-            <p style="color: rgba(255,255,255,0.7); font-size: 12px;">Pronto recibirás una confirmación del restaurante.</p>
-          </div>
-        `
-      })
-    });
-
-    // The restaurant copy is the one that matters for the booking to be actioned;
-    // a failed customer copy is logged but does not fail the whole request.
-    if (!clientRes.ok) {
-      const detail = await clientRes.text();
-      console.error('Formspree rejected client copy:', clientRes.status, detail.slice(0, 300));
-    }
-
-    return res.status(200).json({ sent: true, clientCopy: clientRes.ok });
+    return res.status(200).json({ sent: true, provider: result.provider });
   } catch (err) {
-    console.error('Error sending emails:', err?.message);
-    return res.status(500).json({ error: 'Failed to send emails' });
+    console.error('Error sending reservation email:', err?.message);
+    return res.status(500).json({ error: 'Failed to send email' });
   }
 }
