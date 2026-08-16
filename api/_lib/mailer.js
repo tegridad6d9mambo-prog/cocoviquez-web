@@ -30,7 +30,11 @@ const RESEND_ENDPOINT = 'https://api.resend.com/emails';
 // that variable holds a @gmail.com address, and Resend can only send from a
 // domain you have verified via DNS - never from a free mail provider. Falling
 // back to it would fail every send with a 403.
-const MAIL_FROM = process.env.MAIL_FROM || 'Coco Víquez <reservas@cocoviquez.com>';
+// Exported so diagnostics report the address that is actually used. It was
+// duplicated in email-health.js before, and the two drifted the moment this one
+// changed - the diagnostic then reported an unverified sender that production had
+// already stopped using.
+export const MAIL_FROM = process.env.MAIL_FROM || 'Coco Víquez <reservas@cocoviquez.com>';
 
 export function resendConfigured() {
   return Boolean(process.env.RESEND_API_KEY);

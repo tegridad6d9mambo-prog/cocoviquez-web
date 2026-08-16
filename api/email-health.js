@@ -8,6 +8,8 @@
 // from-address (which appears in every email anyway), and what Resend reports
 // about the account's domains. GET-only and side-effect free.
 
+import { MAIL_FROM } from './_lib/mailer.js';
+
 const RESEND_DOMAINS_ENDPOINT = 'https://api.resend.com/domains';
 
 // Resend can only send from a domain verified via DNS. Free providers can never
@@ -19,7 +21,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const from = process.env.MAIL_FROM || 'Coco Víquez <reservas@send.cocoviquez.com>';
+  // Imported, never re-derived: a local copy of this default silently went stale
+  // once mailer.js changed, and this endpoint then blamed production for a sender
+  // it was no longer using.
+  const from = MAIL_FROM;
   const match = from.match(/<([^>]+)>/);
   const fromAddress = match ? match[1] : from;
   const fromDomain = (fromAddress.split('@')[1] || '').toLowerCase();
